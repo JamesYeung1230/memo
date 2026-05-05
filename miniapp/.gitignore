@@ -1,0 +1,20 @@
+# 微信小程序
+node_modules/
+miniprogram_npm/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+npm-debug.log*
+
+# 无用文件
+nul

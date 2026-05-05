@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+vendor/
+miniprogram_npm/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+target/
+bin/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Temp
+tmp/
+temp/
+*.tmp
+
+# Coverage
+coverage/
+*.coverprofile
+
+# Certificates
+*.pem
+*.key
+*.crt
+
+# WeChat miniapp private config (contains appid, etc.)
+project.private.config.json
+
+# Nul
+nul
