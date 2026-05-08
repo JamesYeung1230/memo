@@ -295,7 +295,8 @@ docs(root): 更新项目规则文件
 
 | 文件位置 | 职责 | 包含板块 |
 |---------|------|---------|
-| `.trae/rules/project_rules.md`（根） | 项目全局规则 | Part A（Git）、Part B（AI 通用）、Part C（Skill）、Part D（维护指南）、Part E（MCP 规范）、Part F（Agent 规范）、附录 |
+| `~/.trae/rules/project_rules.md`（**全局**） | **用户全局规则**（自动对所有项目生效） | Part B（AI 通用）、Part C（Skill 通用原则）、Part E（MCP 通用原则）、Part F（Agent 规范） |
+| `.trae/rules/project_rules.md`（根） | 项目全局规则（本文件） | Part A（Git）、Part B（AI 通用）、Part C（Skill）、Part D（维护指南）、Part E（MCP 规范）、Part F（Agent 规范）、附录 |
 | `.trae/rules/template.project_rules.md` | **通用规则模板** | 剥离项目特定内容的通用版，新项目可直接拷贝使用 |
 | `backend/.trae/rules/project_rules.md` | 后端子项目 AI 行为扩展 | Part B 扩展 |
 | `miniapp/.trae/rules/project_rules.md` | 小程序子项目 AI 行为扩展 | Part B 扩展 |
