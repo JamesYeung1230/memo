@@ -3,7 +3,7 @@
 > 本文档作为项目开发的核心锚点，后续所有开发迭代必须遵循以下规则。
 > 锚定文档：[技术可行性分析报告](../docs/技术可行性分析报告.md)、[前端技术开发指导及规范](../docs/前端技术开发指导及规范.md)
 
-> 根规则 [Part A — Git 工作流规范](../../.trae/rules/project_rules.md)、[Part C — Skill 管理规范](../../.trae/rules/project_rules.md#part-c--skill-管理规范) 全局适用，本文件不重复列出。
+> 根规则 [Part A — Git 工作流规范](../../.trae/rules/project_rules.md)、[Part C — Skill 管理规范](../../.trae/rules/project_rules.md#part-c--skill-管理规范)、[Part E — MCP 服务调用规范](../../.trae/rules/project_rules.md#part-e--mcp-服务调用规范)、[Part F — Agent 选用与执行规范](../../.trae/rules/project_rules.md#part-f--agent-选用与执行规范) 全局适用，本文件不重复列出。
 > 根规则 [Part D — 规则维护指南](../../.trae/rules/project_rules.md#part-d--规则维护指南) 描述了整体的规则维护规范。
 
 ---
@@ -555,7 +555,7 @@ git commit -m "feat(scope): 描述"
 
 每次开始新任务前，必须先加载以下文件：
 1. [project.md](../../project.md) — 项目总览与当前阶段
-2. [.trae/rules/project_rules.md](../../.trae/rules/project_rules.md) — 根规则锚点（Part A Git 工作流 / Part B AI 行为 / Part C Skill 管理 / Part D 维护指南）
+2. [.trae/rules/project_rules.md](../../.trae/rules/project_rules.md) — 根规则锚点（Part A Git 工作流 / Part B AI 行为 / Part C Skill 管理 / Part D 维护指南 / Part E MCP 规范 / Part F Agent 选用）
 
 ### 16.3 文档锚定
 
