@@ -34,8 +34,11 @@ webapp/
 
 ## 相关文档
 
+- [项目开发规则锚点](./.trae/rules/project_rules.md) — **🔴 每次开发前必读**
 - [Web 管理端 PRD](./docs/PRD.md)
 - [小程序 PRD](../miniapp/docs/PRD.md)
+- [技术可行性分析报告](./docs/技术可行性分析报告.md)
+- [前端技术开发指导及规范](./docs/前端技术开发指导及规范.md)
 - [项目总览与开发规范](./project.md)
 
 ## 核心功能模块
@@ -51,8 +54,17 @@ webapp/
 
 ## 技术栈
 
-待确定（Web 前端框架 + UI 组件库）
+| 类别 | 技术 |
+|------|------|
+| 框架 | React 19 + TypeScript |
+| 构建 | Vite 6 |
+| UI 库 | Ant Design 5.x |
+| 状态管理 | TanStack React Query + Zustand |
+| 表单 | React Hook Form + Zod |
+| 图表 | Apache ECharts |
+| 富文本 | Tiptap |
+| 拖拽 | @dnd-kit |
+| HTTP | Axios |
+| 样式 | Tailwind CSS 4 |
 
-## 快速开始
-
-> 项目初始化阶段，开发环境搭建指南将在技术选型后补充。
+> 详细技术选型见 [技术可行性分析报告](./docs/技术可行性分析报告.md)、完整开发规范见 [前端技术开发指导及规范](./docs/前端技术开发指导及规范.md)
