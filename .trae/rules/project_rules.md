@@ -335,7 +335,7 @@ docs(root): 更新项目规则文件
 | 根规则 Part C | C.6 | C.7, C.8 … |
 | 根规则 Part D | D.5 | D.6, D.7 … |
 | 根规则 Part E | E.6 | E.7, E.8 … |
-| 根规则 Part F | F.8 | F.9, F.10 … |
+| 根规则 Part F | F.7 | F.8, F.9 … |
 | backend 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
 | miniapp 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
 | test 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
@@ -363,7 +363,7 @@ docs(root): 更新项目规则文件
 
 > 本文件是对根规则 [Part B — AI 编程行为规范](../../.trae/rules/project_rules.md) 的子项目扩展。
 > 根规则 Part B 的通用条款（B.1 上下文感知 ~ B.8 任务追踪）同样适用，不重复列出。
-> 根规则 Part A（Git 工作流）和 Part C（Skill 管理）全局适用，本文件不涉及。
+> 根规则 Part A（Git 工作流）、Part C（Skill 管理）、Part D（维护指南）、Part E（MCP 规范）、Part F（Agent 规范）全局适用，本文件不涉及。
 
 ---
 
