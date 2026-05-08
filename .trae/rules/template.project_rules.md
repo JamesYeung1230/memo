@@ -1,25 +1,26 @@
-# Memo 项目规范
+# <项目名称> 项目规范
 
 > 本文档是项目的核心规则锚点，所有开发工作（包括人和 AI）均须遵守。
 > 文档采用板块化结构，AI Agent 和开发者在执行对应操作时查阅相关板块即可。
+>
+> 📌 **使用说明**：将 `<项目名称>` `<项目根目录名>` `<子项目1>` `<子项目2>` 等占位符替换为实际值后使用。
 
 ---
 
 ## 适用范围
 
-以下规则在 Trae IDE 打开 `memo/` 或其下任意子项目（`backend/`、`miniapp/`、`test/`、`webapp/`）时均生效。
+以下规则在 Trae IDE 打开 `<项目根目录名>/` 或其下任意子项目（`<子项目1>/`、`<子项目2>/` 等）时均生效。
 
 ### 仓库结构
 
 ```
-memo/                     # Git 仓库根目录（唯一仓库）
-├── .gitignore            # 白名单模式，控制追踪范围
+<项目根目录名>/           # Git 仓库根目录（唯一仓库）
+├── .gitignore            # 文件追踪规则
 ├── README.md             # 全局说明文档
 ├── .trae/rules/          # 规则文件目录（本文件所在目录）
-├── backend/              # 后端子项目
-├── miniapp/              # 小程序子项目
-├── test/                 # 测试子项目
-└── webapp/               # Web 应用子项目
+├── <子项目1>/            # 子项目 1（按需修改）
+├── <子项目2>/            # 子项目 2（按需修改）
+└── ...                   # 更多子项目
 ```
 
 ### 板块导读
@@ -30,9 +31,9 @@ memo/                     # Git 仓库根目录（唯一仓库）
 | **Part B** — AI 编程行为规范 | 上下文感知、修改验证、依赖管理、安全红线等 | AI Agent | 执行开发任务时 |
 | **Part C** — Skill 管理规范 | Skill 选用、创建、维护、问题排查 | AI Agent | 使用或创建 Skill 时 |
 | **Part D** — 规则维护指南 | 文件架构、编号体系、创建/更新规范、跨文件引用 | AI Agent + 开发者 | 修改规则文件时 |
-| **Part E** — MCP 服务调用规范 | MCP 调用流程、项目 MCP 清单、安全约束、排查指南 | AI Agent | 调用 MCP 服务时 |
+| **Part E** — MCP 服务调用规范 | MCP 调用流程、MCP 清单示例、安全约束、排查指南 | AI Agent | 调用 MCP 服务时 |
 | **Part F** — Agent 选用与执行规范 | Agent 选用原则、任务执行规范、子 Agent 调用、风险应对 | AI Agent | 执行开发任务时 |
-| **附录** — .gitignore 说明 | 白名单模式的工作原理 | 开发者 + AI Agent | 理解文件追踪范围时 |
+| **附录** — .gitignore 说明 | .gitignore 的工作原理说明 | 开发者 + AI Agent | 理解文件追踪范围时 |
 
 > AI Agent 在执行任务时自动遵守 Part B、Part C、Part E 和 Part F 的规则；Part A 在任务完成后的提交阶段生效。
 
@@ -44,7 +45,7 @@ memo/                     # Git 仓库根目录（唯一仓库）
 
 ## A.1 唯一 Git 仓库
 
-所有 git 操作统一在 `memo/` 根目录下执行，子项目内部不初始化独立的 git 仓库。
+所有 git 操作统一在 `<项目根目录名>/` 根目录下执行，子项目内部不初始化独立的 git 仓库。
 
 ## A.2 提交隔离原则
 
@@ -52,18 +53,18 @@ memo/                     # Git 仓库根目录（唯一仓库）
 
 ## A.3 默认提交（Agent 自动行为）
 
-Agent 完成用户指令并修改文件后，**必须默认执行一次本地提交**。无论用户当前打开的是 `memo/` 还是其下任意子项目，本规则均生效。
+Agent 完成用户指令并修改文件后，**必须默认执行一次本地提交**。无论用户当前打开的是 `<项目根目录名>/` 还是其下任意子项目，本规则均生效。
 
 ## A.4 父子目录分离提交
 
-当 memo 根目录文件（`README.md`、`.trae/` 下规则文件等）与子项目文件**同时**存在修改时，**必须拆分为两次独立提交**：
+当根目录文件（`README.md`、`.trae/` 下规则文件等）与子项目文件**同时**存在修改时，**必须拆分为两次独立提交**：
 
 | 顺序 | 提交内容 | 示例命令 |
 |------|---------|---------|
 | 先提交 | 子项目文件 | `git add <子项目目录>/ && git commit -m "..."` |
 | 再提交 | 根目录文件 | `git add README.md .trae/ && git commit -m "..."` |
 
-> 分开提交的目的是让每次 commit 的 scope 清晰明确，避免一个 commit 同时包含 `webapp` 和 `root` 两种 scope。
+> 分开提交的目的是让每次 commit 的 scope 清晰明确，避免一个 commit 同时包含子项目和根目录两种 scope。
 
 若仅修改了根目录文件（如更新规则），则只需一次 `docs(root):` 提交。
 若仅修改了子项目文件，则只需一次对应 scope 的提交。
@@ -72,12 +73,12 @@ Agent 完成用户指令并修改文件后，**必须默认执行一次本地提
 
 ```bash
 # 仅子项目
-cd /d/workspace/memo
+cd /d/workspace/<项目根目录名>
 git add <子项目目录>/
 git commit -m "<type>(<scope>): <描述>"
 
 # 仅根目录
-cd /d/workspace/memo
+cd /d/workspace/<项目根目录名>
 git add README.md .trae/   # 按实际变更文件添加
 git commit -m "<type>(root): <描述>"
 ```
@@ -93,7 +94,7 @@ git commit -m "<type>(root): <描述>"
 ```
 
 - `type`: feat / fix / refactor / style / docs / chore / test
-- `scope`: webapp / backend / miniapp / test / root
+- `scope`: root / <子项目1> / <子项目2> / ...（按实际子项目填写）
 - 描述使用中文
 
 **示例：**
@@ -113,7 +114,7 @@ docs(root): 更新项目规则文件
 
 - 禁止在单次提交中混入多个子项目的文件变更
 - 禁止在一次提交中同时包含根目录文件和子项目文件（必须拆分）
-- 禁止提交 `memo/README.md` 和 `.trae/` 以外的根目录文件（`.gitignore` 除外）
+- 禁止提交根目录下 `README.md` 和 `.trae/` 以外的根目录文件（`.gitignore` 除外）
 - 禁止在子项目内部执行 `git init` 或 `git add` 操作
 
 ---
@@ -192,11 +193,19 @@ docs(root): 更新项目规则文件
 
 ## C.2 本项目可用 Skill 及适用场景
 
-| Skill | 所属子项目 | 核心能力 | 使用场景 | 禁止场景 |
-|-------|-----------|---------|---------|---------|
-| `bugpack-usage` | 全局 | BugPack 部署、配置、Bug 管理 | Bug 创建/查看/状态更新、BugPack MCP 配置 | 普通开发任务、代码修改 |
-| `skill-creator` | 全局 | 创建新的自定义 Skill | 用户明确要求创建 Skill 时 | 非创建 Skill 的任何任务 |
-| `ui-ux-pro-max` | miniapp | UI/UX 设计智能化 | 页面/组件 UI 设计、颜色/字体/图标推荐、设计系统参考 | 纯逻辑开发、后端/测试任务 |
+> ⚠️ 此表为示例格式，请根据实际安装的 Skill 替换内容。
+
+| Skill | 所属范围 | 核心能力 | 使用场景 | 禁止场景 |
+|-------|---------|---------|---------|---------|
+| `<skill-name>` | `<全局/子项目>` | `<核心能力描述>` | `<使用场景>` | `<禁止场景>` |
+
+### 默认可用 Skill（Trae IDE 内置）
+
+以下 Skill 通常开箱可用，无需额外安装：
+
+| Skill | 核心能力 | 使用场景 | 禁止场景 |
+|-------|---------|---------|---------|
+| `skill-creator` | 创建新的自定义 Skill | 用户明确要求创建 Skill 时 | 非创建 Skill 的任何任务 |
 
 ## C.3 使用约束
 
@@ -293,14 +302,14 @@ docs(root): 更新项目规则文件
 
 ### 文件分布
 
+> ⚠️ 根据实际子项目结构调整下表。
+
 | 文件位置 | 职责 | 包含板块 |
 |---------|------|---------|
 | `.trae/rules/project_rules.md`（根） | 项目全局规则 | Part A（Git）、Part B（AI 通用）、Part C（Skill）、Part D（维护指南）、Part E（MCP 规范）、Part F（Agent 规范）、附录 |
-| `.trae/rules/template.project_rules.md` | **通用规则模板** | 剥离项目特定内容的通用版，新项目可直接拷贝使用 |
-| `backend/.trae/rules/project_rules.md` | 后端子项目 AI 行为扩展 | Part B 扩展 |
-| `miniapp/.trae/rules/project_rules.md` | 小程序子项目 AI 行为扩展 | Part B 扩展 |
-| `test/.trae/rules/project_rules.md` | 测试子项目 AI 行为扩展 | Part B 扩展 |
-| `webapp/.trae/rules/project_rules.md` | Web 管理端完整规范 | Part A（项目 Git）+ Part B（AI 扩展）+ 项目特定规范（§一~§十六） |
+| `<子项目1>/.trae/rules/project_rules.md` | 子项目 1 AI 行为扩展（可选） | Part B 扩展 |
+| `<子项目2>/.trae/rules/project_rules.md` | 子项目 2 AI 行为扩展（可选） | Part B 扩展 |
+| `...` | 更多子项目 | — |
 
 ### 职责分工
 
@@ -312,8 +321,8 @@ docs(root): 更新项目规则文件
 ### 核心原则
 
 1. **根规则统管全局**：Part A（Git 工作流）、Part C（Skill 管理）、Part E（MCP 规范）和 Part F（Agent 规范）全局适用，子项目不重复定义
-2. **子项目按需扩展**：子项目只补充 Part B 的领域特定条款（如 backend 的数据安全、miniapp 的 UI 还原）
-3. **webapp 特殊处理**：因已有 §一~§十六的完整项目规范，AI 行为扩展作为 §十七存在，不强制改为 Part 编号
+2. **子项目按需扩展**：子项目只补充 Part B 的领域特定条款，不重复根规则已有内容
+3. **子项目规则独立编号**：各子项目使用独立的 Part B 扩展编号区间，互不影响
 
 ## D.2 编号体系
 
@@ -337,10 +346,8 @@ docs(root): 更新项目规则文件
 | 根规则 Part D | D.5 | D.6, D.7 … |
 | 根规则 Part E | E.6 | E.7, E.8 … |
 | 根规则 Part F | F.7 | F.8, F.9 … |
-| backend 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
-| miniapp 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
-| test 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
-| webapp 子项目 | 十七 | 十八, 十九 … |
+| <子项目1> 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
+| <子项目2> 子项目 | B.14 | B.15, B.16 … (上限 B.20) |
 
 > 子项目使用 B.9~B.20 区间，与根规则 Part B 的 B.1~B.8 自然衔接，形成一个完整的编号序列。B.9~B.20 为子项目保留区间（共 12 个编号），根规则扩展从 B.21 开始。
 >
@@ -414,7 +421,7 @@ docs(root): 更新项目规则文件
 | 引用目标 | 格式 | 示例 |
 |---------|------|------|
 | 根规则章节 | `参见根规则 §X.N` | `参见根规则 §B.3` |
-| 子项目规则章节 | `参见 <子项目名> §X.N` | `参见 backend §B.10` |
+| 子项目规则章节 | `参见 <子项目名> §X.N` | `参见 <子项目> §B.10` |
 | 同一文件内章节 | `参见 §X.N` | `参见 §C.3.1` |
 
 ### 引用原则
@@ -447,34 +454,23 @@ docs(root): 更新项目规则文件
 
 ## E.2 本项目可用 MCP 服务清单
 
+> ⚠️ 此表为示例格式，请根据实际配置的 MCP 服务替换内容。
+
 ### MCP 服务总览
 
 | MCP 服务 | 所属范围 | 核心能力 | 涉及子项目 |
 |---------|---------|---------|-----------|
-| **BugPack MCP** | 全局（test 项目强制使用） | Bug 创建、查询、状态管理、截图、修复说明 | test |
-| **Pencil MCP** | 全局（miniapp/webapp 涉及设计） | 设计文件读写、编辑、截图导出 | miniapp, webapp |
+| `<MCP 服务名>` | `<全局/子项目>` | `<能力描述>` | `<子项目>` |
 
-### BugPack MCP 工具详情
+### 填写模板
 
+按以下格式填写每个 MCP 工具：
+
+```
 | 工具 | 用途 | 使用场景 | 注意事项 |
 |------|------|---------|---------|
-| `list_bugs` | 查询 Bug 列表 | 任务开始时了解当前 Bug 状态 | 可配合 project/status 参数过滤 |
-| `get_bug_context` | 获取 Bug 完整上下文 | 修复 Bug 前查看详情和修复说明 | 返回数据量较大 |
-| `get_bug_screenshot` | 获取 Bug 截图 | 理解 Bug 视觉表现 | 截图消耗 Token 较多 |
-| `mark_bug_status` | 更新 Bug 状态 | Bug 修复后标记状态 | **不可逆操作**，确认后再执行 |
-| `add_fix_note` | 添加修复说明 | Bug 修复后记录修复方案 | 追加写入，不会覆盖已有内容 |
-
-### Pencil MCP 工具详情
-
-| 工具 | 用途 | 使用场景 | 注意事项 |
-|------|------|---------|---------|
-| `batch_design` | 批量编辑设计文件 | 创建/修改/删除设计节点 | **任一操作失败则整批回滚**，不宜一次塞入过多操作 |
-| `batch_get` | 批量读取设计节点 | 查询设计元素和组件 | readDepth/searchDepth 过大时返回数据量巨大 |
-| `get_screenshot` | 获取设计截图 | 验证视觉还原效果 | **高 Token 消耗**，优先使用 snapshot_layout |
-| `snapshot_layout` | 检查布局结构 | 验证布局和元素位置 | 低 Token 消耗，适合结构检查 |
-| `find_empty_space` | 查找空白区域 | 在画布上定位可放置新元素的位置 | 需提供准确的尺寸和方向参数 |
-| `get_variables` / `set_variables` | 管理设计变量 | 全局颜色/字体/间距变量管理 | 需遵循 .pen schema 的变量格式 |
-| `search_all_unique_properties` / `replace_all_matching_properties` | 批量属性操作 | 全局替换/搜索设计属性 | 影响范围大，谨慎使用 |
+| `<工具名>` | `<功能>` | `<场景>` | `<注意点>` |
+```
 
 ## E.3 调用流程规范
 
@@ -500,19 +496,19 @@ docs(root): 更新项目规则文件
 
 ```
 ✅ 正确做法：
-  第1步：list_bugs → 获取当前 Bug 列表和状态
-  第2步：get_bug_context → 查看具体 Bug 详情
-  第3步：确认后 → mark_bug_status → 更新状态
-  第4步：list_bugs → 确认状态已更新
+  第1步：查询当前状态
+  第2步：分析返回数据
+  第3步：确认后执行操作
+  第4步：查询确认状态已更新
 
 ❌ 错误做法：
-  一次调用 mark_bug_status → 更新状态后不验证
+  一次执行操作后不验证
 ```
 
 ### E.3.3 避免上下文溢出
 
-- `batch_get` 的 `readDepth` 和 `searchDepth` 参数优先使用低值（1~2），需要更多数据时逐层深入
-- `get_screenshot` 和 `get_bug_screenshot` 仅在需要视觉验证时使用
+- 查询工具的 depth 参数优先使用低值（1~2），需要更多数据时逐层深入
+- 截图类 MCP 仅在需要视觉验证时使用
 - 大批量操作拆分为多个小批次执行
 
 ## E.4 安全约束
@@ -521,12 +517,7 @@ docs(root): 更新项目规则文件
 
 以下 MCP 操作一旦执行无法恢复，**必须先确认参数再执行**：
 
-| MCP 服务 | 不可逆操作 | 执行前必须 |
-|---------|-----------|-----------|
-| BugPack | `mark_bug_status` | 确认 Bug ID、目标状态、项目名正确 |
-| BugPack | `add_fix_note` | 确认 Fix Note 内容完整准确 |
-| Pencil | `batch_design` 中的 D（删除）操作 | 确认删除的节点 ID 正确 |
-| Pencil | `replace_all_matching_properties` | 确认替换范围 and 新值正确 |
+> ⚠️ 根据实际 MCP 服务填写不可逆操作列表。
 
 ### E.4.2 状态漂移防护
 
@@ -538,15 +529,15 @@ docs(root): 更新项目规则文件
 
 ### E.4.3 数据安全
 
-- BugPack MCP 上报的 Bug 信息不应包含用户个人隐私
-- Pencil MCP 操作设计文件时，注意不要误删他人创作的内容
-- 禁止通过 MCP 操作未经授权的资源（如其他项目的 Bug）
+- MCP 上报的信息不应包含用户个人隐私
+- 操作外部系统时，注意不要误删他人创作的内容
+- 禁止通过 MCP 操作未经授权的资源（如其他项目的资源）
 
 ### E.4.4 频率控制
 
 - 避免在短时间内重复调用同一个 MCP 工具
 - 连续调用之间留出合理的间隔，避免服务端限流
-- 批量操作优先使用批量接口（如 `batch_design`、`batch_get`），而非逐个调用
+- 批量操作优先使用批量接口，而非逐个调用
 
 ## E.5 错误处理规范
 
@@ -578,9 +569,9 @@ MCP 调用失败
 
 ### E.5.3 批量操作回滚感知
 
-Pencil MCP 的 `batch_design` 支持事务性回滚：
+如果 MCP 服务支持事务性回滚（如 Pencil MCP 的 `batch_design`）：
 - 如果某个操作失败，整个批次的**所有操作**都会回滚
-- 不要在同一个 `batch_design` 调用中放入过多操作（一般不超过 10 个）
+- 不要在同一个批量调用中放入过多操作（一般不超过 10 个）
 - 将大型修改拆分为多个批次，降低单次回滚的影响范围
 
 ## E.6 问题排查
@@ -622,18 +613,20 @@ Pencil MCP 的 `batch_design` 支持事务性回滚：
 |------|------|---------|
 | **主 Agent**（当前对话） | 统筹任务、拆解步骤、协调子 Agent | 所有任务的入口 |
 | **子 Agent**（Task 工具启动） | 执行特定子任务，返回结果给主 Agent | 搜索调研、专业领域任务 |
-| **MCP Agent**（MCP 协议驱动） | 操作外部系统 | Bug 管理、设计操作（参见 Part E） |
+| **MCP Agent**（MCP 协议驱动） | 操作外部系统 | 外部系统交互（参见 Part E） |
 
 ## F.2 本项目可用 Agent 清单
 
 ### Agent 选择矩阵
 
+> ⚠️ Trae IDE 内置 Agent 列表。具体可用 Agent 以 IDE 版本为准。
+
 | Agent | 核心能力 | 使用场景 | 禁止场景 |
 |-------|---------|---------|---------|
 | `search` | 跨模块代码搜索与调研 | 高层级代码查询、架构理解 | 执行代码修改 |
-| `frontend-architect` | 前端 UI 开发、组件实现 | React/小程序页面开发、组件编写 | 后端 API 设计、数据库操作 |
+| `frontend-architect` | 前端 UI 开发、组件实现 | 前端页面开发、组件编写 | 后端 API 设计、数据库操作 |
 | `backend-architect` | 后端 API 设计、服务端架构 | REST API 设计、中间件实现 | 前端 UI 实现、样式调整 |
-| `ui-designer` | 交互设计、视觉还原 | 设计系统创建、UI 组件设计、Pencil 操作 | 纯逻辑开发、后端任务 |
+| `ui-designer` | 交互设计、视觉还原 | 设计系统创建、UI 组件设计、设计工具操作 | 纯逻辑开发、后端任务 |
 | `api-test-pro` | API 及性能测试 | 接口测试、契约测试、负载测试 | UI 开发、数据库设计 |
 | `performance-expert` | 性能分析、瓶颈定位 | 慢查询优化、渲染性能分析 | 新功能开发 |
 | `devops-architect` | CI/CD、部署自动化 | 流水线配置、容器化部署 | 业务代码编写 |
@@ -643,12 +636,14 @@ Pencil MCP 的 `batch_design` 支持事务性回滚：
 
 ### 按项目类型推荐
 
-| 子项目 | 推荐 Agent | 配合使用 |
-|--------|-----------|---------|
-| backend | `backend-architect` + `api-test-pro` + `performance-expert` + `devops-architect` | `search` |
-| miniapp | `frontend-architect` + `ui-designer` | `backend-architect`（API 理解）、`search` |
-| webapp | `frontend-architect` + `ui-designer` | `backend-architect`（API 理解）、`search` |
-| test | `api-test-pro` + `frontend-architect` | `backend-architect`（API 分析）、`search` |
+> ⚠️ 根据实际子项目类型调整推荐组合。
+
+| 子项目类型 | 推荐 Agent | 配合使用 |
+|-----------|-----------|---------|
+| 后端服务 | `backend-architect` + `api-test-pro` + `performance-expert` + `devops-architect` | `search` |
+| 前端 Web | `frontend-architect` + `ui-designer` | `backend-architect`（API 理解）、`search` |
+| 移动端/小程序 | `frontend-architect` + `ui-designer` | `backend-architect`（API 理解）、`search` |
+| 测试工程 | `api-test-pro` + `frontend-architect` | `backend-architect`（API 分析）、`search` |
 
 ## F.3 Agent 选用原则
 
@@ -783,8 +778,8 @@ Pencil MCP 的 `batch_design` 支持事务性回滚：
 
 | 要素 | 说明 | 示例 |
 |------|------|------|
-| **任务目标** | 清晰的单一任务描述 | 「查询 backend 项目中的所有 API 路由」 |
-| **上下文锚点** | 子 Agent 需要加载的文件 | 「请先加载 backend/project.md」 |
+| **任务目标** | 清晰的单一任务描述 | 「查询项目中的所有 API 路由」 |
+| **上下文锚点** | 子 Agent 需要加载的文件 | 「请先加载 project.md」 |
 | **输出要求** | 期望返回什么信息 | 「返回路由列表及对应的文件路径」 |
 | **边界约束** | 什么不能做 | 「只做查询，不做代码修改」 |
 
@@ -878,8 +873,12 @@ Pencil MCP 的 `batch_design` 支持事务性回滚：
 
 # 附录 — .gitignore 说明
 
-采用白名单模式：
-1. `/*` — 先忽略根目录下所有内容
-2. `!/backend/` `!/miniapp/` `!/test/` `!/webapp/` — 放行四个子项目
-3. `!/README.md` — 放行根目录 README
-4. 其余规则对已追踪目录内的依赖、构建产物、IDE 配置等进行忽略
+`.gitignore` 文件决定了哪些文件和目录不被 Git 追踪。建议采用白名单模式（先全部忽略再逐项放行）或黑名单模式（默认追踪特定类型文件），根据项目需求选择。
+
+**白名单模式示例：**
+```
+/*                    # 先忽略根目录下所有内容
+!/<子项目1>/          # 放行子项目 1
+!/<子项目2>/          # 放行子项目 2
+!/README.md           # 放行根目录 README
+```
