@@ -626,11 +626,7 @@ git commit -m "feat(scope): 描述"
 
 ### 17.8 AI Agent 协同
 
-- 前端开发涉及以下场景时可调用对应 Agent 并行工作：
-  - `frontend-architect` — 前端开发、UI 实现
-  - `ui-designer` — 交互设计、视觉还原
-  - `backend-architect` — 后端 API 设计理解
-  - `search` — 代码搜索与调研
+Agent 选用和委派遵循根规则 [Part F — Agent 选用与执行规范](../../.trae/rules/project_rules.md#part-f--agent-选用与执行规范)，webapp 项目的推荐 Agent 组合参见根规则 [§F.2 按项目类型推荐](../../.trae/rules/project_rules.md#按项目类型推荐) 中的 webapp 行。
 
 ### 17.9 任务追踪
 
