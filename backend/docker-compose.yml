@@ -1,0 +1,124 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: codesail-postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${DB_NAME:-codesail}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-codesail}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - codesail-network
+
+  redis:
+    image: redis:7
+    container_name: codesail-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - codesail-network
+
+  auth:
+    build:
+      context: .
+      dockerfile: services/auth/Dockerfile
+    container_name: codesail-auth
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - codesail-network
+
+  knowledge:
+    build:
+      context: .
+      dockerfile: services/knowledge/Dockerfile
+    container_name: codesail-knowledge
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - codesail-network
+
+  core:
+    build:
+      context: .
+      dockerfile: services/core/Dockerfile
+    container_name: codesail-core
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      knowledge:
+        condition: service_started
+    ports:
+      - "8000:8000"
+    volumes:
+      - uploads_data:/data/uploads
+    environment:
+      UPLOAD_DIR: /data/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - codesail-network
+
+volumes:
+  postgres_data:
+    name: codesail-postgres-data
+  redis_data:
+    name: codesail-redis-data
+  uploads_data:
+    name: codesail-uploads-data
+
+networks:
+  codesail-network:
+    name: codesail-network
+    driver: bridge
