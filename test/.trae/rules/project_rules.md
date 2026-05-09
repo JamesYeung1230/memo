@@ -2,7 +2,7 @@
 
 > 本文件是对根规则 [Part B — AI 编程行为规范](../../.trae/rules/project_rules.md#part-b--ai-编程行为规范) 的子项目扩展。
 > 根规则 Part B 的通用条款（B.1 上下文感知 ~ B.8 任务追踪）同样适用，不重复列出。
-> 根规则 Part A（Git 工作流）、Part C（Skill 管理）、Part D（规则维护指南）、Part E（MCP 规范）、Part F（Agent 规范）全局适用，本文件不涉及。
+> 根规则 Part A（Git 工作流）、Part C（Skill 管理）、Part D（规则维护指南）、Part E（MCP 规范）、Part F（Agent 规范）、Part G（Token 开销优化规范）全局适用，本文件不涉及。
 
 ---
 
