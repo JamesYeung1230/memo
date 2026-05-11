@@ -26,31 +26,26 @@
 - [x] docs/_templates/ — AI 指令模板 + 验收 checklist + 速查卡
 - [x] Auth 服务 Alembic：env.py + script.py.mako + 0001_init_auth
 - [x] Auth 服务：修复 0002_seed_admin.py（参数化查询替代 f-string）
-- [x] Knowledge 服务 Alembic：env.py + script.py.mako + 0001_init_knowledge（8 表 + 7 枚举）
+- [x] Knowledge 服务 Alembic：env.py + script.py.mako + 0001_init_knowledge
 - [x] Knowledge 服务：修复 0002_seed_domains.py（参数化查询替代 f-string）
-- [x] Core 服务 Alembic：env.py + script.py.mako + 0001_init_core（12 表 + 5 枚举）
+- [x] Core 服务 Alembic：env.py + script.py.mako + 0001_init_core
 - [x] Core 服务：0002_seed_config.py（7 个默认配置项）
+- [x] **阶段一完成** — 项目搬迁至 Ubuntu + Docker 环境搭建 + Alembic 迁移验证（完成于 2026-05-09）
+- [x] **A1** Auth 骨架搭建：main.py + models/Admin.py + models/User.py + base.py（完成于 2026-05-11）
+- [x] **A2** 管理员认证：routes/admin.py（登录 + JWT 签发 + Token 刷新 + 密码修改）（完成于 2026-05-11）
+- [x] **A3** 微信登录：routes/wechat.py（wx.login code → OpenID → JWT）（完成于 2026-05-11）
 
 ---
 
 ## 🔴 进行中
 
-- [ ] **Step 2** — 项目搬迁至 Ubuntu VM + Docker 环境搭建
+_暂无进行中任务_
 
 ---
 
 ## ⚪ 待开始（按依赖顺序排列）
 
-### 阶段一：搬迁至 Ubuntu
-- [ ] Step 2 — 项目搬迁至 Ubuntu VM + Docker 环境搭建
-- [ ] 运行 Alembic 迁移验证三 Schema 初始化
-- [ ] `docker compose up` 验证健康检查
-
-### ① 认证服务 (Auth) — 8 个子任务
-- [ ] **A1** Auth 骨架搭建：main.py + models/Admin.py + models/User.py
-- [ ] **A2** 管理员认证：routes/admin_login.py（bcrypt + JWT 签发 + 密码修改）
-- [ ] **A3** 微信登录：routes/wechat_login.py（wx.login code → OpenID → JWT）
-- [ ] Auth 路由：Token 刷新
+### ① 认证服务 (Auth) — 4 个子任务（A1/A2/A3 已完成）
 - [ ] Auth 服务单元测试
 - [ ] Auth API 集成测试
 
@@ -87,9 +82,9 @@
 |:----|:-------:|:--------:|:---------:|:---------:|:-----:|
 | 文档 & 规范 | 13 | 13 | 0 | 0 | 100% |
 | Alembic 迁移修复 | 8 | 8 | 0 | 0 | 100% |
-| 搬迁至 Ubuntu | 3 | 0 | 1 | 2 | 0% |
-| Auth 服务 | 8 | 1 (A4) | 0 | 7 | 12.5% |
+| 搬迁至 Ubuntu | 3 | 3 | 0 | 0 | 100% |
+| Auth 服务 | 8 | 4 (A1, A2, A3, A4) | 0 | 4 | 50% |
 | Knowledge 服务 | 12 | 0 | 0 | 12 | 0% |
 | Core 服务 | 16 | 0 | 0 | 16 | 0% |
 | 联调提测 | 1 | 0 | 0 | 1 | 0% |
-| **合计** | **61** | **22** | **1** | **38** | **36%** |
+| **合计** | **61** | **28** | **0** | **33** | **46%** |

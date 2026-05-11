@@ -20,6 +20,9 @@ class ErrorCodes:
     SERVICE_UNAVAILABLE = ErrorCode("SERVICE_UNAVAILABLE", 503, "Dependency service unavailable")
     INTEGRATION_ERROR = ErrorCode("INTEGRATION_ERROR", 502, "Internal service call failed")
 
+    AUTH_FAILED = ErrorCode("AUTH_FAILED", 401, "Authentication failed")
+    INVALID_CREDENTIALS = ErrorCode("INVALID_CREDENTIALS", 401, "Invalid username or password")
+
     KNOWLEDGE_NOT_FOUND = ErrorCode("KNOWLEDGE_NOT_FOUND", 404, "Knowledge resource not found")
     KNOWLEDGE_VALIDATION_ERROR = ErrorCode("KNOWLEDGE_VALIDATION_ERROR", 422, "Knowledge service validation failed")
     KNOWLEDGE_DUPLICATE = ErrorCode("KNOWLEDGE_DUPLICATE", 409, "Resource name already exists")

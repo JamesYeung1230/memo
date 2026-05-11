@@ -216,7 +216,7 @@ backend/
 └── tests/                     # 测试用例（待搭建）
 ```
 
-> **状态说明**：shared 共享库已完成；三服务的 main.py、models/、routes/ 等业务代码目录尚未创建，待 Ubuntu 环境就绪后开始开发。
+> **状态说明**：shared 共享库已完成；Auth 服务的骨架、ORM 模型、管理员认证、微信登录和 Token 刷新已全部完成（A1~A3）。Knowledge 和 Core 服务的业务代码待后续开发。
 
 ## 技术选型
 
@@ -396,15 +396,15 @@ backend/
 | 阶段 | 里程碑 | 状态 | 说明 |
 |------|--------|------|------|
 | **M0** | 项目初始化 | 🟢 已完成 | 技术选型、架构设计、三服务拆解、文档编写、shared 共享库、docker-compose 编排（完成于 2026-05-09）|
-| **M1** | 基础设施搭建 | 🔴 进行中 | Docker Compose 编排已就绪，shared 共享库已完成，Alembic 迁移已修复（三服务的 env.py + 0001 初始迁移 + 种子脚本安全修复）；待搬迁至 Ubuntu 环境运行验证 |
+| **M1** | 基础设施搭建 | 🟢 已完成 | Docker Compose 编排已就绪，shared 共享库已完成，Alembic 迁移已修复，Ubuntu 环境部署验证通过（完成于 2026-05-09）|
 
 ### ① 认证服务 (Auth)
 
 | 阶段 | 里程碑 | 状态 | 说明 |
 |------|--------|------|------|
-| **A1** | Auth 骨架搭建 | ⚪ 待开始 | FastAPI 项目骨架、auth_db Alembic 初始化、Admin/User 模型 |
-| **A2** | 管理员认证 | ⚪ 待开始 | bcrypt 密码哈希、JWT 签发与刷新、密码修改 |
-| **A3** | 微信登录 | ⚪ 待开始 | wx.login code → OpenID、小程序 JWT 签发 |
+| **A1** | Auth 骨架搭建 | 🟢 已完成 | FastAPI 项目骨架、auth_db Alembic 初始化、Admin/User 模型（完成于 2026-05-11） |
+| **A2** | 管理员认证 | 🟢 已完成 | bcrypt 密码哈希、JWT 签发与刷新、密码修改（完成于 2026-05-11） |
+| **A3** | 微信登录 | 🟢 已完成 | wx.login code → OpenID、小程序 JWT 签发（完成于 2026-05-11） |
 | **A4** | JWT 共享验证 | 🟢 已完成 | shared/auth.py 本地验签模块 — 已实现 create_access_token / verify_jwt / extract_token（完成于 2026-05-08）|
 
 ### ② 知识管理服务 (Knowledge)
