@@ -13,7 +13,7 @@
 | 所属项目 | backend |
 | 对应根规则 | [Part B — AI 编程行为规范](../../.trae/rules/project_rules.md#part-b--ai-编程行为规范) |
 | 基础条款 | B.1 上下文感知 ~ B.8 任务追踪（通用，本文件不重复） |
-| 扩展条款 | B.9 ~ B.14（本文件定义的后端特定条款） |
+| 扩展条款 | B.9 ~ B.19（本文件定义的后端特定条款） |
 
 ---
 
@@ -85,3 +85,32 @@
 - 所有 SQLAlchemy 查询必须使用 async 模式（`select()` + `await execute()`）
 - 新环境变量必须同步更新 [.env.example](../../.env.example) 和 [docs/06-环境变量清单.md](../../docs/06-环境变量清单.md)
 - 禁止在迁移脚本中使用 f-string 拼接 SQL 参数，必须使用参数化查询或 SQLAlchemy ORM
+
+## B.18 VM 开发环境工作流
+
+- 本地（Windows + Trae IDE）负责编码，VM（Ubuntu）负责运行和调试
+- 标准操作流程：
+  1. 本地修改代码
+  2. 运行 Git Bash: `./backend/scripts/sync-backend.sh` 同步到 VM
+  3. VM 上 `uvicorn --reload` 自动热重载
+  4. 通过 `http://192.168.234.128:<port>` 验证接口
+- 新增依赖时在本地 `requirements.txt` 中添加后同步到 VM，VM 上执行 `pip install -r requirements.txt`
+- 数据库迁移脚本在本地编写后同步到 VM，在 VM 上执行 `alembic upgrade head`
+- 所有 `.env`、证书等敏感文件必须手动在 VM 上维护，禁止纳入同步（已在 `.syncignore` 中排除）
+- 禁止在 VM 上直接执行 `git` 操作、修改代码后必须同步回本地再提交
+- VM 上的 `.venv` 虚拟环境不参与同步，各 VM 独立创建
+
+## B.19 环境一致性管理
+
+- 本地的 Python 版本必须与 VM 一致（目标：Python 3.12）
+- 依赖变更流程：
+  1. 本地修改 `requirements.txt`
+  2. 通过 `sync-backend.sh` 同步到 VM
+  3. VM 上执行 `pip install -r requirements.txt`
+  4. 确认无版本冲突后再继续开发
+- VM 上数据库（PostgreSQL/Redis）的连接配置与本地对照表：
+  - 本地：`localhost:5432` / `localhost:6379`
+  - VM：`192.168.234.128:5432` / `192.168.234.128:6379`
+  - 差异记录在 `docs/06-环境变量清单.md`
+- 新增环境变量时，必须同步更新 `.env.example` 和 `docs/06-环境变量清单.md`
+- VM 上的系统和 Python 包更新操作必须先告知用户，确认后再执行
