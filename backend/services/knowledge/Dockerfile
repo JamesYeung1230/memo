@@ -13,7 +13,7 @@ WORKDIR /app/services/knowledge
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV PYTHONPATH="/app/shared:/app/services/knowledge:$PYTHONPATH"
+ENV PYTHONPATH="/app"
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
     CMD curl -f http://localhost:8002/health || exit 1
