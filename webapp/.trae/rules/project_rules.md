@@ -3,7 +3,7 @@
 > 本文档作为项目开发的核心锚点，后续所有开发迭代必须遵循以下规则。
 > 锚定文档：[技术可行性分析报告](../docs/技术可行性分析报告.md)、[前端技术开发指导及规范](../docs/前端技术开发指导及规范.md)
 
-> 根规则 [Part A — Git 工作流规范](../../.trae/rules/project_rules.md)、[Part C — Skill 管理规范](../../.trae/rules/project_rules.md#part-c--skill-管理规范)、[Part E — MCP 服务调用规范](../../.trae/rules/project_rules.md#part-e--mcp-服务调用规范)、[Part F — Agent 选用与执行规范](../../.trae/rules/project_rules.md#part-f--agent-选用与执行规范)、[Part G — Token 开销优化规范](../../.trae/rules/project_rules.md#part-g--token-开销优化规范) 全局适用，本文件不重复列出。
+> 根规则 [Part A — Git 工作流规范](root-rules.md)、[Part C — Skill 管理规范](../../.trae/rules/project_rules.md#part-c--skill-管理规范)、[Part E — MCP 服务调用规范](../../.trae/rules/project_rules.md#part-e--mcp-服务调用规范)、[Part F — Agent 选用与执行规范](../../.trae/rules/project_rules.md#part-f--agent-选用与执行规范)、[Part G — Token 开销优化规范](../../.trae/rules/project_rules.md#part-g--token-开销优化规范) 全局适用，本文件不重复列出。
 > 根规则 [Part D — 规则维护指南](../../.trae/rules/project_rules.md#part-d--规则维护指南) 描述了整体的规则维护规范。
 
 ---
