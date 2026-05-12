@@ -4,13 +4,13 @@
 
 | 项目 | 内容 |
 |------|------|
-| 项目名称 | 卡片学记 — 测试工程 |
+| 项目名称 | 码上启航 — 测试工程 |
 | 项目类型 | 后端测试项目（测试用例编写 + Bug 上报） |
-| 关联项目 | [卡片学记微信小程序](../miniapp)、[卡片学记 Web 管理后台](../webapp) |
+| 关联项目 | [码上启航微信小程序](../miniapp)、[码上启航 Web 管理后台](../webapp) |
 | 测试范围 | 后端 SDK API 测试、微信小程序黑盒测试、Web 管理后台黑盒测试 |
 | Bug 管理 | BugPack MCP 服务 |
 | 当前阶段 | **项目初始化（未开发）** |
-| 相关文档 | [PRD.md](../miniapp/docs/PRD.md)、[交互设计.md](../miniapp/docs/交互设计.md) |
+| 相关文档 | [小程序 PRD](../miniapp/docs/PRD.md)、[Web 管理端 PRD](../webapp/docs/PRD.md)、[交互设计.md](../miniapp/docs/交互设计.md) |
 
 ## 项目定位
 
