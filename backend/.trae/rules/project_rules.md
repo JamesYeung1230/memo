@@ -1,8 +1,8 @@
-# 卡片学记 后端服务 — Part B 扩展：AI 编程行为规范
+# 卡片学记 后端服务 — 项目专属规则
 
-> 本文件是对根规则 [Part B — AI 编程行为规范](../../.trae/rules/project_rules.md#part-b--ai-编程行为规范) 的子项目扩展。
-> 根规则 Part B 的通用条款（B.1 上下文感知 ~ B.8 任务追踪）同样适用，不重复列出。
-> 根规则 Part A（Git 工作流）、Part C（Skill 管理）、Part D（规则维护指南）、Part E（MCP 规范）、Part F（Agent 规范）、Part G（Token 开销优化规范）全局适用，本文件不涉及。
+> 继承自：[core-rules.md](../../.trae/rules/core-rules.md)（全局通用规则）
+> 本文件仅包含后端项目专属的增量/覆写条款，通用规则请查阅 core-rules.md。
+> 根规则 [root-rules.md](root-rules.md) 中的 Part A（Git）、Part C（Skill）、Part D（维护）、Part E（MCP）、Part F（Agent）、Part G（Token）全局适用，本文件不涉及。
 
 ---
 
@@ -11,9 +11,10 @@
 | 维度 | 说明 |
 |------|------|
 | 所属项目 | backend |
-| 对应根规则 | [Part B — AI 编程行为规范](../../.trae/rules/project_rules.md#part-b--ai-编程行为规范) |
-| 基础条款 | B.1 上下文感知 ~ B.8 任务追踪（通用，本文件不重复） |
-| 扩展条款 | B.9 ~ B.19（本文件定义的后端特定条款） |
+| 继承自 | [core-rules.md](../../.trae/rules/core-rules.md)（全局通用规则） |
+| 项目全局 | [project_rules.md](../../.trae/rules/project_rules.md)（根规则，Git/Skill/MCP/Agent 等） |
+| 扩展条款 | B.9 ~ B.19（本文件定义的后端专属条款） |
+| 已迁移 | B.12（安全红线）→ core-rules.md Part B / B.13（测试覆盖）→ core-rules.md C.4 |
 
 ---
 
@@ -26,25 +27,17 @@
 
 ## B.10 修改验证（后端补充）
 
-- 每次修改完成后，必须运行对应的 lint/typecheck 命令进行验证（如 `ruff`、`mypy`、`eslint` 等）
-- API 接口修改后应通过 API 测试工具（如 `api-test-pro` Agent）验证接口正确性
+> 通用原则见 core-rules.md §A.8。以下为后端专属命令。
+
+- 后端 lint/typecheck 命令：`ruff` + `mypy`
+- API 接口修改后应通过 `api-test-pro` Agent 验证接口正确性
 
 ## B.11 依赖管理（后端补充）
 
+> 通用原则见 core-rules.md §C.2。以下为后端专属约束。
+
 - 使用新依赖前，先检查 `requirements.txt`、`Pipfile`、`pyproject.toml` 或 `package.json` 等文件中是否已有替代方案
 - 引入新依赖时必须评估其对项目体积、安全性和兼容性的影响
-
-## B.12 安全红线（后端补充）
-
-- 数据库密码、JWT Secret、API Key 等敏感信息必须使用环境变量，禁止硬编码
-- API 接口必须有输入校验和权限控制
-- 用户密码必须加密存储（如 bcrypt），禁止明文存储
-- 禁止生成存在 SQL 注入、XSS、CSRF、SSRF 等安全漏洞的代码
-
-## B.13 测试覆盖（后端补充）
-
-- 每个 API 接口或功能完成后，必须编写或更新对应的测试用例
-- Bug 修复必须先编写复现测试，确认测试失败后再修复
 
 ## B.14 数据库与数据安全
 
