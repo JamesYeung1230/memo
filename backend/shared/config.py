@@ -7,14 +7,14 @@ def load_env(env_file: str = ".env") -> None:
     load_dotenv(env_file)
 
 
-def get_database_url(schema: str = "core") -> str:
+def get_database_url() -> str:
     user = os.environ["DB_USER"]
     password = os.environ["DB_PASSWORD"]
     host = os.environ.get("DB_HOST", "localhost")
     port = os.environ.get("DB_PORT", "5432")
     db = os.environ["DB_NAME"]
     return (f"postgresql+asyncpg://{quote_plus(user)}:{quote_plus(password)}"
-            f"@{host}:{port}/{db}?options=-c%20search_path={schema}")
+            f"@{host}:{port}/{db}")
 
 
 def get_redis_url() -> str:

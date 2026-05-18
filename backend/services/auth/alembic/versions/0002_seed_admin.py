@@ -23,7 +23,7 @@ def upgrade():
             "ADMIN_PASSWORD_HASH environment variable is required "
             "for seeding admin account"
         )
-    op.execute(
+    op.get_bind().execute(
         text(
             "INSERT INTO auth.admin (username, password_hash) "
             "VALUES (:username, :password_hash)"
@@ -34,7 +34,7 @@ def upgrade():
 
 def downgrade():
     username = os.environ.get("ADMIN_USERNAME", "admin")
-    op.execute(
+    op.get_bind().execute(
         text("DELETE FROM auth.admin WHERE username = :username"),
         {"username": username},
     )

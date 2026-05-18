@@ -177,7 +177,12 @@ backend/
 ├── project.md                 # 本文件（项目总览）
 ├── README.md                  # 项目说明
 ├── docker-compose.yml         # 三服务 + PostgreSQL + Redis 统一编排
-├── docs/                      # 项目文档（PRD 等）
+├── docs/                      # 项目文档
+│   ├── README.md              # 文档总索引
+│   ├── api/                   # API 接口文档
+│   ├── architecture/          # 架构设计文档
+│   ├── database/              # 数据库文档
+│   ├── operations/            # 运维与配置文档
 │   ├── PRD-miniapp.md         # 小程序 PRD
 │   └── PRD-webapp.md          # Web 管理端 PRD
 │

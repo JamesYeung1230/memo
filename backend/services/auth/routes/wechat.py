@@ -10,7 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from services.auth.models import User
 from services.auth.routes.deps import get_db
-from shared.auth import create_access_token, create_refresh_token
+from shared.auth import create_access_token, create_refresh_token, verify_jwt
 from shared.config import get_env
 from shared.errors import AppException, ErrorCodes
 from shared.responses import success
@@ -31,20 +31,39 @@ class WeChatLoginResponse(BaseModel):
 
 
 async def _get_openid_from_wechat(code: str) -> str:
-    appid = get_env("WX_APPID")
-    secret = get_env("WX_SECRET")
+    try:
+        appid = get_env("WX_APPID")
+        secret = get_env("WX_SECRET")
+    except RuntimeError as e:
+        raise AppException(ErrorCodes.INTERNAL_ERROR, detail={"config": str(e)})
 
-    async with httpx.AsyncClient(timeout=15.0) as client:
-        resp = await client.get(
-            "https://api.weixin.qq.com/sns/jscode2session",
-            params={
-                "appid": appid,
-                "secret": secret,
-                "js_code": code,
-                "grant_type": "authorization_code",
-            },
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            resp = await client.get(
+                "https://api.weixin.qq.com/sns/jscode2session",
+                params={
+                    "appid": appid,
+                    "secret": secret,
+                    "js_code": code,
+                    "grant_type": "authorization_code",
+                },
+            )
+            data = resp.json()
+    except httpx.TimeoutException:
+        raise AppException(
+            ErrorCodes.INTEGRATION_ERROR,
+            message="WeChat API request timed out",
         )
-        data = resp.json()
+    except httpx.RequestError as e:
+        raise AppException(
+            ErrorCodes.INTEGRATION_ERROR,
+            message=f"WeChat API request failed: {e}",
+        )
+    except ValueError:
+        raise AppException(
+            ErrorCodes.INTEGRATION_ERROR,
+            message="WeChat API returned invalid response",
+        )
 
     if "errcode" in data and data["errcode"] != 0:
         raise AppException(
@@ -95,12 +114,17 @@ async def wechat_login(
     else:
         user.last_login_at = datetime.now(timezone.utc)
 
-    await session.flush()
+    await session.commit()
 
-    secret = get_env("JWT_SECRET")
-    algorithm = get_env("JWT_ALGORITHM", "HS256")
-    access_expire = int(get_env("JWT_ACCESS_EXPIRE", "86400"))
-    refresh_expire = int(get_env("JWT_REFRESH_EXPIRE", "604800"))
+    try:
+        secret = get_env("JWT_SECRET")
+        algorithm = get_env("JWT_ALGORITHM", "HS256")
+        access_expire = int(get_env("JWT_ACCESS_EXPIRE", "86400"))
+        refresh_expire = int(get_env("JWT_REFRESH_EXPIRE", "604800"))
+    except RuntimeError as e:
+        raise AppException(ErrorCodes.INTERNAL_ERROR, detail={"config": str(e)})
+    except ValueError:
+        raise AppException(ErrorCodes.INTERNAL_ERROR, detail={"config": "Invalid JWT expire value"})
 
     access_token = create_access_token(
         subject=openid,
@@ -124,5 +148,57 @@ async def wechat_login(
             token_type="Bearer",
             expires_in=access_expire,
             is_new_user=is_new_user,
+        )
+    )
+
+
+class WeChatRefreshRequest(BaseModel):
+    refresh_token: str
+
+
+class WeChatRefreshResponse(BaseModel):
+    access_token: str
+    token_type: str = "Bearer"
+    expires_in: int
+
+
+@router.post("/refresh", response_model=None)
+async def wechat_refresh(body: WeChatRefreshRequest):
+    try:
+        secret = get_env("JWT_SECRET")
+        algorithm = get_env("JWT_ALGORITHM", "HS256")
+        access_expire = int(get_env("JWT_ACCESS_EXPIRE", "86400"))
+    except RuntimeError as e:
+        raise AppException(ErrorCodes.INTERNAL_ERROR, detail={"config": str(e)})
+    except ValueError:
+        raise AppException(ErrorCodes.INTERNAL_ERROR, detail={"config": "Invalid JWT expire value"})
+
+    try:
+        claims = verify_jwt(body.refresh_token, secret, algorithm)
+    except Exception:
+        raise AppException(
+            ErrorCodes.UNAUTHORIZED,
+            detail={"token": "Invalid or expired refresh token"},
+        )
+
+    if claims.get("type") != "refresh" or claims.get("role") != "user":
+        raise AppException(
+            ErrorCodes.UNAUTHORIZED,
+            detail={"token": "Invalid token type"},
+        )
+
+    access_token = create_access_token(
+        subject=claims["sub"],
+        role="user",
+        secret=secret,
+        algorithm=algorithm,
+        expire_seconds=access_expire,
+    )
+
+    return success(
+        WeChatRefreshResponse(
+            access_token=access_token,
+            token_type="Bearer",
+            expires_in=access_expire,
         )
     )

@@ -17,21 +17,29 @@ VM_HOST="192.168.234.128"
 VM_BASE="/home/peng/memo"
 LOCAL_BACKEND="$(cd "$(dirname "$0")/.." && pwd)"
 SYNCIGNORE="${LOCAL_BACKEND}/.syncignore"
+SSH_KEY="${LOCAL_BACKEND}/.ssh/vm_key"
 
 VM_BACKEND="${VM_BASE}/backend"
+
+# 构建 SSH 命令：优先使用工作区密钥（Trae sandbox 场景），否则回退默认
+if [ -f "${SSH_KEY}" ]; then
+    SSH_CMD="ssh -i '${SSH_KEY}' -o StrictHostKeyChecking=no '${VM_USER}@${VM_HOST}'"
+else
+    SSH_CMD="ssh '${VM_USER}@${VM_HOST}'"
+fi
 
 echo "=========================================="
 echo "  同步 backend/ → ${VM_USER}@${VM_HOST}:${VM_BACKEND}"
 echo "=========================================="
 
 # 远端创建目标目录
-ssh "${VM_USER}@${VM_HOST}" "mkdir -p ${VM_BACKEND}"
+eval "${SSH_CMD}" "mkdir -p ${VM_BACKEND}"
 
 # tar 打包 → SSH 管道 → 远端解包
 tar czf - \
   --exclude-from="${SYNCIGNORE}" \
   -C "${LOCAL_BACKEND}" . \
-| ssh "${VM_USER}@${VM_HOST}" "tar xzf - -C ${VM_BACKEND}"
+| eval "${SSH_CMD}" "tar xzf - -C ${VM_BACKEND}"
 
 echo ""
 echo "  ✅ 同步完成"

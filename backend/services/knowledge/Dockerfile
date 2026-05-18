@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
+
 COPY shared/ /app/shared/
 
 COPY services/knowledge/ /app/services/knowledge/

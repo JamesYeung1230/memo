@@ -14,3 +14,6 @@ build/
 *~
 .DS_Store
 Thumbs.db
+
+# SSH keys for VM access (only used by sandbox, not needed on VM)
+.ssh/

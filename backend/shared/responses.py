@@ -1,6 +1,7 @@
+import uuid
 from typing import Any, Generic, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 T = TypeVar("T")
 
@@ -12,8 +13,11 @@ class PaginationMeta(BaseModel):
 
 
 class SuccessResponse(BaseModel, Generic[T]):
+    code: int = 0
+    message: str = "success"
     data: T
     meta: PaginationMeta | None = None
+    request_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
 
 
 class ErrorDetail(BaseModel):

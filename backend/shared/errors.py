@@ -45,11 +45,10 @@ class AppException(Exception):
 
     def to_dict(self) -> dict[str, Any]:
         return {
-            "error": {
-                "code": self.error_code.code,
-                "message": self.message,
-                "detail": self.detail,
-            }
+            "code": self.error_code.code,
+            "message": self.message,
+            "data": None,
+            "detail": self.detail,
         }
 
     @property
@@ -126,9 +125,8 @@ class KnowledgeSensitiveHitError(AppException):
 
 def error_response(error_code: ErrorCode, message: str | None = None, detail: dict[str, Any] | None = None) -> dict[str, Any]:
     return {
-        "error": {
-            "code": error_code.code,
-            "message": message or error_code.message,
-            "detail": detail or {},
-        }
+        "code": error_code.code,
+        "message": message or error_code.message,
+        "data": None,
+        "detail": detail or {},
     }

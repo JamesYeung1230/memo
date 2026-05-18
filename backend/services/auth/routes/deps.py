@@ -18,7 +18,10 @@ async def get_current_admin(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     token = credentials.credentials
-    secret = get_env("JWT_SECRET")
+    try:
+        secret = get_env("JWT_SECRET")
+    except RuntimeError as e:
+        raise AppException(ErrorCodes.INTERNAL_ERROR, detail={"config": str(e)})
     algorithm = get_env("JWT_ALGORITHM", "HS256")
 
     try:
