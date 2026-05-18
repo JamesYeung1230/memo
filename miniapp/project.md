@@ -10,7 +10,7 @@
 | 设计规范 | 基于 Pixso 设计稿，品牌主色科技蓝（#4A90D9），主题色由管理端动态下发（参见 PRD §2.5.3）；30px 大圆角，8px 描边 |
 | 当前阶段 | **项目初始化（未开发）** |
 | 代码仓库 | [https://github.com/JamesYeung1230/memo.git](https://github.com/JamesYeung1230/memo.git) |
-| 相关文档 | [PRD.md](docs/PRD.md)（产品需求规格说明）、[交互设计.md](docs/交互设计.md)（交互设计稿）、[codesail-design-spec.json](designs/codesail-design-spec.json)（UI 设计规格） |
+| 相关文档 | [PRD.md](docs/PRD.md)（产品需求规格说明）、[交互设计.md](docs/交互设计.md)（交互设计稿）、[CodeSail.pen](designs/CodeSail.pen)（UI 设计源文件） |
 
 ## 产品概要
 
