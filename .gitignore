@@ -26,6 +26,8 @@
 node_modules/
 vendor/
 miniprogram_npm/
+venv/
+.venv/
 
 # IDE
 .idea/
