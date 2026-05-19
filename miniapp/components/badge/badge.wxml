@@ -1,0 +1,10 @@
+<view class="badge-container">
+  <slot></slot>
+  <view
+    wx:if="{{!hidden}}"
+    class="badge badge--{{mode}}"
+    style="--badge-color: {{color}};"
+  >
+    <text wx:if="{{mode === 'number'}}" class="badge__text">{{displayCount}}</text>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+<navigation-bar title="笔记详情" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>笔记详情</text>
+  </view>
+</scroll-view>
+

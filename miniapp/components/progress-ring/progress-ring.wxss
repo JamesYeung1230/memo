@@ -1,0 +1,33 @@
+.progress-ring {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.progress-ring__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.progress-ring__percent {
+  font-size: var(--font-number);
+  color: var(--color-text-primary);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.progress-ring__subtitle {
+  font-size: var(--font-caption);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}

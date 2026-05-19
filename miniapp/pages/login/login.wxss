@@ -1,0 +1,56 @@
+.page-scroll {
+  flex: 1;
+  height: 100vh;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0 96rpx;
+  gap: 40rpx;
+}
+
+.logo-box {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 24rpx;
+  background-color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  color: #FFFFFF;
+  font-size: 48rpx;
+  font-weight: 700;
+}
+
+.app-title {
+  color: var(--color-text-primary);
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body);
+}
+
+.btn-wrapper {
+  width: 480rpx;
+}
+
+.btn-wrapper .btn.btn--lg {
+  width: 480rpx;
+  height: 96rpx;
+  border-radius: 48rpx;
+}
+
+.privacy-text {
+  color: var(--color-text-hint);
+  font-size: var(--font-caption);
+}

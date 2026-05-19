@@ -1,0 +1,3 @@
+<view class="tag tag--{{variant}} tag--{{size}}">
+  <text class="tag__text">{{text}}</text>
+</view>

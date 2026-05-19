@@ -1,0 +1,15 @@
+<view class="tab-bar-wrapper">
+  <view class="tab-bar">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab-item {{activeKey === item.key ? 'tab-item--active' : ''}}"
+      data-key="{{item.key}}"
+      bind:tap="onTabTap"
+    >
+      <text class="tab-icon">{{item.icon}}</text>
+      <text class="tab-label">{{item.label}}</text>
+    </view>
+  </view>
+  <view class="tab-bar-safe-area" />
+</view>

@@ -1,0 +1,44 @@
+<view class="kcard {{card.mastered ? 'kcard--mastered' : ''}}">
+  <view class="kcard__tag-row">
+    <view class="kcard__tags">
+      <block wx:for="{{card.tags}}" wx:key="*this">
+        <tag
+          text="{{item}}"
+          variant="primary"
+          size="sm"
+          data-index="{{index}}"
+          bind:tap="onTagClick"
+        />
+      </block>
+    </view>
+    <view class="kcard__bookmark {{card.favorited ? 'kcard__bookmark--active' : ''}}" bind:tap="onFavorite">
+      <text class="kcard__bookmark-icon">{{card.favorited ? '🔖' : '🏷'}}</text>
+    </view>
+  </view>
+
+  <view class="kcard__title">{{card.title}}</view>
+
+  <view class="kcard__concept">{{card.concept}}</view>
+
+  <view class="kcard__description {{expanded ? 'kcard__description--expanded' : 'kcard__description--collapsed'}}">
+    <text class="kcard__description-text">{{card.description}}</text>
+  </view>
+  <view class="kcard__expand-toggle" bind:tap="onExpand" wx:if="{{card.description}}">
+    <text class="kcard__expand-text">{{expanded ? '收起' : '展开全文'}}</text>
+  </view>
+
+  <view class="kcard__analogy" wx:if="{{card.analogy}}">
+    <text class="kcard__analogy-label">场景类比：</text>
+    <text class="kcard__analogy-text">{{card.analogy}}</text>
+  </view>
+
+  <view class="kcard__actions">
+    <view class="kcard__btn-master {{card.mastered ? 'kcard__btn-master--done' : ''}}" bind:tap="onMastered">
+      <text class="kcard__btn-master-text">{{card.mastered ? '✓ 已掌握' : '懂了'}}</text>
+    </view>
+    <view class="kcard__btn-fav {{card.favorited ? 'kcard__btn-fav--active' : ''}}" bind:tap="onFavorite">
+      <text class="kcard__btn-fav-icon">{{card.favorited ? '★' : '☆'}}</text>
+      <text class="kcard__btn-fav-text">收藏</text>
+    </view>
+  </view>
+</view>

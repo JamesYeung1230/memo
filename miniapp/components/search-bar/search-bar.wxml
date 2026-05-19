@@ -1,0 +1,29 @@
+<view class="search-bar">
+  <view class="search-bar__input-wrap">
+    <view class="search-bar__icon">&#128269;</view>
+    <input
+      class="search-bar__input"
+      type="text"
+      value="{{inputValue}}"
+      placeholder="{{placeholder}}"
+      placeholder-class="search-bar__input-placeholder"
+      confirm-type="search"
+      bindinput="onInput"
+      bindconfirm="onConfirm"
+      bindfocus="onFocus"
+      bindblur="onBlur"
+    />
+    <view
+      wx:if="{{inputValue}}"
+      class="search-bar__clear"
+      bindtap="onClear"
+    >
+      <view class="search-bar__clear-x search-bar__clear-x--a"></view>
+      <view class="search-bar__clear-x search-bar__clear-x--b"></view>
+    </view>
+  </view>
+  <view
+    class="search-bar__cancel {{(showCancel || inputFocus) ? '' : 'search-bar__cancel--hidden'}}"
+    bindtap="onCancel"
+  >取消</view>
+</view>

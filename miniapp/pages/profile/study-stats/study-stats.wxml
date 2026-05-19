@@ -1,0 +1,7 @@
+<navigation-bar title="学习统计总览" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>学习统计总览</text>
+  </view>
+</scroll-view>
+

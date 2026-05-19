@@ -1,10 +1,71 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/login/login",
+    "pages/home/home",
+    "pages/learn/learn",
+    "pages/learn/knowledge-tree",
+    "pages/learn/card-browse",
+    "pages/learn/card-detail",
+    "pages/learn/quiz",
+    "pages/learn/quiz-result",
+    "pages/learn/quiz-analysis",
+    "pages/learn/daily-challenge",
+    "pages/learn/challenge-result",
+    "pages/learn/error-book",
+    "pages/learn/error-review",
+    "pages/learn/quiz-stats",
+    "pages/learn/review-today",
+    "pages/learn/note-review",
+    "pages/learn/chapter-progress",
+    "pages/learn/review-settings",
+    "pages/notes/notes",
+    "pages/notes/note-editor",
+    "pages/notes/note-detail",
+    "pages/notes/note-share",
+    "pages/points/points",
+    "pages/points/points-detail",
+    "pages/points/unlock-shop",
+    "pages/points/unlock-confirm",
+    "pages/points/achievements",
+    "pages/points/achievement-detail",
+    "pages/profile/profile",
+    "pages/profile/study-stats",
+    "pages/profile/favorites",
+    "pages/profile/calendar",
+    "pages/profile/audit-history",
+    "pages/profile/settings",
+    "pages/profile/memory-settings",
+    "pages/profile/home-settings",
+    "pages/profile/general-settings"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/learn/learn",
+        "text": "学习"
+      },
+      {
+        "pagePath": "pages/notes/notes",
+        "text": "笔记"
+      },
+      {
+        "pagePath": "pages/points/points",
+        "text": "积分"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
   },
   "style": "v2",
   "renderer": "skyline",

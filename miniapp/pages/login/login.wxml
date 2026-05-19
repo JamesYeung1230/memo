@@ -1,0 +1,14 @@
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="login-container">
+    <view class="logo-box">
+      <text class="logo-text">CS</text>
+    </view>
+    <text class="app-title">码上启航 CodeSail</text>
+    <text class="subtitle">让非开发者掌握编程基础</text>
+    <text class="subtitle">从而更好地用AI写代码</text>
+    <view class="btn-wrapper">
+      <btn type="primary" size="lg" text="微信一键登录" bind:click="handleLogin" />
+    </view>
+    <text class="privacy-text">登录即表示同意《隐私政策》《用户协议》</text>
+  </view>
+</scroll-view>

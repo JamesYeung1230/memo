@@ -1,0 +1,4 @@
+<view wx:if="{{showToast}}" class="toast toast--{{type}} toast--enter" style="--toast-bg: {{bgColor}}; --toast-fg: {{fgColor}};">
+  <text class="toast-icon">{{iconText}}</text>
+  <text class="toast-message">{{message}}</text>
+</view>

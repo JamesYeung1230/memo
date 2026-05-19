@@ -1,0 +1,7 @@
+<navigation-bar title="知识卡片浏览" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>知识卡片浏览</text>
+  </view>
+</scroll-view>
+
