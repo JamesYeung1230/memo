@@ -1,7 +1,0 @@
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>笔记</text>
-  </view>
-</scroll-view>
-
-<tab-bar></tab-bar>

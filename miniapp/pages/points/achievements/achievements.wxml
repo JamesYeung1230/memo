@@ -1,7 +1,0 @@
-<navigation-bar title="成就徽章墙" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>成就徽章墙</text>
-  </view>
-</scroll-view>
-

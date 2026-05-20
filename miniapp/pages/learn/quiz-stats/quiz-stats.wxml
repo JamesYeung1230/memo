@@ -1,7 +1,0 @@
-<navigation-bar title="答题统计" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>答题统计</text>
-  </view>
-</scroll-view>
-

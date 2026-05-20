@@ -1,2 +1,7 @@
-<!--pages/points/points-detail.wxml-->
-<text>pages/points/points-detail.wxml</text>
+<navigation-bar title="积分明细" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>积分明细</text>
+  </view>
+</scroll-view>
+

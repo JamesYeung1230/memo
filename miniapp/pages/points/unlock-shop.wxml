@@ -1,2 +1,7 @@
-<!--pages/points/unlock-shop.wxml-->
-<text>pages/points/unlock-shop.wxml</text>
+<navigation-bar title="知识解锁商店" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>知识解锁商店</text>
+  </view>
+</scroll-view>
+

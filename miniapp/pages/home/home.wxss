@@ -1,0 +1,392 @@
+.page-scroll {
+  flex: 1;
+  height: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg-page);
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  padding: 0 32rpx;
+  background-color: var(--color-bg-page);
+}
+
+.nav-title {
+  color: var(--color-text-primary);
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.content-scroll {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  padding: 0 32rpx 220rpx 32rpx;
+}
+
+.banner {
+  height: 260rpx;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-text {
+  color: var(--color-text-on-primary);
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.progress-card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  padding: 32rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 32rpx;
+}
+
+.progress-ring {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 9999rpx;
+  background-color: var(--color-divider);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.progress-ring-inner {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 9999rpx;
+  background-color: var(--color-bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-percent {
+  color: var(--color-primary);
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.progress-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.stat-line-1 {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.stat-line-2 {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+}
+
+.review-card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  height: 112rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+}
+
+.review-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.review-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.review-label {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.review-desc {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+}
+
+.review-badge {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 9999rpx;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-badge-num {
+  color: var(--color-text-on-primary);
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.section-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+  font-weight: 600;
+}
+
+.knowledge-card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-tag {
+  border-radius: 8rpx;
+  background-color: var(--color-primary-light);
+  padding: 6rpx 16rpx;
+}
+
+.card-tag-text {
+  color: var(--color-primary-dark);
+  font-size: 20rpx;
+  font-weight: 500;
+}
+
+.card-bookmark {
+  color: var(--color-text-hint);
+  font-size: 32rpx;
+}
+
+.card-title {
+  color: var(--color-text-primary);
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.card-concept {
+  color: var(--color-primary);
+  font-size: var(--font-body);
+}
+
+.card-desc {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+  line-height: 1.6;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-btn-primary {
+  border-radius: 9999rpx;
+  background-color: var(--color-primary);
+  padding: 16rpx 48rpx;
+}
+
+.card-btn-primary-text {
+  color: var(--color-text-on-primary);
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.card-btn-save {
+  border-radius: 9999rpx;
+  background-color: #EEF0F5;
+  padding: 16rpx 24rpx;
+}
+
+.card-btn-save-text {
+  color: var(--color-text-primary);
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.challenge-card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  height: 128rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+}
+
+.challenge-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.challenge-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.challenge-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.challenge-subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+}
+
+.challenge-btn {
+  border-radius: 9999rpx;
+  background-color: var(--color-primary);
+  padding: 12rpx 28rpx;
+}
+
+.challenge-btn-text {
+  color: var(--color-text-on-primary);
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.notes-card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  height: 96rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+}
+
+.notes-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.notes-emoji {
+  font-size: 32rpx;
+}
+
+.notes-text {
+  color: var(--color-text-hint);
+  font-size: var(--font-body);
+}
+
+.notes-add {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 9999rpx;
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notes-add-text {
+  color: var(--color-text-on-primary);
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.points-card {
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  height: 112rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+}
+
+.points-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.points-emoji {
+  font-size: 40rpx;
+}
+
+.points-amount {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.points-ad-btn {
+  border-radius: 9999rpx;
+  background-color: var(--color-warning);
+  padding: 12rpx 24rpx;
+}
+
+.points-ad-text {
+  color: var(--color-text-on-primary);
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.bottom-safe-area {
+  height: calc(env(safe-area-inset-bottom));
+}
+
+.page-enter {
+  animation: pageEnter 0.35s ease-out;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

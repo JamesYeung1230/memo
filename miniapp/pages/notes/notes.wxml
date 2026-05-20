@@ -1,2 +1,49 @@
-<!--pages/notes/notes.wxml-->
-<text>pages/notes/notes.wxml</text>
+<view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}" style="padding-top: {{statusBarHeight}}px">
+  <view class="nav-bar">
+    <text class="nav-title">我的笔记</text>
+    <text class="nav-add" bind:tap="onAddNote">+</text>
+  </view>
+
+  <view class="search-bar">
+    <text class="search-icon">🔍</text>
+    <input class="search-input" placeholder="搜索笔记..." placeholder-class="search-placeholder" value="{{searchKeyword}}" bindinput="onSearchInput" />
+  </view>
+
+  <view class="filter-tabs">
+    <view
+      wx:for="{{filters}}"
+      wx:key="key"
+      class="filter-item {{activeFilter === item.key ? 'filter-item--active' : ''}}"
+      data-key="{{item.key}}"
+      bind:tap="onFilterTap"
+    >
+      <text class="filter-text {{activeFilter === item.key ? 'filter-text--active' : ''}}">{{item.label}}</text>
+    </view>
+  </view>
+
+  <scroll-view class="note-scroll" scroll-y type="list">
+    <view class="content-scroll">
+      <view
+        wx:for="{{notes}}"
+        wx:key="index"
+        class="note-item"
+        data-index="{{index}}"
+        bind:tap="onNoteTap"
+      >
+        <view class="note-content">
+          <text class="note-title">{{item.title}}</text>
+          <text class="note-preview">{{item.preview}}</text>
+          <view class="note-meta">
+            <text class="note-time">{{item.time}}</text>
+            <view class="note-status note-status--{{item.statusClass}}">
+              <text class="note-status-text">{{item.statusLabel}}</text>
+            </view>
+          </view>
+        </view>
+        <text class="note-arrow">›</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <tab-bar></tab-bar>
+</view>

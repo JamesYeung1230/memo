@@ -1,66 +1,35 @@
-// pages/profile/profile.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    _pageEnter: true
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
+  onLoad() {},
 
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-
+    if (this._hasShown) {
+      this.setData({ _pageEnter: false }, function () {
+        this.setData({ _pageEnter: true })
+      })
+    } else {
+      this._hasShown = true
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  onUserTap() {
+    wx.showToast({ title: '个人资料', icon: 'none' })
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  onMenuTap(e) {
+    const page = e.currentTarget.dataset.page
+    const paths = {
+      'study-stats': '/pages/profile/study-stats',
+      'favorites': '/pages/profile/favorites',
+      'achievements': '/pages/points/achievements',
+      'audit-history': '/pages/profile/audit-history'
+    }
+    const url = paths[page]
+    if (url) {
+      wx.navigateTo({ url })
+    }
   }
 })

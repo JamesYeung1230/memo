@@ -37,9 +37,8 @@ miniapp/
 ├── sitemap.json                    # 站点地图
 ├── pages/
 │   ├── login/                      # L0 登录页
-│   ├── home/home/                  # L1 首页（Tab）
-│   ├── learn/                      # L1 学习Tab + L2/L3 子页面
-│   │   ├── learn/                  # L1 学习主页
+│   ├── home/                       # L1 首页（Tab）
+│   ├── learn/                      # L1 学习Tab + L2/L3 子页面（含 L1 学习主页）
 │   │   ├── knowledge-tree/         # L2 知识目录导航
 │   │   ├── card-browse/            # L2 知识卡片浏览
 │   │   ├── card-detail/            # L3 卡片详情
@@ -55,20 +54,17 @@ miniapp/
 │   │   ├── note-review/            # L2 笔记回顾
 │   │   ├── chapter-progress/       # L3 章节学习进度
 │   │   └── review-settings/        # L3 复习计划配置
-│   ├── notes/                      # L1 笔记Tab + L2/L3 子页面
-│   │   ├── notes/                  # L1 笔记列表主页
+│   ├── notes/                      # L1 笔记Tab + L2/L3 子页面（含 L1 笔记列表主页）
 │   │   ├── note-editor/            # L2 新建/编辑笔记
 │   │   ├── note-detail/            # L2 笔记详情
 │   │   └── note-share/             # L3 笔记分享预览
-│   ├── points/                     # L1 积分Tab + L2/L3 子页面
-│   │   ├── points/                 # L1 积分主页
+│   ├── points/                     # L1 积分Tab + L2/L3 子页面（含 L1 积分主页）
 │   │   ├── points-detail/          # L2 积分明细
 │   │   ├── unlock-shop/            # L2 知识解锁商店
 │   │   ├── unlock-confirm/         # L3 解锁确认
 │   │   ├── achievements/           # L2 成就徽章墙
 │   │   └── achievement-detail/     # L3 徽章详情
-│   └── profile/                    # L1 个人中心Tab + L2/L3 子页面
-│       ├── profile/                # L1 个人主页
+│   └── profile/                    # L1 个人中心Tab + L2/L3 子页面（含 L1 个人主页）
 │       ├── study-stats/            # L2 学习统计总览
 │       ├── favorites/              # L2 收藏夹
 │       ├── calendar/               # L2 打卡日历
@@ -103,7 +99,7 @@ miniapp/
 详见 [交互设计.md](docs/交互设计.md)：
 - **设计 Token**：颜色/字体/间距/圆角/阴影 均通过 CSS 变量统一定义
 - **主题色**：默认 #4A90D9（品牌蓝），支持管理端动态下发
-- **组件库**：C01~C24 共 24 个公共组件（已实现核心 17 个）
+- **组件库**：C01~C24 共 24 个公共组件（已实现 17 个）；未实现的编号：C13、C15、C18~C20、C22~C24
 - **路由层级**：L0(登录) → L1(Tab) → L2(子页) → L3(详情) → L4(弹窗)
 
 ## 开发里程碑

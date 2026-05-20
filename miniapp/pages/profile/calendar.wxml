@@ -1,2 +1,7 @@
-<!--pages/profile/calendar.wxml-->
-<text>pages/profile/calendar.wxml</text>
+<navigation-bar title="打卡日历" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>打卡日历</text>
+  </view>
+</scroll-view>
+

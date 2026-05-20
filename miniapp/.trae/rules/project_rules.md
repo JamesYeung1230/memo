@@ -40,16 +40,7 @@ L3：需持续授权的 API（位置、后台数据）
 
 ### PA.2 页面交互状态全覆盖
 
-每个页面必须完整覆盖四种交互状态，不得遗漏：
-
-| 状态 | 触发条件 | 处理要求 |
-|------|---------|---------|
-| **加载中** | 数据请求 / 计算中 | 必须有 loading 指示器 |
-| **空数据** | 列表为空 / 无记录 | 空状态插图 + 引导文案 + 行动按钮 |
-| **错误** | 网络异常 / 逻辑异常 | 错误提示 + 重试入口 |
-| **正常** | 数据就绪 | 正常内容展示 |
-
-首次进入特定功能时的状态（如首次进入笔记的风险告知弹窗）属于空/初始状态的特化，需同样覆盖。
+每个页面必须完整覆盖四种交互状态（加载中/空数据/错误/正常），不得遗漏。具体实现方式详见 [`miniapp-page-scaffold`](../../skills/miniapp-page-scaffold/SKILL.md) Skill。
 
 ### PA.3 知识内容数据真实性
 
@@ -63,6 +54,7 @@ L3：需持续授权的 API（位置、后台数据）
 - 每次代码修改完成后，必须运行 `npm run lint` 进行 ESLint 验证
 - WXML / WXSS 修改后应确保在不同屏幕尺寸（375px ~ 414px 逻辑宽度）下布局正常
 - 涉及 Skyline 特有组件或 glass-easel 特性的修改，需确认基础库版本兼容范围（sdkVersionBegin: 3.0.0）
+- **页面文件层级校验**：每次创建或修改页面文件后，检查 `app.json` 中注册的每个页面路径对应的扁平四文件是否存在（参见 PC.1.3），确保无页面文件被错误嵌套在同名子目录中
 
 ---
 
@@ -104,15 +96,63 @@ L3：需持续授权的 API（位置、后台数据）
 
 ### PC.1 页面文件结构约定
 
-每个页面目录必须包含四个文件，按职责划分：
+本项目页面文件采用**扁平结构**——页面四文件直接放在模块目录下，不嵌套同名子目录。
 
 ```
-pages/<page-name>/
-├── <page-name>.js      # 页面逻辑：数据、事件处理、生命周期
-├── <page-name>.json    # 页面配置：组件注册、窗口样式
-├── <page-name>.wxml    # 页面模板：Skyline 兼容的 WXML 结构
-└── <page-name>.wxss    # 页面样式：仅本页面样式
+pages/<module>/
+├── <page-a>.js          # ← 页面四文件，扁平放在模块目录下
+├── <page-a>.json
+├── <page-a>.wxml
+├── <page-a>.wxss
+├── <page-b>.js
+├── <page-b>.json
+├── <page-b>.wxml
+├── <page-b>.wxss
+├── components/          # ← 页面私有组件放在子目录
+│   └── <comp>/
+└── [ ... ]
 ```
+
+#### PC.1.1 `app.json` → 文件系统路径映射（强制）
+
+微信小程序中 `app.json` 的页面路径是**扁平路径**——直接拼接文件名后缀形成完整文件路径：
+
+| `app.json` 注册路径 | 实际文件系统路径 | 是否正确 |
+|---------------------|-----------------|:------:|
+| `"pages/learn/card-browse"` | `pages/learn/card-browse.js` | ✅ 正确 |
+| `"pages/learn/card-browse"` | `pages/learn/card-browse/card-browse.js` | ❌ **错误** |
+| `"pages/home/home"` | `pages/home/home.js` | ✅ 正确 |
+| `"pages/home/home"` | `pages/home/home/home.js` | ❌ **错误** |
+
+**规则**：`app.json` 的路径 `pages/<module>/<name>` 映射到 `pages/<module>/<name>.*`，**绝不**映射到 `pages/<module>/<name>/<name>.*`。
+
+> 微信框架将 `app.json` 注册路径直接作为文件路径前缀，拼接 `.js`/`.wxml`/`.wxss`/`.json` 后缀定位文件。例如 `"pages/learn/card-browse"` → `pages/learn/card-browse.js`。千万不要额外嵌套一层同名子目录。
+
+#### PC.1.2 嵌套子目录检测与清理
+
+以下模式的文件属于**嵌套子目录反模式**，应立即扁平化：
+
+```
+# 反例：页面文件嵌套在额外一层同名子目录中
+pages/learn/card-browse/card-browse.js     ← 框架找不到，删除
+pages/learn/card-browse/card-browse.wxml   ← 框架找不到，删除
+```
+
+**检测方法**：在模块目录（`pages/<module>/`）下不应存在与页面同名的子目录。所有页面文件必须直接放在模块目录的扁平级。
+
+**清理步骤**：
+1. 列出 `pages/<module>/` 下的子目录（排除 `components/`）
+2. 将子目录内的四文件移到模块目录扁平级
+3. 删除空的子目录
+
+#### PC.1.3 创建页面前必检清单
+
+每次新建页面时，执行以下检查（无论手动创建还是通过工具生成）：
+
+- [ ] 目标路径是 `pages/<module>/<name>.js` 格式（扁平结构），而非 `pages/<module>/<name>/<name>.js`
+- [ ] `app.json` 中注册的路径不含文件名后缀（即注册 `"pages/<module>/<name>"`，不注册 `"pages/<module>/<name>/<name>"`）
+- [ ] 四个文件（`.js`、`.json`、`.wxml`、`.wxss`）全部创建
+- [ ] 文件创建后未在 `pages/<module>/` 下意外创建同名子目录
 
 ### PC.2 组件目录规范
 
@@ -191,10 +231,7 @@ components/
 
 ### PE.1 设计文件读取策略
 
-本项目的 Pixso 设计文件位于 `designs/CodeSail.pen`：
-- 优先使用 `snapshot_layout` 检查布局结构，而非 `get_screenshot`
-- `batch_get` 从 `readDepth: 1` 开始，按需逐层加深
-- 获取组件列表时设置 `searchDepth` 控制范围
+本项目设计文件 `designs/CodeSail.pen` 的读取策略已内置于 [`design-to-page`](../../skills/design-to-page/SKILL.md) Skill Step 1~2，核心原则：优先 `snapshot_layout` 检查布局、`batch_get` 从 `readDepth:1` 起逐层加深。
 
 ### PE.2 项目文档读取优先级
 

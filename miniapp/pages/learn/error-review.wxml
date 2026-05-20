@@ -1,2 +1,7 @@
-<!--pages/learn/error-review.wxml-->
-<text>pages/learn/error-review.wxml</text>
+<navigation-bar title="错题再练" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>错题再练</text>
+  </view>
+</scroll-view>
+

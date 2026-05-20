@@ -1,8 +1,0 @@
-.page-scroll {
-  flex: 1;
-  height: 100%;
-}
-
-.page-content {
-  padding: var(--space-lg);
-}

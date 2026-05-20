@@ -1,2 +1,7 @@
-<!--pages/profile/home-settings.wxml-->
-<text>pages/profile/home-settings.wxml</text>
+<navigation-bar title="首页模块设置" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>首页模块设置</text>
+  </view>
+</scroll-view>
+

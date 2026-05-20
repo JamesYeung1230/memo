@@ -1,2 +1,7 @@
-<!--pages/profile/general-settings.wxml-->
-<text>pages/profile/general-settings.wxml</text>
+<navigation-bar title="通用设置" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>通用设置</text>
+  </view>
+</scroll-view>
+

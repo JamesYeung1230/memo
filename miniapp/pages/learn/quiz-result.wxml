@@ -1,2 +1,7 @@
-<!--pages/learn/quiz-result.wxml-->
-<text>pages/learn/quiz-result.wxml</text>
+<navigation-bar title="答题结果与解析" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>答题结果与解析</text>
+  </view>
+</scroll-view>
+

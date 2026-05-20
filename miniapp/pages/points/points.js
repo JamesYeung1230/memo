@@ -1,66 +1,44 @@
-// pages/points/points.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    _pageEnter: true,
+    navTitle: '积分与成就',
+    pointsAmount: '168',
+    pointsHint: '可解锁 3 个知识领域',
+    adIcon: '🎬',
+    adText: '看广告赚积分 +10/次',
+    adBtnText: '观看',
+    storeLabel: '知识解锁商店',
+    storeList: [
+      { icon: '🗄️', name: 'K04 数据库', price: '40 积分', unlocked: true },
+      { icon: '💻', name: 'K05 操作系统', price: '50 积分🔒', unlocked: false }
+    ],
+    achLabel: '成就徽章 (3/8)',
+    achList: [
+      { icon: '🏅', name: '初识编程', iconStyle: '', nameStyle: '' },
+      { icon: '🔥', name: '连续7天', iconStyle: '', nameStyle: '' },
+      { icon: '⭐', name: '积分达人', iconStyle: 'color: var(--color-text-hint);', nameStyle: 'color: var(--color-text-hint);' }
+    ]
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
+  onLoad() {},
 
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-
+    if (this._hasShown) {
+      this.setData({ _pageEnter: false }, function () {
+        this.setData({ _pageEnter: true })
+      })
+    } else {
+      this._hasShown = true
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
+  onWatchAd() {},
 
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  onStoreTap(e) {
+    const index = e.currentTarget.dataset.index
+    const item = this.data.storeList[index]
+    if (!item.unlocked) {
+      wx.navigateTo({ url: '/pages/points/unlock-confirm/unlock-confirm' })
+    }
   }
 })

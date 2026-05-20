@@ -1,2 +1,7 @@
-<!--pages/learn/review-today.wxml-->
-<text>pages/learn/review-today.wxml</text>
+<navigation-bar title="今日复习" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+    <text>今日复习</text>
+  </view>
+</scroll-view>
+

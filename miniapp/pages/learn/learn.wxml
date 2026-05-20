@@ -1,2 +1,106 @@
-<!--pages/learn/learn.wxml-->
-<text>pages/learn/learn.wxml</text>
+<view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}" style="padding-top: {{statusBarHeight}}px">
+  <view class="nav-bar">
+    <text class="nav-title">学习</text>
+    <text class="nav-search-icon">🔍</text>
+  </view>
+
+  <scroll-view class="page-scroll" scroll-y type="list">
+    <view class="content-scroll">
+
+      <view class="domain-tags">
+        <view
+          wx:for="{{domainTags}}"
+          wx:key="index"
+          class="tag {{activeTagIndex === index ? 'tag--active' : ''}}"
+          data-index="{{index}}"
+          bind:tap="onTagTap"
+        >
+          <text class="tag-text {{activeTagIndex === index ? 'tag-text--active' : ''}}">{{item.name}}</text>
+        </view>
+      </view>
+
+      <view class="overview-card">
+        <view class="overview-header">
+          <text class="overview-title">编程基础概念</text>
+          <text class="overview-status">学习中</text>
+        </view>
+
+        <view class="progress-bar">
+          <view class="progress-bar-fill" style="width: 240rpx" />
+        </view>
+
+        <view class="stats-row">
+          <view class="stat-item">
+            <text class="stat-num">5/12</text>
+            <text class="stat-label">已学卡片</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-num" style="color: var(--color-success)">68%</text>
+            <text class="stat-label">正确率</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-num" style="color: var(--color-primary)">42</text>
+            <text class="stat-label">积分</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="entry-card" bind:tap="onCardLearnTap">
+        <view class="entry-left">
+          <text class="entry-icon">📄</text>
+          <view class="entry-info">
+            <text class="entry-title">知识卡片学习</text>
+            <text class="entry-sub">继续学习 · 变量与数据类型</text>
+          </view>
+        </view>
+        <text class="entry-arrow">›</text>
+      </view>
+
+      <view class="entry-card" bind:tap="onQuizTap">
+        <view class="entry-left">
+          <text class="entry-icon">📝</text>
+          <view class="entry-info">
+            <text class="entry-title">刷题学习</text>
+            <text class="entry-sub" style="color: var(--color-warning)">错题本 (12题)</text>
+          </view>
+        </view>
+        <text class="entry-arrow">›</text>
+      </view>
+
+      <view class="memory-card">
+        <view class="memory-header">
+          <text class="memory-title">记忆强化</text>
+          <text class="memory-subtitle">艾宾浩斯记忆法</text>
+        </view>
+
+        <view class="memory-item" bind:tap="onReviewTodayTap">
+          <view class="memory-item-left">
+            <view class="memory-dot dot--blue" />
+            <text class="memory-item-text">今日待复习 (8张)</text>
+          </view>
+          <text class="memory-item-arrow">›</text>
+        </view>
+
+        <view class="memory-item" bind:tap="onErrorReviewTap">
+          <view class="memory-item-left">
+            <view class="memory-dot dot--red" />
+            <text class="memory-item-text">错题再练</text>
+          </view>
+          <text class="memory-item-arrow">›</text>
+        </view>
+
+        <view class="memory-item" bind:tap="onReviewSettingsTap">
+          <view class="memory-item-left">
+            <view class="memory-dot dot--gray" />
+            <text class="memory-item-text">复习计划配置</text>
+          </view>
+          <text class="memory-item-arrow">›</text>
+        </view>
+      </view>
+
+      <view class="bottom-safe-area" />
+    </view>
+  </scroll-view>
+
+  <tab-bar></tab-bar>
+</view>

@@ -1,66 +1,53 @@
-// pages/learn/learn.js
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    _pageEnter: true,
+    domainTags: [
+      { name: 'K01 编程基础' },
+      { name: 'K02 网络基础' },
+      { name: 'K03 软件工程' },
+      { name: 'K04 数据库' }
+    ],
+    activeTagIndex: 0,
+    statusBarHeight: 0
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad(options) {
-
+  onLoad() {
+    const { statusBarHeight } = wx.getSystemInfoSync()
+    this.setData({ statusBarHeight })
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  onTagTap(e) {
+    const { index } = e.currentTarget.dataset
+    this.setData({ activeTagIndex: index })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-
+    if (this._hasShown) {
+      this.setData({ _pageEnter: false }, function () {
+        this.setData({ _pageEnter: true })
+      })
+    } else {
+      this._hasShown = true
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  onCardLearnTap() {
+    wx.navigateTo({ url: '/pages/learn/card-browse/card-browse' })
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
+  onQuizTap() {
+    wx.navigateTo({ url: '/pages/learn/error-book/error-book' })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
+  onReviewTodayTap() {
+    wx.navigateTo({ url: '/pages/learn/review-today/review-today' })
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
+  onErrorReviewTap() {
+    wx.navigateTo({ url: '/pages/learn/error-review/error-review' })
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  onReviewSettingsTap() {
+    wx.navigateTo({ url: '/pages/learn/review-settings/review-settings' })
   }
 })
