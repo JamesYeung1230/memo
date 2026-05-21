@@ -5,7 +5,6 @@ Revises: 0001_init_knowledge
 Create Date: 2026-05-09 10:00:00.000000
 """
 from alembic import op
-from sqlalchemy import text
 
 
 revision = "0002_seed_domains"
@@ -26,27 +25,16 @@ DOMAINS = [
 
 
 def upgrade():
-    for domain in DOMAINS:
+    for d in DOMAINS:
+        unlock = f"'{d['unlock_points']}'" if d['unlock_points'] is not None else "NULL"
         op.execute(
-            text(
-                "INSERT INTO knowledge.domain "
-                "(name, icon, sort_order, is_free, unlock_points, status) "
-                "VALUES (:name, :icon, :sort_order, :is_free, :unlock_points, 'published')"
-            ),
-            {
-                "name": domain["name"],
-                "icon": domain["icon"],
-                "sort_order": domain["sort_order"],
-                "is_free": domain["is_free"],
-                "unlock_points": domain["unlock_points"],
-            },
+            f"INSERT INTO knowledge.domain "
+            f"(name, icon, sort_order, is_free, unlock_points, status) "
+            f"VALUES ('{d['name']}', '{d['icon']}', {d['sort_order']}, {str(d['is_free']).lower()}, {unlock}, 'published')"
         )
 
 
 def downgrade():
     names = [d["name"] for d in DOMAINS]
     for name in names:
-        op.execute(
-            text("DELETE FROM knowledge.domain WHERE name = :name"),
-            {"name": name},
-        )
+        op.execute(f"DELETE FROM knowledge.domain WHERE name = '{name}'")

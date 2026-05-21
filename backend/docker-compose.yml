@@ -68,6 +68,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      - AI_MOCK_MODE=true
     depends_on:
       postgres:
         condition: service_healthy
