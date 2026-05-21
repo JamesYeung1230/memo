@@ -46,18 +46,18 @@ function adWatch() {
 
 /**
  * 获取成就徽章列表
- * GET /admin/badges
+ * GET /points/badges
  */
 function getAchievements() {
-  return request.get('/admin/badges')
+  return request.get('/points/badges')
 }
 
 /**
  * 获取解锁消耗配置
- * GET /admin/unlock-config
+ * GET /points/unlock-config
  */
 function getConfig() {
-  return request.get('/admin/unlock-config')
+  return request.get('/points/unlock-config')
 }
 
 module.exports = {

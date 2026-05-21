@@ -24,7 +24,7 @@ from redis.asyncio import Redis
 from sqlalchemy import select, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.core.models import PointsRecord, Config
+from services.core.models import PointsRecord, Config, Achievement
 from services.core.routes.deps import get_db, get_user_id, get_admin_id, get_redis
 from shared.errors import AppException, ErrorCode
 from shared.responses import success, paginated
@@ -233,6 +233,38 @@ async def unlock_domain(
         "points_cost": body.points_cost,
         "balance_after": new_balance,
     })
+
+
+@router.get("/points/badges")
+async def get_public_badges(
+    db: AsyncSession = Depends(get_db),
+):
+    """获取已发布成就徽章列表（公开，用户前台使用）. """
+    result = await db.execute(
+        select(Achievement).where(Achievement.status == "published")
+        .order_by(Achievement.created_at.asc())
+    )
+    items = result.scalars().all()
+    return success([{
+        "id": a.id,
+        "name": a.name,
+        "description": a.description,
+        "icon_url": a.icon_url,
+        "points_required": a.points_required,
+        "status": a.status,
+    } for a in items])
+
+
+@router.get("/points/unlock-config")
+async def get_public_unlock_config(
+    db: AsyncSession = Depends(get_db),
+):
+    """获取解锁消耗配置（公开，用户前台使用）. """
+    result = await db.execute(
+        select(Config).where(Config.config_key == "unlock_config")
+    )
+    config = result.scalar_one_or_none()
+    return success(config.config_value if config else {})
 
 
 # ═════════════════════════════════════════════
