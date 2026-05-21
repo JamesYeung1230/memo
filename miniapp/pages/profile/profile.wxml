@@ -59,6 +59,16 @@
           <text class="menu-arrow">›</text>
         </view>
       </view>
+
+      <view class="menu-section" style="margin-top: 24rpx;">
+        <view class="menu-item no-border" bind:tap="onSettingsTap">
+          <view class="menu-item-left">
+            <text class="menu-icon">⚙️</text>
+            <text class="menu-text">设置</text>
+          </view>
+          <text class="menu-arrow">›</text>
+        </view>
+      </view>
     </view>
   </scroll-view>
 
