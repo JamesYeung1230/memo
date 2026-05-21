@@ -149,6 +149,10 @@
   padding: 4rpx 12rpx;
 }
 
+.note-status--draft {
+  background-color: #F3F4F6;
+}
+
 .note-status--pending {
   background-color: #FEF3C7;
 }
@@ -163,6 +167,10 @@
 
 .note-status-text {
   font-size: var(--font-tag);
+}
+
+.note-status--draft .note-status-text {
+  color: var(--color-text-hint);
 }
 
 .note-status--pending .note-status-text {
@@ -182,6 +190,22 @@
   font-size: 36rpx;
   margin-left: 16rpx;
   flex-shrink: 0;
+}
+
+.loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 0;
+  padding: 80rpx 0;
+}
+
+.load-more-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 0;
 }
 
 .page-enter {

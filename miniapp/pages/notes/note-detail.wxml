@@ -1,7 +1,66 @@
 <navigation-bar title="笔记详情" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>笔记详情</text>
+
+<!-- 加载中 -->
+<view wx:if="{{loading}}" class="loading-wrap">
+  <loading-spinner></loading-spinner>
+</view>
+
+<!-- 笔记内容 -->
+<scroll-view wx:elif="{{note}}" class="page-scroll" scroll-y type="list">
+  <view class="detail-wrap">
+    <!-- 标题 -->
+    <text class="detail-title">{{note.title}}</text>
+
+    <!-- 元信息 -->
+    <view class="detail-meta">
+      <view class="detail-status detail-status--{{statusClass}}">
+        <text class="detail-status-text">{{statusLabel}}</text>
+      </view>
+      <text class="detail-time">更新于 {{formatTime(note.updated_at || note.created_at)}}</text>
+    </view>
+
+    <!-- 标签 -->
+    <view wx:if="{{note.tags && note.tags.length > 0}}" class="detail-tags">
+      <tag wx:for="{{note.tags}}" wx:key="index" text="{{item}}" variant="default" size="sm"></tag>
+    </view>
+
+    <!-- 内容 -->
+    <view class="detail-content">
+      <text class="detail-content-text">{{note.content}}</text>
+    </view>
+
+    <!-- 关联卡片 -->
+    <view wx:if="{{note.card_id}}" class="detail-card-link">
+      <text class="detail-card-label">关联知识卡片 ID：{{note.card_id}}</text>
+    </view>
+
+    <!-- 审核备注 -->
+    <view wx:if="{{note.audit_remark}}" class="detail-audit-remark">
+      <text class="detail-remark-label">审核备注：</text>
+      <text class="detail-remark-text">{{note.audit_remark}}</text>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="detail-actions">
+      <view wx:if="{{canEdit}}" class="action-btn action-btn--edit" bind:tap="onEdit">
+        <text class="action-btn-text">编辑</text>
+      </view>
+
+      <view wx:if="{{canSubmitReview}}" class="action-btn action-btn--submit" bind:tap="onSubmitReview">
+        <text class="action-btn-text">提交审核</text>
+      </view>
+
+      <view wx:if="{{canWithdrawReview}}" class="action-btn action-btn--withdraw" bind:tap="onWithdrawReview">
+        <text class="action-btn-text">撤回审核</text>
+      </view>
+
+      <view class="action-btn action-btn--share" bind:tap="onShare">
+        <text class="action-btn-text">分享卡片</text>
+      </view>
+
+      <view class="action-btn action-btn--delete" bind:tap="onDelete">
+        <text class="action-btn-text">删除</text>
+      </view>
+    </view>
   </view>
 </scroll-view>
-

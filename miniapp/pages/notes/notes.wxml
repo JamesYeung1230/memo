@@ -21,13 +21,32 @@
     </view>
   </view>
 
-  <scroll-view class="note-scroll" scroll-y type="list">
+  <!-- 加载中 -->
+  <view wx:if="{{loading && notes.length === 0}}" class="loading-wrap">
+    <loading-spinner></loading-spinner>
+  </view>
+
+  <!-- 空状态 -->
+  <empty-state
+    wx:elif="{{showEmpty && !loading}}"
+    icon="📝"
+    message="暂无笔记，点击右上角 + 新建"
+  ></empty-state>
+
+  <!-- 笔记列表 -->
+  <scroll-view
+    wx:elif="{{notes.length > 0}}"
+    class="note-scroll"
+    scroll-y
+    type="list"
+    bindscrolltolower="onReachBottom"
+  >
     <view class="content-scroll">
       <view
         wx:for="{{notes}}"
         wx:key="index"
         class="note-item"
-        data-index="{{index}}"
+        data-note-id="{{item.note_id}}"
         bind:tap="onNoteTap"
       >
         <view class="note-content">
@@ -41,6 +60,11 @@
           </view>
         </view>
         <text class="note-arrow">›</text>
+      </view>
+
+      <!-- 加载更多 -->
+      <view wx:if="{{loadingMore}}" class="load-more-wrap">
+        <loading-spinner></loading-spinner>
       </view>
     </view>
   </scroll-view>
