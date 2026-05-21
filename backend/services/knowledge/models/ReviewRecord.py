@@ -27,3 +27,5 @@ class ReviewRecord(Base):
     manual_result: Mapped[str | None] = mapped_column(ENUM('approved', 'rejected', name='manual_result', create_type=False), nullable=True)
     manual_reason: Mapped[str | None] = mapped_column(Text, nullable=True)
     reviewed_at: Mapped[str | None] = mapped_column(TIMESTAMP(timezone=True), nullable=True)
+    created_at: Mapped[str | None] = mapped_column(TIMESTAMP(timezone=True), server_default=text("NOW()"))
+    updated_at: Mapped[str | None] = mapped_column(TIMESTAMP(timezone=True), server_default=text("NOW()"))

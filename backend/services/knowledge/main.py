@@ -18,6 +18,7 @@ from services.knowledge.routes import (
     question_router,
     ai_generation_router,
     sensitive_words_router,
+    review_router,
 )
 
 logger = logging.getLogger("knowledge")
@@ -58,6 +59,7 @@ app.include_router(card_router)
 app.include_router(question_router)
 app.include_router(ai_generation_router)
 app.include_router(sensitive_words_router)
+app.include_router(review_router)
 
 
 @app.exception_handler(AppException)

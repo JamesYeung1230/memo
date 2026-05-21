@@ -38,6 +38,7 @@
 - [x] **K2** 内容管理 CRUD：routes/ domain/chapter/card/question + 全量测试 99 个（完成于 2026-05-21）
 - [x] **K3** AI 内容生成：routes/ai_generation.py + MockProvider + 全量测试（完成于 2026-05-21）
 - [x] **K4** 敏感词库：routes/sensitive_words.py + 7 端点 + Redis 缓存同步 + 全量测试（完成于 2026-05-21）
+- [x] **K5** AI 笔记审核：routes/review.py + 10 端点 + 三级审核流程 + 全量测试（完成于 2026-05-21）
 
 ---
 
@@ -58,7 +59,7 @@ _暂无进行中任务_
 - [x] **K2** 内容管理 CRUD：routes/ domain / chapter / card / question
 - [x] **K3** AI 内容生成：ai/AIProvider.py + ai/deepseek.py + 生成路由
 - [x] **K4** 敏感词库：routes/sensitive_words.py + Redis 缓存同步
-- [ ] **K5** AI 笔记审核：tasks/review_worker.py + 审核路由
+- [x] **K5** AI 笔记审核：tasks/review_worker.py + 审核路由
 - [ ] **K6** 审核统计
 - [ ] Knowledge 服务单元测试
 - [ ] Knowledge API 集成测试
@@ -88,7 +89,7 @@ _暂无进行中任务_
 | Alembic 迁移修复 | 8 | 8 | 0 | 0 | 100% |
 | 搬迁至 Ubuntu | 3 | 3 | 0 | 0 | 100% |
 | Auth 服务 | 8 | 4 (A1, A2, A3, A4) | 0 | 4 | 50% |
-| Knowledge 服务 | 12 | 4 (K1~K4) | 0 | 8 | 33% |
+| Knowledge 服务 | 12 | 5 (K1~K5) | 0 | 7 | 42% |
 | Core 服务 | 16 | 0 | 0 | 16 | 0% |
 | 联调提测 | 1 | 0 | 0 | 1 | 0% |
-| **合计** | **61** | **32** | **0** | **29** | **52%** |
+| **合计** | **61** | **33** | **0** | **28** | **54%** |
