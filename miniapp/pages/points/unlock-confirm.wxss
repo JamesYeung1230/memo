@@ -1,8 +1,125 @@
-.page-scroll {
-  flex: 1;
-  height: 100%;
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
+  padding: 32rpx;
 }
 
-.page-content {
-  padding: var(--space-lg);
+.confirm-card {
+  width: 100%;
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.confirm-header {
+  padding: 32rpx;
+  text-align: center;
+}
+
+.confirm-title {
+  font-size: 34rpx;
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.confirm-body {
+  padding: 0 32rpx 24rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.confirm-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.confirm-label {
+  font-size: 28rpx;
+  color: var(--color-text-secondary);
+}
+
+.confirm-value {
+  font-size: 28rpx;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.confirm-value--cost {
+  color: var(--color-warning);
+  font-weight: 700;
+}
+
+.confirm-value--insufficient {
+  color: var(--color-error);
+}
+
+.confirm-divider {
+  height: 2rpx;
+  background-color: var(--color-border);
+  margin: 4rpx 0;
+}
+
+.confirm-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 16rpx;
+  padding: 24rpx 32rpx 32rpx 32rpx;
+}
+
+.confirm-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: var(--radius-lg);
+}
+
+.confirm-btn--cancel {
+  background-color: var(--color-bg-page);
+}
+
+.confirm-btn--confirm {
+  background-color: var(--color-primary);
+}
+
+.confirm-btn--disabled {
+  background-color: var(--color-bg-page);
+  opacity: 0.5;
+}
+
+.confirm-btn-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.confirm-btn--cancel .confirm-btn-text {
+  color: var(--color-text-secondary);
+}
+
+.confirm-btn--confirm .confirm-btn-text {
+  color: var(--color-text-on-primary);
+}
+
+.confirm-btn--disabled .confirm-btn-text {
+  color: var(--color-text-hint);
+}
+
+.warning-bar {
+  margin-top: 24rpx;
+  padding: 20rpx 24rpx;
+  background-color: var(--color-warning);
+  border-radius: var(--radius-lg);
+}
+
+.warning-text {
+  font-size: 24rpx;
+  color: var(--color-text-on-primary);
+  line-height: 1.6;
 }

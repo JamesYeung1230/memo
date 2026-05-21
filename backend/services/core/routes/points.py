@@ -8,6 +8,7 @@ User endpoints (public):
   GET    /points/records          - 积分明细列表（分页）
   GET    /points/rules            - 获取当前积分规则
   POST   /points/ad-watch         - 观看激励广告（+10分，每日上限100分）
+  POST   /points/unlock           - 消耗积分解锁领域
 
 Admin endpoints:
   GET    /admin/points-rules          - 获取积分规则配置
@@ -194,6 +195,43 @@ async def ad_watch(
         "balance_after": new_balance,
         "daily_total": daily_total + 1,
         "daily_limit": DAILY_AD_LIMIT,
+    })
+
+
+class UnlockRequest(BaseModel):
+    domain_id: str
+    points_cost: int
+
+
+@router.post("/points/unlock")
+async def unlock_domain(
+    body: UnlockRequest,
+    user_id: str = Depends(get_user_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """消耗积分解锁知识领域."""
+    balance = await _get_balance(db, user_id)
+    if balance < body.points_cost:
+        raise AppException(
+            ErrorCode("INSUFFICIENT_POINTS", 400, "积分不足"),
+        )
+
+    new_balance = balance - body.points_cost
+    record = PointsRecord(
+        user_id=user_id,
+        points=-body.points_cost,
+        balance_after=new_balance,
+        action_type="unlock_domain",
+        reference_id=body.domain_id,
+        description=f"解锁知识领域 {body.domain_id}",
+    )
+    db.add(record)
+    await db.commit()
+
+    return success({
+        "domain_id": body.domain_id,
+        "points_cost": body.points_cost,
+        "balance_after": new_balance,
     })
 
 

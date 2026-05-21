@@ -1,7 +1,43 @@
 <navigation-bar title="知识领域解锁确认" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>知识领域解锁确认</text>
-  </view>
-</scroll-view>
 
+<view class="page-wrapper">
+  <view class="confirm-card">
+    <view class="confirm-header">
+      <text class="confirm-title">确认解锁</text>
+    </view>
+
+    <view class="confirm-body">
+      <view class="confirm-row">
+        <text class="confirm-label">知识领域</text>
+        <text class="confirm-value">{{domainName}}</text>
+      </view>
+      <view class="confirm-row">
+        <text class="confirm-label">消耗积分</text>
+        <text class="confirm-value confirm-value--cost">{{pointsCost}} 积分</text>
+      </view>
+      <view class="confirm-divider"></view>
+      <view class="confirm-row">
+        <text class="confirm-label">当前积分</text>
+        <text class="confirm-value">{{userBalance}}</text>
+      </view>
+      <view class="confirm-row">
+        <text class="confirm-label">解锁后余额</text>
+        <text class="confirm-value {{canUnlock ? '' : 'confirm-value--insufficient'}}">{{canUnlock ? balanceAfter : '积分不足'}}</text>
+      </view>
+    </view>
+
+    <view class="confirm-footer">
+      <view class="confirm-btn confirm-btn--cancel" bind:tap="onCancel">
+        <text class="confirm-btn-text">取消</text>
+      </view>
+      <view class="confirm-btn {{canUnlock && !_submitting ? 'confirm-btn--confirm' : 'confirm-btn--disabled'}}" bind:tap="onConfirmUnlock">
+        <text class="confirm-btn-text">{{_submitting ? '处理中...' : '确认解锁'}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 警告提示（积分不足时显示） -->
+<view class="warning-bar" wx:if="{{!canUnlock && domainId}}">
+  <text class="warning-text">积分不足以解锁此知识领域，继续学习赚取更多积分吧！</text>
+</view>

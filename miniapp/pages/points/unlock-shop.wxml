@@ -1,7 +1,51 @@
 <navigation-bar title="知识解锁商店" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>知识解锁商店</text>
-  </view>
-</scroll-view>
 
+<view class="page-wrapper">
+  <!-- 用户积分信息 -->
+  <view class="balance-bar" wx:if="{{!_loading}}">
+    <text class="balance-label">当前积分</text>
+    <text class="balance-amount">{{userBalance}}</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-wrap" wx:if="{{_loading}}">
+    <loading-component></loading-component>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-wrap" wx:elif="{{unlockList.length === 0}}">
+    <text class="empty-text">暂无可解锁的知识领域</text>
+  </view>
+
+  <!-- 解锁列表 -->
+  <scroll-view class="list-scroll" scroll-y wx:elif="{{unlockList.length > 0}}" type="list">
+    <view class="unlock-list">
+      <view
+        class="unlock-item"
+        wx:for="{{unlockList}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bind:tap="onUnlockTap"
+      >
+        <view class="unlock-left">
+          <text class="unlock-icon">{{item.icon}}</text>
+          <view class="unlock-info">
+            <text class="unlock-name {{item.unlocked ? 'unlock-text--muted' : ''}}">{{item.name}}</text>
+            <text class="unlock-desc" wx:if="{{item.description}}">{{item.description}}</text>
+          </view>
+        </view>
+        <view class="unlock-right">
+          <view class="unlock-price" wx:if="{{!item.unlocked}}">
+            <text class="unlock-price-text">{{item.pointsCost}} 积分</text>
+          </view>
+          <view class="unlock-btn {{item.canUnlock ? 'unlock-btn--active' : 'unlock-btn--disabled'}}" wx:if="{{!item.unlocked}}">
+            <text class="unlock-btn-text">{{item.canUnlock ? '解锁' : '积分不足'}}</text>
+          </view>
+          <view class="unlock-badge" wx:else>
+            <text class="unlock-badge-text">已解锁</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
