@@ -13,6 +13,8 @@ from shared.config import get_database_url, load_env
 from shared.errors import AppException
 from services.core.clients import KnowledgeClient
 from services.core.middleware.jwt import JWTAuthMiddleware
+from services.core.routes.learning import router as learning_router
+from services.core.routes.quiz import router as quiz_router
 
 logger = logging.getLogger("core")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -141,3 +143,6 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+app.include_router(learning_router)
+app.include_router(quiz_router)
