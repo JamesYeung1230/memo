@@ -95,8 +95,25 @@ async def mark_card_mastered(
         )
         db.add(record)
 
+    await db.flush()
+
+    # Award points for mastering a card
+    result_balance = await db.execute(
+        select(func.coalesce(func.sum(PointsRecord.points), 0)).where(PointsRecord.user_id == user_id)
+    )
+    current_balance = result_balance.scalar() or 0
+    points_record = PointsRecord(
+        user_id=user_id,
+        points=1,
+        balance_after=current_balance + 1,
+        action_type="learn_card",
+        reference_id=card_id,
+        description="掌握知识卡片",
+    )
+    db.add(points_record)
+
     await db.commit()
-    return success({"status": "mastered"})
+    return success({"status": "mastered", "points_earned": 1, "balance_after": current_balance + 1})
 
 
 @router.get("/progress")

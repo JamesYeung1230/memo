@@ -59,13 +59,32 @@ async def submit_answer(
         is_correct=is_correct,
     )
     db.add(answer)
+    await db.flush()
+
+    # Award points if correct
+    points_earned = 15 if is_correct else 0
+    if points_earned > 0:
+        result_balance = await db.execute(
+            select(func.coalesce(func.sum(PointsRecord.points), 0)).where(PointsRecord.user_id == user_id)
+        )
+        current_balance = result_balance.scalar() or 0
+        points_record = PointsRecord(
+            user_id=user_id,
+            points=points_earned,
+            balance_after=current_balance + points_earned,
+            action_type="learn_card",
+            reference_id=body.question_id,
+            description="答题正确",
+        )
+        db.add(points_record)
+
     await db.commit()
 
     return success({
         "correct": is_correct,
         "correct_option": question.get("correct_option"),
         "explanation": question.get("explanation", ""),
-        "points_earned": 0,
+        "points_earned": points_earned,
     })
 
 
