@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 
 from services.core.routes.learning import router as learning_router
 from services.core.routes.quiz import router as quiz_router
+from services.core.routes.review import router as review_router
 from services.core.clients import KnowledgeClient
 from shared.errors import AppException
 
@@ -67,6 +68,7 @@ def client(mock_session, mock_knowledge_client):
     app = FastAPI()
     app.include_router(learning_router)
     app.include_router(quiz_router)
+    app.include_router(review_router)
 
     mock_session.__aenter__ = AsyncMock(return_value=mock_session)
     mock_session.__aexit__ = AsyncMock(return_value=None)
@@ -173,4 +175,58 @@ class TestQuizRoutes:
     def test_get_wrong_questions(self, client, mock_session):
         mock_session.execute.return_value = _mock_result(scalars_all=[])
         resp = client.get("/api/v1/quiz/wrong-questions")
+        assert resp.status_code == 200
+
+
+class TestReviewRoutes:
+
+    def test_get_today_review(self, client, mock_session):
+        mock_session.execute.return_value = _mock_result(scalar_one_or_none=None)
+        # First call: get_or_create config (no config exists)
+        # Second call: select learning records
+        mock_session.execute.side_effect = [
+            _mock_result(scalar_one_or_none=None),  # config not found
+            _mock_result(scalars_all=[]),  # no learning records
+        ]
+        resp = client.get("/api/v1/review/today")
+        assert resp.status_code == 200
+
+    def test_get_config(self, client, mock_session):
+        config = MagicMock()
+        config.review_nodes = [1, 2, 4, 7, 15]
+        config.daily_limit = 20
+        config.forgotten_alert_days = 7
+        config.reminder_time = "20:00"
+        config.weekend_quiet = False
+        config.preset = None
+        mock_session.execute.return_value = _mock_result(scalar_one_or_none=config)
+        resp = client.get("/api/v1/review/config")
+        assert resp.status_code == 200
+        assert resp.json()["data"]["daily_limit"] == 20
+
+    def test_update_config(self, client, mock_session):
+        config = MagicMock()
+        mock_session.execute.return_value = _mock_result(scalar_one_or_none=config)
+        resp = client.put("/api/v1/review/config", json={"daily_limit": 30})
+        assert resp.status_code == 200
+
+    def test_reset_config(self, client, mock_session):
+        config = MagicMock()
+        mock_session.execute.return_value = _mock_result(scalar_one_or_none=config)
+        resp = client.post("/api/v1/review/config/reset")
+        assert resp.status_code == 200
+
+    def test_get_forgotten(self, client, mock_session):
+        config = MagicMock()
+        config.forgotten_alert_days = 7
+        mock_session.execute.side_effect = [
+            _mock_result(scalar_one_or_none=config),
+            _mock_result(scalars_all=[]),
+        ]
+        resp = client.get("/api/v1/review/forgotten")
+        assert resp.status_code == 200
+
+    def test_get_notes_review(self, client, mock_session, mock_knowledge_client):
+        mock_knowledge_client.get_review_records = AsyncMock(return_value=[])
+        resp = client.get("/api/v1/review/notes")
         assert resp.status_code == 200
