@@ -10,7 +10,7 @@ class AnswerRecord(Base):
     __table_args__ = {"schema": "core"}
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"))
-    user_id: Mapped[str] = mapped_column(UUID(as_uuid=False), nullable=False)
+    user_id: Mapped[str] = mapped_column(String(100), nullable=False)
     question_id: Mapped[str] = mapped_column(UUID(as_uuid=False), nullable=False)
     card_id: Mapped[str | None] = mapped_column(UUID(as_uuid=False), nullable=True)
     domain_id: Mapped[str | None] = mapped_column(UUID(as_uuid=False), nullable=True)

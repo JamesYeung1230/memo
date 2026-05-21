@@ -10,7 +10,7 @@ class DailyChallengeRecord(Base):
     __table_args__ = {"schema": "core"}
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"))
-    user_id: Mapped[str] = mapped_column(UUID(as_uuid=False), nullable=False)
+    user_id: Mapped[str] = mapped_column(String(100), nullable=False)
     challenge_date: Mapped[str] = mapped_column(String, nullable=False)
     total_questions: Mapped[int] = mapped_column(Integer, nullable=False, server_default=text("0"))
     correct_count: Mapped[int] = mapped_column(Integer, nullable=False, server_default=text("0"))

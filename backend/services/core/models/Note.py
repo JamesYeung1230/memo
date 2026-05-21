@@ -10,7 +10,7 @@ class Note(Base):
     __table_args__ = {"schema": "core"}
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"))
-    user_id: Mapped[str] = mapped_column(UUID(as_uuid=False), nullable=False)
+    user_id: Mapped[str] = mapped_column(String(100), nullable=False)
     title: Mapped[str] = mapped_column(String(300), nullable=False)
     content: Mapped[str] = mapped_column(Text, nullable=False)
     tags: Mapped[dict | None] = mapped_column(JSONB, nullable=True, server_default=text("'[]'"))

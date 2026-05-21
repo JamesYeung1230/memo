@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -50,12 +50,11 @@ async def get_today_review(
     page_size: int = Query(20, ge=1, le=50),
 ):
     config = await _get_or_create_config(user_id, db)
-    today = date.today()
 
     result = await db.execute(
         select(LearningRecord).where(
             LearningRecord.user_id == user_id,
-            LearningRecord.next_review_at <= today.isoformat(),
+            LearningRecord.next_review_at <= datetime.now(),
         )
         .order_by(LearningRecord.next_review_at.asc())
         .offset((page - 1) * page_size).limit(config.daily_limit)
@@ -101,7 +100,7 @@ async def complete_review(
     next_days = nodes[next_idx]
 
     record.review_count += 1
-    record.next_review_at = (date.today() + timedelta(days=next_days)).isoformat()
+    record.next_review_at = datetime.now() + timedelta(days=next_days)
     await db.commit()
 
     return success({
@@ -119,7 +118,7 @@ async def get_forgotten(
 ):
     config = await _get_or_create_config(user_id, db)
     alert_days = config.forgotten_alert_days
-    cutoff = (date.today() - timedelta(days=alert_days)).isoformat()
+    cutoff = datetime.now() - timedelta(days=alert_days)
 
     result = await db.execute(
         select(LearningRecord).where(
@@ -136,7 +135,7 @@ async def get_forgotten(
         "card_id": r.card_id,
         "last_reviewed_at": str(r.learned_at) if r.learned_at else None,
         "next_review_at": str(r.next_review_at) if r.next_review_at else None,
-        "days_overdue": (date.today() - date.fromisoformat(str(r.next_review_at)[:10])).days if r.next_review_at else 0,
+        "days_overdue": (datetime.now() - r.next_review_at).days if r.next_review_at else 0,
     } for r in records if r.next_review_at])
 
 

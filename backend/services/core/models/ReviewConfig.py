@@ -10,7 +10,7 @@ class ReviewConfig(Base):
     __table_args__ = {"schema": "core"}
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"))
-    user_id: Mapped[str] = mapped_column(UUID(as_uuid=False), nullable=False, unique=True)
+    user_id: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
     review_nodes: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default=text("'[1,2,4,7,15]'"))
     daily_limit: Mapped[int] = mapped_column(Integer, nullable=False, server_default=text("20"))
     forgotten_alert_days: Mapped[int] = mapped_column(Integer, nullable=False, server_default=text("7"))

@@ -10,7 +10,7 @@ class PointsRecord(Base):
     __table_args__ = {"schema": "core"}
 
     id: Mapped[str] = mapped_column(UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()"))
-    user_id: Mapped[str] = mapped_column(UUID(as_uuid=False), nullable=False)
+    user_id: Mapped[str] = mapped_column(String(100), nullable=False)
     points: Mapped[int] = mapped_column(Integer, nullable=False)
     balance_after: Mapped[int | None] = mapped_column(Integer, nullable=True)
     action_type: Mapped[str] = mapped_column(ENUM(
