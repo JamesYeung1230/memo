@@ -60,9 +60,9 @@ _暂无进行中任务_
 - [x] **K3** AI 内容生成：ai/AIProvider.py + ai/deepseek.py + 生成路由
 - [x] **K4** 敏感词库：routes/sensitive_words.py + Redis 缓存同步
 - [x] **K5** AI 笔记审核：tasks/review_worker.py + 审核路由
-- [ ] **K6** 审核统计
-- [ ] Knowledge 服务单元测试
-- [ ] Knowledge API 集成测试
+- [x] **K6** 审核统计
+- [x] Knowledge 服务单元测试
+- [x] Knowledge API 集成测试
 
 ### ③ 核心服务 (Core) — 16 个子任务
 - [ ] **C1** Core 骨架搭建：main.py + ORM 模型（12 张表）+ clients/KnowledgeClient.py + middleware/JWT 中间件
@@ -89,7 +89,7 @@ _暂无进行中任务_
 | Alembic 迁移修复 | 8 | 8 | 0 | 0 | 100% |
 | 搬迁至 Ubuntu | 3 | 3 | 0 | 0 | 100% |
 | Auth 服务 | 8 | 4 (A1, A2, A3, A4) | 0 | 4 | 50% |
-| Knowledge 服务 | 12 | 5 (K1~K5) | 0 | 7 | 42% |
+| Knowledge 服务 | 12 | 6 (K1~K6) | 0 | 6 | 50% |
 | Core 服务 | 16 | 0 | 0 | 16 | 0% |
 | 联调提测 | 1 | 0 | 0 | 1 | 0% |
-| **合计** | **61** | **33** | **0** | **28** | **54%** |
+| **合计** | **61** | **34** | **0** | **27** | **56%** |
