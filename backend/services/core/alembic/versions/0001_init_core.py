@@ -120,7 +120,6 @@ def upgrade():
     op.execute("CREATE INDEX idx_points_user ON core.points_record (user_id)")
     op.execute("CREATE INDEX idx_points_user_created ON core.points_record (user_id, created_at DESC)")
     op.execute("CREATE INDEX idx_points_action ON core.points_record (action_type)")
-    op.execute("CREATE INDEX idx_points_created_date ON core.points_record ((created_at::date))")
 
     op.execute("""
         CREATE TABLE core.config (

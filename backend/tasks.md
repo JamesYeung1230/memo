@@ -39,6 +39,7 @@
 - [x] **K3** AI 内容生成：routes/ai_generation.py + MockProvider + 全量测试（完成于 2026-05-21）
 - [x] **K4** 敏感词库：routes/sensitive_words.py + 7 端点 + Redis 缓存同步 + 全量测试（完成于 2026-05-21）
 - [x] **K5** AI 笔记审核：routes/review.py + 10 端点 + 三级审核流程 + 全量测试（完成于 2026-05-21）
+- [x] **C1** Core 骨架搭建：main.py + ORM 模型（12 张表）+ clients/KnowledgeClient.py + middleware/JWT 中间件（完成于 2026-05-21）
 
 ---
 
@@ -65,7 +66,7 @@ _暂无进行中任务_
 - [x] Knowledge API 集成测试
 
 ### ③ 核心服务 (Core) — 16 个子任务
-- [ ] **C1** Core 骨架搭建：main.py + ORM 模型（12 张表）+ clients/KnowledgeClient.py + middleware/JWT 中间件
+- [x] **C1** Core 骨架搭建：main.py + ORM 模型（12 张表）+ clients/KnowledgeClient.py + middleware/JWT 中间件（完成于 2026-05-21）
 - [ ] **C2** 学习记录 API：学习状态、答题判定、错题本、收藏夹、每日挑战
 - [ ] **C3** 记忆强化 API：间隔重复调度、复习计划配置、遗忘预警
 - [ ] **C4** 笔记管理 API：笔记 CRUD + 审核提交/撤回/分享/违规限制
@@ -90,6 +91,6 @@ _暂无进行中任务_
 | 搬迁至 Ubuntu | 3 | 3 | 0 | 0 | 100% |
 | Auth 服务 | 8 | 4 (A1, A2, A3, A4) | 0 | 4 | 50% |
 | Knowledge 服务 | 12 | 6 (K1~K6) | 0 | 6 | 50% |
-| Core 服务 | 16 | 0 | 0 | 16 | 0% |
+| Core 服务 | 16 | 1 (C1) | 0 | 15 | 6% |
 | 联调提测 | 1 | 0 | 0 | 1 | 0% |
-| **合计** | **61** | **34** | **0** | **27** | **56%** |
+| **合计** | **61** | **35** | **0** | **26** | **57%** |

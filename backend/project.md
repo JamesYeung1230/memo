@@ -427,7 +427,7 @@ backend/
 
 | 阶段 | 里程碑 | 状态 | 说明 |
 |------|--------|------|------|
-| **C1** | Core 骨架搭建 | ⚪ 待开始 | FastAPI 项目骨架、core Schema 模型定义、KnowledgeClient、shared/auth.py 集成 |
+| **C1** | Core 骨架搭建 | 🟢 已完成 | FastAPI 项目骨架、12张 ORM 模型、KnowledgeClient（54 个 API）、JWT 中间件、异常处理器、Dockerfile、main.py（完成于 2026-05-21） |
 | **C2** | 学习记录 API | ⚪ 待开始 | 学习状态追踪、答题判定、错题本、收藏夹、每日挑战 |
 | **C3** | 记忆强化 API | ⚪ 待开始 | 间隔重复调度、复习计划配置、错题再练、遗忘预警 |
 | **C4** | 笔记管理 API | ⚪ 待开始 | 笔记 CRUD、关联笔记、审核提交/撤回、分享卡片、违规限制 |

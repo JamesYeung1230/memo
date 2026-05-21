@@ -74,10 +74,11 @@ CONFIG_DESCRIPTIONS = {
 
 
 def upgrade():
+    conn = op.get_bind()
     for config_key, config_value in DEFAULT_CONFIGS.items():
         value_json = json.dumps(config_value, ensure_ascii=False)
         description = CONFIG_DESCRIPTIONS.get(config_key, "")
-        op.execute(
+        conn.execute(
             text(
                 "INSERT INTO core.config (config_key, config_value, description, updated_by) "
                 "VALUES (:key, :value, :desc, 'system') "
@@ -88,9 +89,10 @@ def upgrade():
 
 
 def downgrade():
+    conn = op.get_bind()
     keys = list(DEFAULT_CONFIGS.keys())
     for key in keys:
-        op.execute(
+        conn.execute(
             text("DELETE FROM core.config WHERE config_key = :key"),
             {"key": key},
         )
