@@ -79,7 +79,7 @@ Page({
     var chapterId = e.currentTarget.dataset.chapterId
     var chapterName = e.currentTarget.dataset.chapterName
     wx.navigateTo({
-      url: '/pages/learn/card-browse/card-browse?chapter_id=' + chapterId + '&chapter_name=' + encodeURIComponent(chapterName)
+      url: '/pages/learn/card-browse?chapter_id=' + chapterId + '&chapter_name=' + encodeURIComponent(chapterName)
     })
   },
 
@@ -87,7 +87,7 @@ Page({
     var domainId = e.currentTarget.dataset.domainId
     var domainName = e.currentTarget.dataset.domainName
     wx.navigateTo({
-      url: '/pages/learn/chapter-progress/chapter-progress?domain_id=' + domainId + '&domain_name=' + encodeURIComponent(domainName)
+      url: '/pages/learn/chapter-progress?domain_id=' + domainId + '&domain_name=' + encodeURIComponent(domainName)
     })
   },
 

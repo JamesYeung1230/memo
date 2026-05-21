@@ -137,15 +137,15 @@ Page({
   },
 
   onQuizTap() {
-    wx.navigateTo({ url: '/pages/learn/error-book/error-book' })
+    wx.navigateTo({ url: '/pages/learn/error-book' })
   },
 
   onReviewTodayTap() {
-    wx.navigateTo({ url: '/pages/learn/review-today/review-today' })
+    wx.navigateTo({ url: '/pages/learn/review-today' })
   },
 
   onErrorReviewTap() {
-    wx.navigateTo({ url: '/pages/learn/error-review/error-review' })
+    wx.navigateTo({ url: '/pages/learn/error-review' })
   },
 
   onReviewSettingsTap() {
@@ -153,6 +153,6 @@ Page({
   },
 
   onDailyChallengeTap() {
-    wx.navigateTo({ url: '/pages/learn/daily-challenge/daily-challenge' })
+    wx.navigateTo({ url: '/pages/learn/daily-challenge' })
   }
 })

@@ -209,7 +209,7 @@ Page({
   },
 
   onAddNote: function () {
-    wx.navigateTo({ url: '/pages/notes/note-editor/note-editor' })
+    wx.navigateTo({ url: '/pages/notes/note-editor' })
   },
 
   /**

@@ -43,7 +43,7 @@ Page({
     var cardId = e.currentTarget.dataset.cardId
     if (cardId) {
       wx.navigateTo({
-        url: '/pages/learn/card-detail/card-detail?card_id=' + cardId
+        url: '/pages/learn/card-detail?card_id=' + cardId
       })
     }
   },

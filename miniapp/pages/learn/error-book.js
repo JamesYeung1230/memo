@@ -43,7 +43,7 @@ Page({
     var questionId = e.currentTarget.dataset.questionId
     if (questionId) {
       wx.navigateTo({
-        url: '/pages/learn/error-review/error-review?question_id=' + questionId
+        url: '/pages/learn/error-review?question_id=' + questionId
       })
     }
   },
@@ -55,7 +55,7 @@ Page({
       return
     }
     wx.navigateTo({
-      url: '/pages/learn/error-review/error-review'
+      url: '/pages/learn/error-review'
     })
   },
 

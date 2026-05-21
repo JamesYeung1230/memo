@@ -57,7 +57,7 @@ Page({
     var badge = this.data.badges[index]
     if (badge) {
       wx.navigateTo({
-        url: '/pages/points/achievement-detail/achievement-detail?id=' + badge.id
+        url: '/pages/points/achievement-detail?id=' + badge.id
       })
     }
   }

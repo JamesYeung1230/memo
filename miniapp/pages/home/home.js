@@ -94,7 +94,7 @@ Page({
   onBannerTap() {},
 
   onReviewTap() {
-    wx.navigateTo({ url: '/pages/learn/review-today/review-today' })
+    wx.navigateTo({ url: '/pages/learn/review-today' })
   },
 
   onCardGotIt() {
@@ -120,11 +120,11 @@ Page({
   },
 
   onChallengeStart() {
-    wx.navigateTo({ url: '/pages/learn/daily-challenge/daily-challenge' })
+    wx.navigateTo({ url: '/pages/learn/daily-challenge' })
   },
 
   onQuickNote() {
-    wx.navigateTo({ url: '/pages/notes/note-editor/note-editor' })
+    wx.navigateTo({ url: '/pages/notes/note-editor' })
   },
 
   onWatchAd() {

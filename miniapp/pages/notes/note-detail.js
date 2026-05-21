@@ -72,7 +72,7 @@ Page({
    */
   onEdit: function () {
     var noteId = this.data.noteId
-    wx.navigateTo({ url: '/pages/notes/note-editor/note-editor?note_id=' + noteId })
+    wx.navigateTo({ url: '/pages/notes/note-editor?note_id=' + noteId })
   },
 
   /**

@@ -237,7 +237,7 @@ Page({
     if (!card) return {}
     return {
       title: '知识卡片：' + (card.title || ''),
-      path: '/pages/learn/card-detail/card-detail?card_id=' + this.data.cardId
+      path: '/pages/learn/card-detail?card_id=' + this.data.cardId
     }
   }
 })
