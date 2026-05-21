@@ -14,6 +14,7 @@ from shared.errors import AppException
 from services.core.clients import KnowledgeClient
 from services.core.middleware.jwt import JWTAuthMiddleware
 from services.core.routes.learning import router as learning_router
+from services.core.routes.notes import router as notes_router
 from services.core.routes.quiz import router as quiz_router
 from services.core.routes.review import router as review_router
 
@@ -146,5 +147,6 @@ async def health():
     return {"status": "ok"}
 
 app.include_router(learning_router)
+app.include_router(notes_router)
 app.include_router(quiz_router)
 app.include_router(review_router)
