@@ -1,7 +1,71 @@
-<navigation-bar title="知识卡片浏览" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<navigation-bar title="{{chapterName || '知识卡片浏览'}}" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
 <scroll-view class="page-scroll" scroll-y type="list">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <search-bar
+      placeholder="搜索卡片标题、概念或标签"
+      bind:input="onSearchInput"
+      bind:search="onSearch"
+      bind:clear="onSearchClear"
+    ></search-bar>
+  </view>
+
+  <!-- 搜索结果数量 -->
+  <view wx:if="{{searchKeyword && !_loading}}" class="search-count">
+    <text>找到 {{filteredCards.length}} 张卡片</text>
+  </view>
+
   <view class="page-content">
-    <text>知识卡片浏览</text>
+
+    <!-- 加载骨架 -->
+    <loading-skeleton wx:if="{{_loading}}" count="4" type="card"></loading-skeleton>
+
+    <!-- 空状态 -->
+    <empty-state
+      wx:elif="{{filteredCards.length === 0}}"
+      icon="{{searchKeyword ? '🔍' : '📭'}}"
+      message="{{searchKeyword ? '没有找到匹配的卡片' : '暂无知识卡片'}}"
+      actionText="{{searchKeyword ? '' : '刷新'}}"
+      showAction="{{!searchKeyword}}"
+      bind:action="fetchCards"
+    ></empty-state>
+
+    <!-- 卡片列表 -->
+    <view wx:else class="card-list">
+      <view
+        class="card-item"
+        wx:for="{{filteredCards}}"
+        wx:key="id"
+        data-card-id="{{item.id}}"
+        bind:tap="onCardTap"
+        bind:longpress="onCardLongPress"
+      >
+        <view class="card-top-row">
+          <text class="card-title">{{item.title}}</text>
+          <view class="card-status-badges">
+            <text wx:if="{{item.mastered}}" class="card-mastered-badge">已掌握</text>
+            <text wx:if="{{item.favorited}}" class="card-fav-icon card-fav-icon--active">★</text>
+          </view>
+        </view>
+
+        <text class="card-concept" wx:if="{{item.concept}}">{{item.concept}}</text>
+
+        <view class="card-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <view class="tag-card-item" wx:for="{{item.tags}}" wx:key="*this">
+            <text class="tag-card-text">{{item}}</text>
+          </view>
+        </view>
+
+        <view class="card-bottom-row">
+          <view class="card-difficulty" wx:if="{{item.difficulty}}">
+            <view class="difficulty-dot difficulty-dot--{{item.difficulty}}"></view>
+            <text class="difficulty-text">{{item.difficulty === 'easy' ? '简单' : item.difficulty === 'medium' ? '中等' : '困难'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bottom-safe" />
   </view>
 </scroll-view>
-

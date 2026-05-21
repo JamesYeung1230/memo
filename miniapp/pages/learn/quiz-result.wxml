@@ -1,7 +1,62 @@
-<navigation-bar title="答题结果与解析" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>答题结果与解析</text>
-  </view>
-</scroll-view>
+<navigation-bar title="答题结果" back="{{false}}" color="black" background="#FFF"></navigation-bar>
 
+<view class="page-wrapper">
+  <scroll-view class="page-scroll" scroll-y type="list">
+    <view class="page-content">
+
+      <!-- 结果头部 -->
+      <view class="result-header">
+        <view class="result-icon">
+          <text class="result-icon-text">{{accuracy >= 80 ? '🎉' : accuracy >= 60 ? '👍' : '💪'}}</text>
+        </view>
+        <text class="result-title">{{accuracy >= 80 ? '太棒了！' : accuracy >= 60 ? '继续加油！' : '还需努力！'}}</text>
+        <text class="result-subtitle">{{accuracy >= 80 ? '你已经掌握了大部分知识点' : accuracy >= 60 ? '基础知识掌握得不错' : '多加练习，下次会更好'}}</text>
+      </view>
+
+      <!-- 分数面板 -->
+      <view class="score-panel">
+        <view class="score-item score-item--accuracy">
+          <text class="score-label">正确率</text>
+          <text class="score-value">{{displayAccuracy || 0}}%</text>
+        </view>
+        <view class="score-divider"></view>
+        <view class="score-item score-item--correct">
+          <text class="score-label">正确</text>
+          <text class="score-value score-value--correct">{{displayScore || 0}}</text>
+        </view>
+        <view class="score-divider"></view>
+        <view class="score-item score-item--wrong">
+          <text class="score-label">错误</text>
+          <text class="score-value score-value--wrong">{{wrong}}</text>
+        </view>
+      </view>
+
+      <!-- 统计详情 -->
+      <view class="stats-panel">
+        <view class="stats-row">
+          <text class="stats-label">总题数</text>
+          <text class="stats-value">{{total}} 题</text>
+        </view>
+        <view class="stats-row">
+          <text class="stats-label">正确数</text>
+          <text class="stats-value stats-value--correct">{{correct}} 题</text>
+        </view>
+        <view class="stats-row">
+          <text class="stats-label">错误数</text>
+          <text class="stats-value stats-value--wrong">{{wrong}} 题</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="action-section">
+        <view class="action-btn action-btn--primary" bind:tap="onRetry">
+          <text class="action-btn-text">再来一次</text>
+        </view>
+        <view class="action-btn action-btn--secondary" bind:tap="onGoBack">
+          <text class="action-btn-text">返回学习</text>
+        </view>
+      </view>
+
+    </view>
+  </scroll-view>
+</view>

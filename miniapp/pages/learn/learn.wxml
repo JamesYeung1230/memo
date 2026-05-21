@@ -7,10 +7,10 @@
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="content-scroll">
 
-      <view class="domain-tags">
+      <view class="domain-tags" wx:if="{{domains.length > 0}}">
         <view
-          wx:for="{{domainTags}}"
-          wx:key="index"
+          wx:for="{{domains}}"
+          wx:key="id"
           class="tag {{activeTagIndex === index ? 'tag--active' : ''}}"
           data-index="{{index}}"
           bind:tap="onTagTap"
@@ -21,25 +21,25 @@
 
       <view class="overview-card">
         <view class="overview-header">
-          <text class="overview-title">编程基础概念</text>
-          <text class="overview-status">学习中</text>
+          <text class="overview-title">{{currentDomainName || '编程基础概念'}}</text>
+          <text class="overview-status">{{currentDomainStatus || '学习中'}}</text>
         </view>
 
         <view class="progress-bar">
-          <view class="progress-bar-fill" style="width: 240rpx" />
+          <view class="progress-bar-fill" style="width: {{progress && progress.total > 0 ? (progress.learned || 0) / progress.total * 100 + '%' : '0%'}}" />
         </view>
 
         <view class="stats-row">
           <view class="stat-item">
-            <text class="stat-num">5/12</text>
+            <text class="stat-num">{{learnedCards}}</text>
             <text class="stat-label">已学卡片</text>
           </view>
           <view class="stat-item">
-            <text class="stat-num" style="color: var(--color-success)">68%</text>
+            <text class="stat-num" style="color: var(--color-success)">{{accuracyRate}}</text>
             <text class="stat-label">正确率</text>
           </view>
           <view class="stat-item">
-            <text class="stat-num" style="color: var(--color-primary)">42</text>
+            <text class="stat-num" style="color: var(--color-primary)">{{points}}</text>
             <text class="stat-label">积分</text>
           </view>
         </view>
@@ -50,7 +50,7 @@
           <text class="entry-icon">📄</text>
           <view class="entry-info">
             <text class="entry-title">知识卡片学习</text>
-            <text class="entry-sub">继续学习 · 变量与数据类型</text>
+            <text class="entry-sub">探索知识目录，系统学习</text>
           </view>
         </view>
         <text class="entry-arrow">›</text>
@@ -61,7 +61,18 @@
           <text class="entry-icon">📝</text>
           <view class="entry-info">
             <text class="entry-title">刷题学习</text>
-            <text class="entry-sub" style="color: var(--color-warning)">错题本 (12题)</text>
+            <text class="entry-sub" style="color: {{errorCount > 0 ? 'var(--color-warning)' : 'var(--color-text-secondary)'}}">错题本 ({{errorCount}}题)</text>
+          </view>
+        </view>
+        <text class="entry-arrow">›</text>
+      </view>
+
+      <view class="entry-card" bind:tap="onDailyChallengeTap">
+        <view class="entry-left">
+          <text class="entry-icon">🏆</text>
+          <view class="entry-info">
+            <text class="entry-title">每日挑战</text>
+            <text class="entry-sub">每日5题，挑战自我</text>
           </view>
         </view>
         <text class="entry-arrow">›</text>
@@ -76,7 +87,7 @@
         <view class="memory-item" bind:tap="onReviewTodayTap">
           <view class="memory-item-left">
             <view class="memory-dot dot--blue" />
-            <text class="memory-item-text">今日待复习 (8张)</text>
+            <text class="memory-item-text">今日待复习 ({{reviewCount}}张)</text>
           </view>
           <text class="memory-item-arrow">›</text>
         </view>
@@ -84,7 +95,7 @@
         <view class="memory-item" bind:tap="onErrorReviewTap">
           <view class="memory-item-left">
             <view class="memory-dot dot--red" />
-            <text class="memory-item-text">错题再练</text>
+            <text class="memory-item-text">错题再练 ({{errorCount}}题)</text>
           </view>
           <text class="memory-item-arrow">›</text>
         </view>

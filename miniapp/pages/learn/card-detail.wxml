@@ -1,7 +1,51 @@
 <navigation-bar title="卡片详情" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
-    <text>卡片详情</text>
+
+    <!-- 加载骨架 -->
+    <loading-skeleton wx:if="{{_loading}}" count="1" type="card"></loading-skeleton>
+
+    <!-- 卡片内容 -->
+    <view wx:if="{{!_loading && cardDetail}}" class="card-detail-wrapper">
+      <!-- 使用 knowledge-card 组件展示 -->
+      <knowledge-card
+        card="{{cardDetail}}"
+        expandable="{{true}}"
+        bind:mastered="onMastered"
+        bind:favorite="onFavorite"
+      ></knowledge-card>
+
+      <!-- 生活类比 -->
+      <view class="analogy-section" wx:if="{{cardDetail.analogy}}">
+        <view class="section-label">
+          <text class="section-icon">💡</text>
+          <text class="section-title">场景类比</text>
+        </view>
+        <view class="analogy-content">
+          <text class="analogy-text">{{cardDetail.analogy}}</text>
+        </view>
+      </view>
+
+      <!-- 分享区域 -->
+      <view class="share-section">
+        <view class="share-btn" bind:tap="onShareCard">
+          <text class="share-btn-icon">📤</text>
+          <text class="share-btn-text">分享知识卡片</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载失败 -->
+    <empty-state
+      wx:elif="{{!_loading && !cardDetail}}"
+      icon="❌"
+      message="卡片加载失败"
+      actionText="重试"
+      showAction="{{true}}"
+      bind:action="fetchCardDetail"
+    ></empty-state>
+
+    <view class="bottom-safe" />
   </view>
 </scroll-view>
-

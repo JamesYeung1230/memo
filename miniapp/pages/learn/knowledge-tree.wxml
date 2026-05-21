@@ -1,7 +1,80 @@
 <navigation-bar title="知识目录导航" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
-    <text>知识目录导航</text>
+
+    <!-- 加载骨架 -->
+    <loading-skeleton wx:if="{{_loading}}" count="4" type="list"></loading-skeleton>
+
+    <!-- 空状态 -->
+    <empty-state
+      wx:elif="{{domains.length === 0}}"
+      icon="📚"
+      message="暂无知识领域"
+      actionText="刷新"
+      showAction="{{true}}"
+      bind:action="fetchDomains"
+    ></empty-state>
+
+    <!-- 领域列表 -->
+    <view wx:else class="domain-list">
+      <view
+        class="domain-item"
+        wx:for="{{domains}}"
+        wx:key="id"
+        data-domain-id="{{item.id}}"
+        data-domain-name="{{item.name}}"
+      >
+        <!-- 领域头 -->
+        <view class="domain-header" bind:tap="onDomainTap" data-domain-id="{{item.id}}">
+          <view class="domain-header-left">
+            <text class="domain-icon">{{item.icon || '📂'}}</text>
+            <view class="domain-info">
+              <text class="domain-name">{{item.name}}</text>
+              <text class="domain-desc">{{item.description || ''}}</text>
+            </view>
+          </view>
+          <view class="domain-header-right">
+            <text class="domain-count">{{item.chapterCount || 0}}章</text>
+            <text class="domain-arrow {{expandedDomainId === item.id ? 'domain-arrow--up' : ''}}">›</text>
+          </view>
+        </view>
+
+        <!-- 展开的章节列表 -->
+        <view class="chapter-list" wx:if="{{expandedDomainId === item.id}}">
+          <view
+            class="chapter-item"
+            wx:for="{{item.chapters}}"
+            wx:key="id"
+            data-chapter-id="{{item.id}}"
+            data-chapter-name="{{item.name}}"
+            bind:tap="onChapterTap"
+          >
+            <view class="chapter-left">
+              <text class="chapter-index">{{index + 1}}</text>
+              <text class="chapter-name">{{item.name}}</text>
+            </view>
+            <view class="chapter-right">
+              <text class="chapter-card-count">{{item.card_count || 0}}卡片</text>
+              <text class="chapter-arrow">›</text>
+            </view>
+          </view>
+
+          <!-- 领域快捷操作 -->
+          <view class="domain-actions">
+            <view class="domain-action-btn" bind:tap="onQuizTap" data-domain-id="{{item.id}}">
+              <text class="domain-action-icon">📝</text>
+              <text class="domain-action-text">刷题</text>
+            </view>
+            <view class="domain-action-btn" bind:tap="onDomainProgressTap" data-domain-id="{{item.id}}" data-domain-name="{{item.name}}">
+              <text class="domain-action-icon">📊</text>
+              <text class="domain-action-text">进度</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bottom-safe" />
   </view>
 </scroll-view>
-

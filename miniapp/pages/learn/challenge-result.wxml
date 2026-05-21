@@ -1,7 +1,79 @@
-<navigation-bar title="每日挑战结果" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>每日挑战结果</text>
-  </view>
-</scroll-view>
+<navigation-bar title="挑战结果" back="{{false}}" color="black" background="#FFF"></navigation-bar>
 
+<view class="page-wrapper">
+  <scroll-view class="page-scroll" scroll-y type="list">
+    <view class="page-content">
+
+      <!-- 结果头部 -->
+      <view class="result-header">
+        <view class="result-icon">
+          <text class="result-icon-text">🏆</text>
+        </view>
+        <text class="result-title">每日挑战完成！</text>
+        <text class="result-subtitle">{{accuracy >= 80 ? '今日表现非常出色！' : accuracy >= 60 ? '不错的成绩，再接再厉！' : '继续努力，明天会更好！'}}</text>
+      </view>
+
+      <!-- 分数面板 -->
+      <view class="score-panel">
+        <view class="score-item score-item--accuracy">
+          <text class="score-label">正确率</text>
+          <text class="score-value">{{displayAccuracy || 0}}%</text>
+        </view>
+        <view class="score-divider"></view>
+        <view class="score-item score-item--correct">
+          <text class="score-label">正确</text>
+          <text class="score-value score-value--correct">{{displayScore || 0}}</text>
+        </view>
+        <view class="score-divider"></view>
+        <view class="score-item score-item--wrong">
+          <text class="score-label">错误</text>
+          <text class="score-value score-value--wrong">{{wrong}}</text>
+        </view>
+      </view>
+
+      <!-- 奖励面板 -->
+      <view class="reward-panel">
+        <text class="reward-title">今日奖励</text>
+        <view class="reward-items">
+          <view class="reward-item">
+            <text class="reward-icon">⭐</text>
+            <text class="reward-value">{{displayPoints || 0}}</text>
+            <text class="reward-label">获得积分</text>
+          </view>
+          <view class="reward-item">
+            <text class="reward-icon">🔥</text>
+            <text class="reward-value">{{streakDays || 0}}</text>
+            <text class="reward-label">连续天数</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 统计详情 -->
+      <view class="stats-panel">
+        <view class="stats-row">
+          <text class="stats-label">总题数</text>
+          <text class="stats-value">{{total}} 题</text>
+        </view>
+        <view class="stats-row">
+          <text class="stats-label">正确数</text>
+          <text class="stats-value stats-value--correct">{{correct}} 题</text>
+        </view>
+        <view class="stats-row">
+          <text class="stats-label">错误数</text>
+          <text class="stats-value stats-value--wrong">{{wrong}} 题</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="action-section">
+        <view class="action-btn action-btn--primary" bind:tap="onGoHome">
+          <text class="action-btn-text">完成</text>
+        </view>
+        <view class="action-btn action-btn--secondary" bind:tap="onShare">
+          <text class="action-btn-text">分享成绩</text>
+        </view>
+      </view>
+
+    </view>
+  </scroll-view>
+</view>
