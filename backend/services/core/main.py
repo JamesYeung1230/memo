@@ -19,6 +19,7 @@ from services.core.routes.notes import router as notes_router
 from services.core.routes.points import router as points_router
 from services.core.routes.quiz import router as quiz_router
 from services.core.routes.review import router as review_router
+from services.core.routes.operations import router as operations_router
 
 logger = logging.getLogger("core")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -158,3 +159,4 @@ app.include_router(notes_router)
 app.include_router(points_router)
 app.include_router(quiz_router)
 app.include_router(review_router)
+app.include_router(operations_router)
