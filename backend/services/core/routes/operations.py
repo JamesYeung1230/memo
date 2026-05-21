@@ -29,17 +29,22 @@ Badge (Achievement):
   POST   /admin/badges/{id}/toggle   - 上架/下架
 """
 
+from datetime import date
 from typing import Any
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from sqlalchemy import select, func
+from sqlalchemy import and_, cast, Date, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from services.core.models import Config, Banner, Achievement
-from services.core.routes.deps import get_db, get_admin_id
+from services.core.clients import KnowledgeClient
+from services.core.models import (
+    Achievement, AnswerRecord, Banner, Config,
+    LearningRecord, OpLog, PointsRecord,
+)
+from services.core.routes.deps import get_admin_id, get_db, get_knowledge_client
 from shared.errors import AppException, ErrorCode, NotFoundError
-from shared.responses import success
+from shared.responses import paginated, success
 
 router = APIRouter(prefix="/api/v1")
 
@@ -518,3 +523,213 @@ async def update_homepage_config(
         db, "homepage_module_order", body.config_value, admin_id, body.description,
     )
     return success(_serialize_config(config))
+
+
+# ═════════════════════════════════════════════
+#  C7 Dashboard  (/api/v1/admin/dashboard/*)
+# ═════════════════════════════════════════════
+
+
+def _serialize_log(l: OpLog) -> dict:
+    return {
+        "id": l.id,
+        "operator": l.operator,
+        "action_type": l.action_type,
+        "target_type": l.target_type,
+        "target_id": l.target_id,
+        "detail": l.detail,
+        "ip_address": l.ip_address,
+        "created_at": str(l.created_at) if l.created_at else None,
+    }
+
+
+@router.get("/admin/dashboard/overview")
+async def dashboard_overview(
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """核心指标概览 — 用户数、今日学习数、今日答题数."""
+    today = date.today()
+
+    # Total users: COUNT(DISTINCT user_id) from learning_record + answer_record
+    lr_users = await db.execute(
+        select(func.count(func.distinct(LearningRecord.user_id)))
+    )
+    ar_users = await db.execute(
+        select(func.count(func.distinct(AnswerRecord.user_id)))
+    )
+    total_users = (lr_users.scalar() or 0) + (ar_users.scalar() or 0)
+
+    # Today learning records
+    today_learning = await db.execute(
+        select(func.count()).where(
+            cast(LearningRecord.created_at, Date) == today
+        )
+    )
+
+    # Today answer records
+    today_answers = await db.execute(
+        select(func.count()).where(
+            cast(AnswerRecord.created_at, Date) == today
+        )
+    )
+
+    return success({
+        "total_users": total_users,
+        "today_learning": today_learning.scalar() or 0,
+        "today_answers": today_answers.scalar() or 0,
+    })
+
+
+@router.get("/admin/dashboard/content")
+async def dashboard_content(
+    admin_id: str = Depends(get_admin_id),
+    knowledge: KnowledgeClient = Depends(get_knowledge_client),
+):
+    """内容数据 — 调用 KnowledgeClient.get_domains() 获取内容统计."""
+    domains = await knowledge.get_domains()
+    return success({
+        "total_domains": len(domains),
+    })
+
+
+@router.get("/admin/dashboard/users")
+async def dashboard_users(
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """用户数据 — 学习记录去重用户数、活跃度分布."""
+    lr_users = await db.execute(
+        select(func.count(func.distinct(LearningRecord.user_id)))
+    )
+    ar_users = await db.execute(
+        select(func.count(func.distinct(AnswerRecord.user_id)))
+    )
+    total_users = (lr_users.scalar() or 0) + (ar_users.scalar() or 0)
+
+    return success({
+        "total_users": total_users,
+    })
+
+
+@router.get("/admin/dashboard/points")
+async def dashboard_points(
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """积分数据 — 今日发放 / 消耗汇总."""
+    today = date.today()
+
+    # Today issued: SUM(points) where points > 0
+    issued = await db.execute(
+        select(func.coalesce(func.sum(PointsRecord.points), 0)).where(
+            and_(
+                PointsRecord.points > 0,
+                cast(PointsRecord.created_at, Date) == today,
+            )
+        )
+    )
+
+    # Today consumed: SUM(points) where points < 0
+    consumed = await db.execute(
+        select(func.coalesce(func.sum(PointsRecord.points), 0)).where(
+            and_(
+                PointsRecord.points < 0,
+                cast(PointsRecord.created_at, Date) == today,
+            )
+        )
+    )
+
+    return success({
+        "today_issued": issued.scalar() or 0,
+        "today_consumed": abs(consumed.scalar() or 0),
+    })
+
+
+@router.get("/admin/dashboard/ads")
+async def dashboard_ads(
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """广告数据 — 今日广告观看次数."""
+    today = date.today()
+
+    ad_count = await db.execute(
+        select(func.count()).where(
+            and_(
+                PointsRecord.action_type == "ad_watch",
+                cast(PointsRecord.created_at, Date) == today,
+            )
+        )
+    )
+
+    return success({
+        "today_ad_views": ad_count.scalar() or 0,
+    })
+
+
+@router.get("/admin/dashboard/review")
+async def dashboard_review(
+    admin_id: str = Depends(get_admin_id),
+    knowledge: KnowledgeClient = Depends(get_knowledge_client),
+):
+    """审核统计 — 调用 KnowledgeClient.get_review_statistics()."""
+    stats = await knowledge.get_review_statistics()
+    return success(stats if stats else {})
+
+
+# ═════════════════════════════════════════════
+#  C8 System Logs  (/api/v1/admin/logs)
+# ═════════════════════════════════════════════
+
+
+@router.get("/admin/logs")
+async def list_logs(
+    page: int = 1,
+    page_size: int = 20,
+    action_type: str | None = None,
+    target_type: str | None = None,
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """操作日志列表（分页，支持 action_type / target_type 筛选，按 created_at DESC 排序）. """
+    conditions: list = []
+    if action_type:
+        conditions.append(OpLog.action_type == action_type)
+    if target_type:
+        conditions.append(OpLog.target_type == target_type)
+
+    # Total count
+    count_query = select(func.count()).select_from(OpLog)
+    if conditions:
+        count_query = count_query.where(and_(*conditions))
+    total_result = await db.execute(count_query)
+    total = total_result.scalar() or 0
+
+    # Paginated query
+    query = select(OpLog)
+    if conditions:
+        query = query.where(and_(*conditions))
+    query = query.order_by(OpLog.created_at.desc())
+    query = query.offset((page - 1) * page_size).limit(page_size)
+
+    result = await db.execute(query)
+    logs = result.scalars().all()
+
+    return paginated(
+        data=[_serialize_log(l) for l in logs],
+        total=total,
+        page=page,
+        page_size=page_size,
+    )
+
+
+@router.delete("/admin/logs")
+async def clear_logs(
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """清空操作日志."""
+    await db.execute(OpLog.__table__.delete())
+    await db.commit()
+    return success({"deleted": True})

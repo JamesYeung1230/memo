@@ -729,3 +729,84 @@ class TestOperationsRoutes:
         data = resp.json()["data"]
         assert data["config_key"] == "homepage_module_order"
         assert data["config_value"]["modules"] == ["banner", "domains"]
+
+    # ── C7 Dashboard ─────────────────────────────────
+
+    def test_dashboard_overview(self, client, mock_session):
+        """dashboard/overview 应返回核心指标."""
+        mock_session.execute.side_effect = [
+            _mock_result(scalar=10),    # DISTINCT users from learning_record
+            _mock_result(scalar=5),     # DISTINCT users from answer_record
+            _mock_result(scalar=3),     # today learning
+            _mock_result(scalar=7),     # today answers
+        ]
+        resp = client.get("/api/v1/admin/dashboard/overview")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert data["total_users"] == 15
+        assert data["today_learning"] == 3
+        assert data["today_answers"] == 7
+
+    def test_dashboard_review(self, client, mock_knowledge_client):
+        """dashboard/review 应调用 KnowledgeClient.get_review_statistics()."""
+        mock_knowledge_client.get_review_statistics = AsyncMock(return_value={
+            "pending_count": 5,
+            "approved_count": 20,
+            "rejected_count": 2,
+        })
+        resp = client.get("/api/v1/admin/dashboard/review")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert data["pending_count"] == 5
+        assert data["approved_count"] == 20
+
+    # ── C8 Logs ──────────────────────────────────────
+
+    def _make_mock_log(self, **overrides) -> MagicMock:
+        l = MagicMock()
+        l.id = str(uuid.uuid4())
+        l.operator = "admin"
+        l.action_type = "DELETE"
+        l.target_type = "Banner"
+        l.target_id = str(uuid.uuid4())
+        l.detail = None
+        l.ip_address = "192.168.1.1"
+        l.created_at = "2026-05-21 10:00:00+00"
+        for k, v in overrides.items():
+            setattr(l, k, v)
+        return l
+
+    def test_list_logs(self, client, mock_session):
+        """list_logs 应返回分页的操作日志列表."""
+        mock_log = self._make_mock_log()
+        mock_session.execute.side_effect = [
+            _mock_result(scalar=1),              # COUNT
+            _mock_result(scalars_all=[mock_log]),  # SELECT
+        ]
+        resp = client.get("/api/v1/admin/logs")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert len(body["data"]) == 1
+        assert body["meta"]["total"] == 1
+        assert body["data"][0]["action_type"] == "DELETE"
+        assert body["data"][0]["target_type"] == "Banner"
+
+    def test_list_logs_with_filters(self, client, mock_session):
+        """list_logs 支持 action_type / target_type 筛选."""
+        mock_log = self._make_mock_log(action_type="CREATE", target_type="Config")
+        mock_session.execute.side_effect = [
+            _mock_result(scalar=1),
+            _mock_result(scalars_all=[mock_log]),
+        ]
+        resp = client.get("/api/v1/admin/logs?action_type=CREATE&target_type=Config")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert len(body["data"]) == 1
+        assert body["data"][0]["action_type"] == "CREATE"
+
+    def test_clear_logs(self, client, mock_session):
+        """clear_logs 应清空所有操作日志."""
+        mock_session.execute.return_value = _mock_result()
+        resp = client.delete("/api/v1/admin/logs")
+        assert resp.status_code == 200
+        assert resp.json()["data"]["deleted"] is True
