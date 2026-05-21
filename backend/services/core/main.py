@@ -5,16 +5,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.responses import JSONResponse
+from redis.asyncio import Redis
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-from shared.config import get_database_url, load_env
+from shared.config import get_database_url, get_redis_url, load_env
 from shared.errors import AppException
 from services.core.clients import KnowledgeClient
 from services.core.middleware.jwt import JWTAuthMiddleware
 from services.core.routes.learning import router as learning_router
 from services.core.routes.notes import router as notes_router
+from services.core.routes.points import router as points_router
 from services.core.routes.quiz import router as quiz_router
 from services.core.routes.review import router as review_router
 
@@ -41,10 +43,15 @@ async def lifespan(app: FastAPI):
     app.state.knowledge_client = knowledge_client
     logger.info("KnowledgeClient initialized")
 
+    redis = Redis.from_url(get_redis_url(), decode_responses=True)
+    app.state.redis = redis
+    logger.info("Redis initialized")
+
     app.state.db_engine = engine
     app.state.db_session_factory = session_factory
     yield
     await knowledge_client.close()
+    await redis.close()
     await engine.dispose()
 
 
@@ -148,5 +155,6 @@ async def health():
 
 app.include_router(learning_router)
 app.include_router(notes_router)
+app.include_router(points_router)
 app.include_router(quiz_router)
 app.include_router(review_router)

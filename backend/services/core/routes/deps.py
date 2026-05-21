@@ -1,4 +1,5 @@
-from fastapi import Request, Depends
+from fastapi import Request
+from redis.asyncio import Redis
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from services.core.clients import KnowledgeClient
@@ -21,3 +22,9 @@ async def get_user_id(request: Request) -> str:
 
 async def get_admin_id(request: Request) -> str:
     return getattr(request.state, "admin_id", "anonymous")
+
+
+async def get_redis(request: Request) -> Redis:
+    """获取 Redis 异步客户端（存放在 app.state.redis 中）. """
+    redis: Redis = request.app.state.redis
+    return redis

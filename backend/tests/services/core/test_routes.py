@@ -13,10 +13,11 @@ from fastapi.testclient import TestClient
 
 from services.core.routes.learning import router as learning_router
 from services.core.routes.notes import router as notes_router
+from services.core.routes.points import router as points_router
 from services.core.routes.quiz import router as quiz_router
 from services.core.routes.review import router as review_router
 from services.core.clients import KnowledgeClient
-from services.core.models import Note
+from services.core.models import Config, Note, PointsRecord
 from shared.errors import AppException
 
 
@@ -66,10 +67,20 @@ def mock_knowledge_client():
 
 
 @pytest.fixture
-def client(mock_session, mock_knowledge_client):
+def mock_redis():
+    redis = AsyncMock()
+    redis.get = AsyncMock(return_value=None)
+    redis.incr = AsyncMock(return_value=1)
+    redis.expire = AsyncMock(return_value=True)
+    return redis
+
+
+@pytest.fixture
+def client(mock_session, mock_knowledge_client, mock_redis):
     app = FastAPI()
     app.include_router(learning_router)
     app.include_router(notes_router)
+    app.include_router(points_router)
     app.include_router(quiz_router)
     app.include_router(review_router)
 
@@ -77,6 +88,7 @@ def client(mock_session, mock_knowledge_client):
     mock_session.__aexit__ = AsyncMock(return_value=None)
     app.state.db_session_factory = MagicMock(return_value=mock_session)
     app.state.knowledge_client = mock_knowledge_client
+    app.state.redis = mock_redis
 
     @app.exception_handler(AppException)
     async def app_exc_handler(request: Request, exc: AppException):
@@ -353,3 +365,99 @@ class TestNoteRoutes:
         body = resp.json()
         assert len(body["data"]) == 1
         assert body["data"][0]["audit_status"] == "approved"
+
+
+class TestPointsRoutes:
+
+    def _make_mock_record(self, **overrides):
+        r = MagicMock(spec=PointsRecord)
+        r.id = str(uuid.uuid4())
+        r.user_id = "anonymous"
+        r.points = 10
+        r.balance_after = 10
+        r.action_type = "ad_watch"
+        r.reference_id = None
+        r.description = "测试记录"
+        r.created_at = "2026-05-21 10:00:00+00"
+        for k, v in overrides.items():
+            setattr(r, k, v)
+        return r
+
+    def _make_mock_config(self, **overrides):
+        c = MagicMock(spec=Config)
+        c.config_key = "points_rules"
+        c.config_value = {
+            "learn_card": 1,
+            "daily_challenge": 15,
+            "create_note": 5,
+            "ad_watch": 10,
+            "daily_ad_limit": 100,
+        }
+        c.version = 1
+        c.description = "积分规则"
+        c.updated_by = "admin"
+        c.updated_at = "2026-05-21 10:00:00+00"
+        for k, v in overrides.items():
+            setattr(c, k, v)
+        return c
+
+    def test_get_balance(self, client, mock_session):
+        mock_session.execute.return_value = _mock_result(scalar=50)
+        resp = client.get("/api/v1/points/balance")
+        assert resp.status_code == 200
+        assert resp.json()["data"]["balance"] == 50
+
+    def test_get_records(self, client, mock_session):
+        mock_record = self._make_mock_record()
+        mock_session.execute.side_effect = [
+            _mock_result(scalar=1),                     # COUNT
+            _mock_result(scalars_all=[mock_record]),     # SELECT
+        ]
+        resp = client.get("/api/v1/points/records")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert len(body["data"]) == 1
+        assert body["meta"]["total"] == 1
+        assert body["data"][0]["action_type"] == "ad_watch"
+
+    def test_get_records_with_action_type_filter(self, client, mock_session):
+        mock_record = self._make_mock_record(action_type="learn_card", points=1)
+        mock_session.execute.side_effect = [
+            _mock_result(scalar=1),
+            _mock_result(scalars_all=[mock_record]),
+        ]
+        resp = client.get("/api/v1/points/records?action_type=learn_card")
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["data"][0]["action_type"] == "learn_card"
+
+    def test_get_rules(self, client, mock_session):
+        config = self._make_mock_config()
+        mock_session.execute.return_value = _mock_result(scalar_one_or_none=config)
+        resp = client.get("/api/v1/points/rules")
+        assert resp.status_code == 200
+        assert resp.json()["data"]["learn_card"] == 1
+        assert resp.json()["data"]["daily_challenge"] == 15
+
+    def test_get_rules_not_found(self, client, mock_session):
+        mock_session.execute.return_value = _mock_result(scalar_one_or_none=None)
+        resp = client.get("/api/v1/points/rules")
+        assert resp.status_code == 200
+        assert resp.json()["data"] == {}
+
+    def test_ad_watch(self, client, mock_session):
+        # First call: balance SUM = 0
+        mock_session.execute.return_value = _mock_result(scalar=0)
+        resp = client.post("/api/v1/points/ad-watch")
+        assert resp.status_code == 200
+        data = resp.json()["data"]
+        assert data["points_added"] == 10
+        assert data["balance_after"] == 10
+        assert data["daily_total"] == 1
+        assert data["daily_limit"] == 100
+
+    def test_ad_watch_daily_limit_reached(self, client, mock_session, mock_redis):
+        mock_redis.get.return_value = "100"
+        resp = client.post("/api/v1/points/ad-watch")
+        assert resp.status_code == 400
+        assert resp.json()["code"] == "DAILY_LIMIT_REACHED"
