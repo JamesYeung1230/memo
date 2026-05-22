@@ -152,12 +152,30 @@ async def get_daily_challenge(
             "questions": [],
         })
 
-    questions = await client.get_review_queue(page=1, page_size=5)
+    questions = []
+    try:
+        domains = await client.get_domains(status="published")
+        if domains:
+            chapters = await client.get_chapters(domains[0]["id"], status="published")
+            if chapters:
+                cards = await client.get_cards(chapters[0]["id"], status="published")
+                for card in cards[:5]:
+                    q = await client.get_question(card["id"])
+                    if q:
+                        questions.append({
+                            "question_id": q.get("id", card["id"]),
+                            "card_id": card["id"],
+                            "question_text": q.get("question_text", ""),
+                            "options": q.get("options", {}),
+                            "difficulty": card.get("difficulty", "beginner"),
+                        })
+    except Exception:
+        pass
     return success({
         "challenge_id": record.id if record else None,
         "date": today_str,
         "is_completed": False,
-        "questions": (questions or [])[:5],
+        "questions": questions,
     })
 
 
@@ -174,7 +192,7 @@ async def submit_daily_challenge(
     correct = 0
 
     for ans in body.answers:
-        question = await client.get_question(ans.get("question_id", ""))
+        question = await client.get_question_detail(ans.get("question_id", ""))
         if ans.get("selected_option") == question.get("correct_option"):
             correct += 1
         answer = AnswerRecord(

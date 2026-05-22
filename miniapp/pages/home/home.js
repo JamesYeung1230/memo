@@ -32,6 +32,7 @@ Page({
 
   onLoad() {
     this.loadHomeData()
+    this.loadRecommendedCard()
   },
 
   onShow() {
@@ -88,6 +89,31 @@ Page({
         challengeSub: challengeCompleted ? (allCorrect ? '全对 +' + pointsEarned + ' 积分' : '已完成') : '尚未完成今日挑战',
         pointsAmount: '积分余额: ' + balanceAmount
       })
+    })
+  },
+
+  loadRecommendedCard: function () {
+    var self = this
+    learnApi.getDomains().then(function (domains) {
+      if (!domains || domains.length === 0) return
+      return learnApi.getChapters(domains[0].id)
+    }).then(function (chapters) {
+      if (!chapters || chapters.length === 0) return
+      return learnApi.getCards(chapters[0].id)
+    }).then(function (cards) {
+      if (!cards || cards.length === 0) return
+      var card = cards[0]
+      var tags = card.tags || []
+      self.setData({
+        currentCardId: card.id,
+        cardTagText: tags.length > 0 ? tags[0] : '',
+        cardTitle: card.title || '',
+        cardConcept: card.core_concept || '',
+        cardDesc: (card.detail || '').substring(0, 60) + '...',
+        tags: tags
+      })
+    }).catch(function () {
+      // silently fail
     })
   },
 

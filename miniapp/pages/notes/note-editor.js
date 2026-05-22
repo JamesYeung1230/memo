@@ -119,7 +119,7 @@ Page({
     }
 
     if (tags) {
-      data.tags = tags
+      data.tags = tags.split(',').map(function (t) { return t.trim() }).filter(Boolean)
     }
     if (cardId) {
       data.card_id = parseInt(cardId, 10)

@@ -140,6 +140,7 @@
   color: var(--color-text-on-primary);
   font-size: var(--font-h1);
   font-weight: 600;
+  line-height: 1;
 }
 
 .submit-btn:not(.submit-btn--active) .submit-btn-text {
