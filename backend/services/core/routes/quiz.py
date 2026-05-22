@@ -161,7 +161,16 @@ async def practice_wrong_question(
     client: KnowledgeClient = Depends(get_knowledge_client),
 ):
     """Practice a wrong question. Returns correct/incorrect and explanation."""
-    question = await client.get_question_detail(question_id)
+    try:
+        question = await client.get_question_detail(question_id)
+    except Exception:
+        return success({
+            "correct": False,
+            "correct_option": "",
+            "explanation": "无法获取题目详情",
+            "points_earned": 0,
+        })
+
     is_correct = body.selected_option == question.get("correct_option")
 
     # Record this practice attempt
