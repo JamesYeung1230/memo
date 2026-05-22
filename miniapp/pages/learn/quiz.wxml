@@ -86,9 +86,9 @@
         class="next-btn {{isAnswered ? 'next-btn--active' : ''}}"
         bind:tap="onNext"
       >
-        <text class="next-btn-text">
+        <view class="next-btn-text">
           {{currentIndex + 1 >= totalQuestions ? '查看结果' : '下一题'}}
-        </text>
+        </view>
       </view>
     </view>
 
