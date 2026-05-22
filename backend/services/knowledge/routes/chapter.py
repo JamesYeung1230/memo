@@ -4,7 +4,7 @@ from sqlalchemy import select, func, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from services.knowledge.models import Chapter, Domain
+from services.knowledge.models import Chapter, Domain, Card
 from services.knowledge.routes.deps import get_db
 from shared.errors import KnowledgeNotFoundError, KnowledgeDuplicateError
 from shared.responses import success, paginated
@@ -36,6 +36,7 @@ def _to_out(c: Chapter) -> dict:
         "name": c.name,
         "sort_order": c.sort_order,
         "status": c.status,
+        "card_count": 0,
         "created_at": str(c.created_at) if hasattr(c, 'created_at') and c.created_at else None,
         "updated_at": str(c.updated_at) if hasattr(c, 'updated_at') and c.updated_at else None,
     }
@@ -61,7 +62,17 @@ async def list_chapters(
     result = await session.execute(query)
     chapters = result.scalars().all()
 
-    return success([_to_out(c) for c in chapters])
+    # 统计每个章节的卡片数量
+    chapters_list = []
+    for c in chapters:
+        item = _to_out(c)
+        count_result = await session.execute(
+            select(func.count(Card.id)).where(Card.chapter_id == c.id)
+        )
+        item["card_count"] = count_result.scalar() or 0
+        chapters_list.append(item)
+
+    return success(chapters_list)
 
 
 @router.get("/chapters/{chapter_id}")

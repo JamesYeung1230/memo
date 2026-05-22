@@ -27,6 +27,46 @@
         </view>
       </view>
 
+      <!-- 题目 -->
+      <view class="qa-section" wx:if="{{questionData}}">
+        <view class="section-label">
+          <text class="section-icon">❓</text>
+          <text class="section-title">巩固练习</text>
+        </view>
+        <view class="qa-card">
+          <text class="qa-question">{{questionData.text}}</text>
+
+          <view class="qa-options" wx:if="{{questionData.options.length > 0}}">
+            <view
+              class="qa-option-item"
+              wx:for="{{questionData.options}}"
+              wx:key="letter"
+              wx:for-item="opt"
+            >
+              <view class="qa-option-letter">{{opt.letter}}</view>
+              <text class="qa-option-text">{{opt.text}}</text>
+            </view>
+          </view>
+
+          <!-- 查看答案 -->
+          <view class="qa-answer-toggle" bind:tap="onToggleAnswer">
+            <text class="qa-toggle-text">{{showAnswer ? '隐藏答案' : '查看答案'}}</text>
+            <text class="qa-toggle-icon">{{showAnswer ? '▲' : '▼'}}</text>
+          </view>
+
+          <view class="qa-answer-reveal" wx:if="{{showAnswer}}">
+            <view class="qa-correct-row">
+              <text class="qa-correct-label">正确答案：</text>
+              <text class="qa-correct-value">{{questionData.correctAnswer}}</text>
+            </view>
+            <view class="qa-explanation-row" wx:if="{{questionData.explanation}}">
+              <text class="qa-explanation-label">解析：</text>
+              <text class="qa-explanation-text">{{questionData.explanation}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <!-- 分享区域 -->
       <view class="share-section">
         <view class="share-btn" bind:tap="onShareCard">

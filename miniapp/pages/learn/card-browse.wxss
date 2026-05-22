@@ -78,6 +78,21 @@
   gap: var(--space-xs);
 }
 
+.tag-card-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  background-color: var(--color-primary-light);
+  border: 1rpx solid rgba(74, 144, 217, 0.15);
+}
+
+.tag-card-text {
+  font-size: 20rpx;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
 .card-bottom-row {
   display: flex;
   flex-direction: row;

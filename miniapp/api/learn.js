@@ -87,6 +87,14 @@ function getProgress() {
  * 获取答题题目
  * GET /quiz/domain/{domainId}/questions
  */
+/**
+ * 获取卡片题目
+ * GET /learn/cards/{cardId}/question
+ */
+function getCardQuestion(cardId) {
+  return request.get('/learn/cards/' + cardId + '/question')
+}
+
 function getQuizQuestions(domainId) {
   return request.get('/quiz/domain/' + domainId + '/questions')
 }
@@ -200,6 +208,7 @@ module.exports = {
   getChapters: getChapters,
   getCards: getCards,
   getCardDetail: getCardDetail,
+  getCardQuestion: getCardQuestion,
   masterCard: masterCard,
   favoriteCard: favoriteCard,
   getCardStatus: getCardStatus,

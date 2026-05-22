@@ -3,27 +3,29 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 12rpx 21rpx 21rpx 21rpx;
-  padding-bottom: calc(21rpx + env(safe-area-inset-bottom));
+  z-index: 999;
+  padding: 8rpx 24rpx 24rpx 24rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   background-color: var(--color-bg-page);
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.04);
 }
 
 .tab-pill {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 62rpx;
-  padding: 4rpx;
-  gap: 2rpx;
+  height: 80rpx;
+  padding: 6rpx;
+  gap: 4rpx;
   background-color: #FFFFFF;
-  border-radius: 36rpx;
+  border-radius: 40rpx;
   border: 1rpx solid var(--color-divider);
 }
 
 .tab-item {
   flex: 1;
   height: 100%;
-  border-radius: 26rpx;
+  border-radius: 32rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +39,7 @@
 }
 
 .tab-icon {
-  font-size: 16rpx;
+  font-size: 20rpx;
   line-height: 1;
   color: var(--color-text-hint);
 }
@@ -47,7 +49,7 @@
 }
 
 .tab-label {
-  font-size: 10rpx;
+  font-size: 11rpx;
   font-weight: 600;
   line-height: 1;
   color: var(--color-text-hint);

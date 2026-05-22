@@ -36,9 +36,40 @@ async def get_domain_questions(
     client: KnowledgeClient = Depends(get_knowledge_client),
     user_id: str = Depends(get_user_id),
 ):
-    """Get questions for a domain (learned cards first)."""
-    questions = await client.get_review_queue(page=1, page_size=50)
-    return success(questions or [])
+    """Get questions for a domain by traversing chapters → cards → questions."""
+    try:
+        chapters = await client.get_chapters(domain_id, status="published")
+    except Exception:
+        return success([])
+
+    questions = []
+    seen_ids = set()
+
+    for chapter in chapters:
+        try:
+            cards = await client.get_cards(chapter.get("id", ""), status="published")
+        except Exception:
+            continue
+        for card in cards:
+            card_id = card.get("id", "")
+            try:
+                q = await client.get_question(card_id)
+            except Exception:
+                continue
+            if q and q.get("id") and q.get("id") not in seen_ids:
+                seen_ids.add(q["id"])
+                questions.append({
+                    "id": q["id"],
+                    "question_text": q.get("question_text", ""),
+                    "options": q.get("options", {}),
+                    "correct_answer": q.get("correct_option", ""),
+                    "explanation": q.get("explanation", ""),
+                    "card_id": card_id,
+                    "card_title": card.get("title", ""),
+                    "difficulty": card.get("difficulty", "beginner"),
+                })
+
+    return success(questions)
 
 
 @router.post("/submit")

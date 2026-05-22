@@ -5,6 +5,8 @@ Page({
     _loading: true,
     cardId: null,
     cardDetail: null,
+    questionData: null,
+    showAnswer: false,
     statusBarHeight: 0
   },
 
@@ -25,8 +27,38 @@ Page({
         cardDetail: card,
         _loading: false
       })
+      if (card) {
+        that.fetchQuestion(card.id)
+      }
     }).catch(function () {
       that.setData({ _loading: false })
+    })
+  },
+
+  fetchQuestion(cardId) {
+    var that = this
+    learnApi.getCardQuestion(cardId).then(function (res) {
+      var q = res.data || null
+      if (q) {
+        var options = q.options || {}
+        var optionsList = Object.keys(options).map(function (k) {
+          return { letter: k, text: options[k] }
+        })
+        that.setData({
+          questionData: {
+            text: q.question_text || '',
+            options: optionsList,
+            correctAnswer: q.correct_option || '',
+            explanation: q.explanation || ''
+          }
+        })
+      }
+    }).catch(function () {})
+  },
+
+  onToggleAnswer() {
+    this.setData({
+      showAnswer: !this.data.showAnswer
     })
   },
 
