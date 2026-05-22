@@ -7,10 +7,11 @@
   padding: 8rpx 24rpx 32rpx 24rpx;
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
   background-color: var(--color-bg-page);
-  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.04);
+  border-top: 2rpx solid var(--color-divider);
 }
 
 .tab-pill {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -20,6 +21,21 @@
   background-color: #FFFFFF;
   border-radius: 50rpx;
   border: 1rpx solid var(--color-divider);
+  overflow: hidden;
+}
+
+/* 滑动指示器 */
+.tab-indicator {
+  position: absolute;
+  top: 6rpx;
+  bottom: 6rpx;
+  width: calc(20% - 8rpx);
+  border-radius: 40rpx;
+  background-color: var(--color-primary);
+  box-shadow: 0 4rpx 16rpx rgba(74, 144, 217, 0.3);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  will-change: left;
 }
 
 .tab-item {
@@ -31,25 +47,20 @@
   align-items: center;
   justify-content: center;
   gap: 4rpx;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s;
   position: relative;
-}
-
-.tab-item--active {
-  background-color: var(--color-primary);
-  transform: scale(1.02);
-  box-shadow: 0 4rpx 16rpx rgba(74, 144, 217, 0.3);
+  z-index: 1;
 }
 
 .tab-item:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
 .tab-icon {
   font-size: 28rpx;
   line-height: 1;
   color: var(--color-text-hint);
-  transition: color 0.2s;
+  transition: color 0.25s;
 }
 
 .tab-icon--active {
@@ -61,7 +72,7 @@
   font-weight: 600;
   line-height: 1;
   color: var(--color-text-hint);
-  transition: color 0.2s;
+  transition: color 0.25s;
 }
 
 .tab-label--active {

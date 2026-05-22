@@ -1,9 +1,10 @@
 <view class="tab-bar">
   <view class="tab-pill">
+    <view class="tab-indicator" style="left: {{indicatorLeft}}px;"></view>
     <view
       wx:for="{{list}}"
       wx:key="index"
-      class="tab-item {{activeIndex === index ? 'tab-item--active' : ''}}"
+      class="tab-item"
       data-index="{{index}}"
       bind:tap="onTabTap"
     >
