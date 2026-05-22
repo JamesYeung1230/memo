@@ -195,20 +195,23 @@ async def get_card_question(
 async def get_learning_progress(
     user_id: str = Depends(get_user_id),
     db: AsyncSession = Depends(get_db),
+    domain_id: str | None = Query(None),
 ):
+    filters = [LearningRecord.user_id == user_id]
+    if domain_id:
+        filters.append(LearningRecord.domain_id == domain_id)
+
     total = await db.execute(
-        select(func.count(LearningRecord.id)).where(LearningRecord.user_id == user_id)
+        select(func.count(LearningRecord.id)).where(*filters)
     )
     mastered = await db.execute(
         select(func.count(LearningRecord.id)).where(
-            LearningRecord.user_id == user_id,
-            LearningRecord.status == "mastered",
+            *filters, LearningRecord.status == "mastered",
         )
     )
     today = await db.execute(
         select(func.count(LearningRecord.id)).where(
-            LearningRecord.user_id == user_id,
-            func.DATE(LearningRecord.learned_at) == date.today(),
+            *filters, func.DATE(LearningRecord.learned_at) == date.today(),
         )
     )
 

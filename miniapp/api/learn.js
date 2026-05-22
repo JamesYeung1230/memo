@@ -77,8 +77,8 @@ function getFavorites() {
  * 获取学习进度
  * GET /learn/progress
  */
-function getProgress() {
-  return request.get('/learn/progress')
+function getProgress(domainId) {
+  return request.get('/learn/progress', { data: { domain_id: domainId || '' } })
 }
 
 // ==================== 刷题 ====================

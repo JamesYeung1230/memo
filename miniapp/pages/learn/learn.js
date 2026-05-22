@@ -46,8 +46,6 @@ Page({
 
   loadAllData() {
     this.fetchDomains()
-    this.fetchProgress()
-    this.fetchPoints()
     this.fetchReviewToday()
     this.fetchErrorCount()
   },
@@ -77,9 +75,9 @@ Page({
     })
   },
 
-  fetchProgress() {
+  fetchProgress(domainId) {
     var that = this
-    learnApi.getProgress().then(function (res) {
+    learnApi.getProgress(domainId).then(function (res) {
       var progress = res.data || null
       that.setData({ progress: progress })
       if (progress) {
@@ -137,7 +135,8 @@ Page({
       activeTagIndex: index
     })
     // 切换到该领域后刷新进度
-    this.fetchProgress()
+    this.fetchProgress(domain.id)
+    this.fetchPoints()
     this.fetchReviewToday()
   },
 
