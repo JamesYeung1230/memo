@@ -1,6 +1,6 @@
 <view class="tab-bar">
   <view class="tab-pill">
-    <view class="tab-indicator" style="left: {{indicatorLeft}}px;"></view>
+    <view class="tab-indicator" style="left: {{indicatorLeft}}px; width: {{indicatorWidth}}px;"></view>
     <view
       wx:for="{{list}}"
       wx:key="index"

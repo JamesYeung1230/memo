@@ -29,13 +29,12 @@
   position: absolute;
   top: 6rpx;
   bottom: 6rpx;
-  width: calc(20% - 8rpx);
   border-radius: 40rpx;
   background-color: var(--color-primary);
   box-shadow: 0 4rpx 16rpx rgba(74, 144, 217, 0.3);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
-  will-change: left;
+  will-change: left, width;
 }
 
 .tab-item {
