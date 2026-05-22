@@ -130,7 +130,7 @@ Page({
     })
 
     var currentQ = this.data.questions[this.data.currentIndex]
-    var questionId = currentQ.id || currentQ.question_id
+    var questionId = currentQ.question_id || currentQ.id
 
     learnApi.errorPractice(questionId, selectedOption.letter).then(function (res) {
       var result = res.data || {}
