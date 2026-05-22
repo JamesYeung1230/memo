@@ -208,6 +208,7 @@
   color: var(--color-text-on-primary);
   font-size: var(--font-h1);
   font-weight: 600;
+  line-height: 88rpx;
 }
 
 .next-btn:not(.next-btn--active) .next-btn-text {
