@@ -35,10 +35,11 @@
             class="challenge-question-item"
             wx:for="{{questions}}"
             wx:for-item="q"
+            wx:for-index="qIdx"
             wx:key="id"
           >
             <view class="cq-header">
-              <text class="cq-number">第 {{index + 1}} 题</text>
+              <text class="cq-number">第 {{qIdx + 1}} 题</text>
             </view>
 
             <view class="cq-question">
@@ -59,7 +60,7 @@
                   status="{{opt.status}}"
                   showExplanation="{{opt.showExplanation}}"
                   bind:select="onOptionSelect"
-                  mark:question-idx="{{index}}"
+                  mark:question-idx="{{qIdx}}"
                 ></quiz-option>
               </view>
             </view>
