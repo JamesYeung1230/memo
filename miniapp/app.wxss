@@ -58,3 +58,7 @@ view {
   height: 0;
   color: transparent;
 }
+
+.bottom-safe-area {
+  height: 100rpx;
+}

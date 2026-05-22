@@ -1,17 +1,14 @@
-<view class="tab-bar-wrapper">
-  <view class="tab-bar-pill">
-    <view class="tab-bar-indicator" style="left: {{indicatorLeft}}px; width: {{indicatorWidth}}px;" />
+<view class="tab-bar">
+  <view class="tab-pill">
     <view
-      wx:for="{{tabs}}"
-      wx:key="key"
-      class="tab-item {{activeKey === item.key ? 'tab-item--active' : ''}}"
-      data-key="{{item.key}}"
+      wx:for="{{list}}"
+      wx:key="index"
+      class="tab-item {{activeIndex === index ? 'tab-item--active' : ''}}"
       data-index="{{index}}"
       bind:tap="onTabTap"
     >
-      <text class="tab-icon">{{item.icon}}</text>
-      <text class="tab-label">{{item.label}}</text>
+      <text class="tab-icon {{activeIndex === index ? 'tab-icon--active' : ''}}">{{activeIndex === index ? item.selectedIcon : item.icon}}</text>
+      <text class="tab-label {{activeIndex === index ? 'tab-label--active' : ''}}">{{item.text}}</text>
     </view>
   </view>
-  <view class="tab-bar-safe-area" />
 </view>

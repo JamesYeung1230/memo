@@ -43,9 +43,10 @@
     "navigationStyle": "custom"
   },
   "tabBar": {
+    "custom": true,
     "color": "#94A3B8",
     "selectedColor": "#4A90D9",
-    "backgroundColor": "#FFFFFF",
+    "backgroundColor": "transparent",
     "borderStyle": "white",
     "list": [
       {

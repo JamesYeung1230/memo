@@ -88,6 +88,7 @@
           <text class="points-ad-text">{{pointsAdText}}</text>
         </view>
       </view>
+      <view class="bottom-safe-area" />
     </view>
   </scroll-view>
 </view>

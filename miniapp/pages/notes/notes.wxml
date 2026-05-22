@@ -63,9 +63,10 @@
       </view>
 
       <!-- 加载更多 -->
-      <view wx:if="{{loadingMore}}" class="load-more-wrap">
-        <loading-spinner></loading-spinner>
+        <view wx:if="{{loadingMore}}" class="load-more-wrap">
+          <loading-spinner></loading-spinner>
+        </view>
+        <view class="bottom-safe-area" />
       </view>
-    </view>
-  </scroll-view>
-</view>
+    </scroll-view>
+  </view>
