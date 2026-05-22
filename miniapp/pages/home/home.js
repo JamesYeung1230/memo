@@ -131,7 +131,9 @@ Page({
     var cardId = self.data.currentCardId
     if (!cardId) return
     learnApi.masterCard(cardId).then(function () {
-      wx.showToast({ title: '已掌握', icon: 'success' })
+      self.setData({ gotItText: '已掌握' })
+      wx.showToast({ title: '已掌握 +1 积分', icon: 'success' })
+      self.loadHomeData()
     }).catch(function () {
       wx.showToast({ title: '操作失败', icon: 'none' })
     })
