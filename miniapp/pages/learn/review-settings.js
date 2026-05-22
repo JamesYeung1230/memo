@@ -36,13 +36,10 @@ Page({
 
       that.setData({
         dailyLimit: config.daily_limit || 20,
-        forgotDays: config.forgot_days || 7,
-        easyInterval: config.easy_interval || 1,
-        mediumInterval: config.medium_interval || 3,
-        hardInterval: config.hard_interval || 7,
-        silentMode: config.silent_mode || false,
-        enableEbbinghaus: config.enable_ebbinghaus !== undefined ? config.enable_ebbinghaus : true,
-        selectedNodes: config.ebbinghaus_nodes || [1, 2, 4, 7],
+        forgotDays: config.forgotten_alert_days || 7,
+        silentMode: config.weekend_quiet || false,
+        enableEbbinghaus: true,
+        selectedNodes: config.review_nodes || [1, 2, 4, 7],
         _loading: false
       })
     }).catch(function () {
@@ -119,13 +116,9 @@ Page({
 
     var config = {
       daily_limit: this.data.dailyLimit,
-      forgot_days: this.data.forgotDays,
-      easy_interval: this.data.easyInterval,
-      medium_interval: this.data.mediumInterval,
-      hard_interval: this.data.hardInterval,
-      silent_mode: this.data.silentMode,
-      enable_ebbinghaus: this.data.enableEbbinghaus,
-      ebbinghaus_nodes: this.data.selectedNodes
+      forgotten_alert_days: this.data.forgotDays,
+      review_nodes: this.data.selectedNodes,
+      weekend_quiet: this.data.silentMode
     }
 
     learnApi.updateReviewConfig(config).then(function () {

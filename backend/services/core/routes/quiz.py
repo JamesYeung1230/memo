@@ -92,10 +92,14 @@ async def submit_answer(
 async def get_wrong_questions(
     user_id: str = Depends(get_user_id),
     db: AsyncSession = Depends(get_db),
+    client: KnowledgeClient = Depends(get_knowledge_client),
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
 ):
-    """Get wrong question records for the user."""
+    """Get wrong question records for the user.
+    每条记录会通过 KnowledgeClient 补充 question_text、options、correct_answer、explanation 字段。
+    如果题目详情获取失败，返回原始记录数据，不阻塞整个请求。
+    """
     subquery = (
         select(
             AnswerRecord.question_id,
@@ -117,13 +121,35 @@ async def get_wrong_questions(
     )
     records = result.scalars().all()
 
-    return success([{
-        "id": r.id,
-        "question_id": r.question_id,
-        "selected_option": r.selected_option,
-        "is_correct": r.is_correct,
-        "answered_at": str(r.answered_at) if r.answered_at else None,
-    } for r in records])
+    items = []
+    for r in records:
+        item = {
+            "id": r.id,
+            "question_id": r.question_id,
+            "selected_option": r.selected_option,
+            "is_correct": r.is_correct,
+            "answered_at": str(r.answered_at) if r.answered_at else None,
+        }
+        # 主动获取题目详情，失败时保持原始记录返回
+        try:
+            question = await client.get_question_detail(r.question_id)
+            if question:
+                item["question_text"] = question.get("question_text", "")
+                raw_options = question.get("options", {})
+                if isinstance(raw_options, dict):
+                    item["options"] = [
+                        {"letter": k, "text": v}
+                        for k, v in raw_options.items()
+                    ]
+                else:
+                    item["options"] = raw_options
+                item["correct_answer"] = question.get("correct_option", "")
+                item["explanation"] = question.get("explanation", "")
+        except Exception:
+            pass
+        items.append(item)
+
+    return success(items)
 
 
 @router.post("/daily-challenge")
