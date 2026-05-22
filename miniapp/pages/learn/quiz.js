@@ -53,23 +53,38 @@ Page({
     var currentQ = this.data.questions[this.data.currentIndex]
     if (!currentQ) return
 
-    // Add letter mapping to options
-    var options = (currentQ.options || []).map(function (opt, idx) {
-      return {
-        letter: LETTERS[idx] || '',
-        text: typeof opt === 'string' ? opt : (opt.text || opt.content || ''),
-        value: typeof opt === 'string' ? opt : (opt.value || opt.id || ''),
-        status: 'default',
-        explanation: ''
-      }
-    })
+    // Parse options - could be dict {A: "...", B: "..."} or array [str, str] or array [{...}]
+    var rawOptions = currentQ.options || {}
+    var optionsList = []
+    if (Array.isArray(rawOptions)) {
+      optionsList = rawOptions.map(function (opt, idx) {
+        return {
+          letter: LETTERS[idx] || '',
+          text: typeof opt === 'string' ? opt : (opt.text || opt.content || ''),
+          value: typeof opt === 'string' ? opt : (opt.value || opt.id || ''),
+          status: 'default',
+          explanation: ''
+        }
+      })
+    } else {
+      // Dict format like {A: "text", B: "text", ...}
+      optionsList = Object.keys(rawOptions).map(function (key) {
+        return {
+          letter: key,
+          text: rawOptions[key] || '',
+          value: key,
+          status: 'default',
+          explanation: ''
+        }
+      })
+    }
 
     this.setData({
-      currentQuestionOptions: options,
+      currentQuestionOptions: optionsList,
       selectedOption: null,
       isAnswered: false,
       isCorrect: false,
-      correctAnswer: currentQ.correct_answer || currentQ.answer || '',
+      correctAnswer: currentQ.correct_answer || currentQ.correct_option || currentQ.answer || '',
       explanation: currentQ.explanation || ''
     })
   },
@@ -95,7 +110,7 @@ Page({
     learnApi.submitAnswer(currentQ.id, selectedLetter).then(function (res) {
       var result = res.data || {}
       var isCorrect = result.correct || false
-      var correctAnswer = result.correct_answer || currentQ.correct_answer || currentQ.answer || ''
+      var correctAnswer = result.correct_answer || result.correct_option || result.answer || currentQ.correct_answer || currentQ.answer || currentQ.correct_option || ''
 
       // 更新选项状态
       var updatedOptions = that.data.currentQuestionOptions.map(function (opt) {

@@ -49,7 +49,7 @@
           </view>
         </view>
 
-        <text class="card-concept" wx:if="{{item.concept}}">{{item.concept}}</text>
+        <text class="card-concept" wx:if="{{item.concept || item.core_concept}}">{{item.concept || item.core_concept}}</text>
 
         <view class="card-tags" wx:if="{{item.tags && item.tags.length > 0}}">
           <view class="tag-card-item" wx:for="{{item.tags}}" wx:key="*this">

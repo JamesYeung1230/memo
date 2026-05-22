@@ -154,14 +154,6 @@ async def get_card_status(
     })
 
 
-@router.get("/cards/{card_id}")
-async def get_learn_card(
-    card_id: str,
-    client: KnowledgeClient = Depends(get_knowledge_client),
-    user_id: str = Depends(get_user_id),
-):
-    card = await client.get_card_detail(card_id)
-    return success(card)
 
 
 @router.get("/cards/{card_id}/question")

@@ -38,7 +38,7 @@
         <!-- 题目内容 -->
         <view class="quiz-question" wx:if="{{questions[currentIndex]}}">
           <text class="question-label">题目</text>
-          <text class="question-text">{{questions[currentIndex].question || questions[currentIndex].content || ''}}</text>
+          <text class="question-text">{{questions[currentIndex].question_text || questions[currentIndex].question || questions[currentIndex].content || ''}}</text>
         </view>
 
         <!-- 选项列表 -->

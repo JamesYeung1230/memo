@@ -23,6 +23,12 @@ Page({
 
     learnApi.getCardDetail(this.data.cardId).then(function (res) {
       var card = res.data || null
+      if (card) {
+        // 归一化字段名: backend → component 期望格式
+        card.concept = card.core_concept || card.concept || ''
+        card.description = card.detail || card.description || ''
+        card.analogy = card.life_analogy || card.analogy || ''
+      }
       that.setData({
         cardDetail: card,
         _loading: false
