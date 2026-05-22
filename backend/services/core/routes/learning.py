@@ -72,8 +72,16 @@ async def mark_card_mastered(
     db: AsyncSession = Depends(get_db),
     client: KnowledgeClient = Depends(get_knowledge_client),
 ):
-    # Get card detail for domain/chapter info
+    # Get card detail → chapter_id, then chapter detail → domain_id
     card_detail = await client.get_card_detail(card_id)
+    chapter_id = card_detail.get("chapter_id", "")
+    domain_id = ""
+    if chapter_id:
+        try:
+            chapter_detail = await client.get_chapter_detail(chapter_id)
+            domain_id = chapter_detail.get("domain_id", "")
+        except Exception:
+            pass
 
     result = await db.execute(
         select(LearningRecord).where(
@@ -89,8 +97,8 @@ async def mark_card_mastered(
         record = LearningRecord(
             user_id=user_id,
             card_id=card_id,
-            domain_id=card_detail.get("chapter", {}).get("domain_id", "") if "chapter" in card_detail else "",
-            chapter_id=card_detail.get("chapter_id", ""),
+            domain_id=domain_id or None,
+            chapter_id=chapter_id or None,
             status="mastered",
         )
         db.add(record)

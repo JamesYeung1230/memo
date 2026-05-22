@@ -141,8 +141,12 @@ Page({
     var self = this
     var cardId = self.data.currentCardId
     if (!cardId) return
-    learnApi.favoriteCard(cardId).then(function () {
-      wx.showToast({ title: '已收藏', icon: 'success' })
+    learnApi.favoriteCard(cardId).then(function (res) {
+      var favorited = res && res.data && res.data.favorited
+      self.setData({
+        saveText: favorited ? '已收藏' : '收藏'
+      })
+      wx.showToast({ title: favorited ? '已收藏' : '已取消收藏', icon: 'success' })
     }).catch(function () {
       wx.showToast({ title: '操作失败', icon: 'none' })
     })
