@@ -94,13 +94,16 @@ Page({
 
   loadRecommendedCard: function () {
     var self = this
-    learnApi.getDomains().then(function (domains) {
+    learnApi.getDomains().then(function (res) {
+      var domains = res && res.data
       if (!domains || domains.length === 0) return
       return learnApi.getChapters(domains[0].id)
-    }).then(function (chapters) {
+    }).then(function (res) {
+      var chapters = res && res.data
       if (!chapters || chapters.length === 0) return
       return learnApi.getCards(chapters[0].id)
-    }).then(function (cards) {
+    }).then(function (res) {
+      var cards = res && res.data
       if (!cards || cards.length === 0) return
       var card = cards[0]
       var tags = card.tags || []
