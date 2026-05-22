@@ -51,7 +51,6 @@
                 wx:for-item="opt"
                 wx:key="letter"
                 class="cq-option-item"
-                data-question-idx="{{index}}"
               >
                 <quiz-option
                   letter="{{opt.letter}}"

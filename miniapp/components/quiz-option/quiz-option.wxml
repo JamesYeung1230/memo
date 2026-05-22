@@ -1,4 +1,4 @@
-<view class="qopt qopt--{{status}}" bind:tap="onSelect">
+<view class="qopt {{status === 'default' && selected ? 'qopt--selected' : 'qopt--' + status}}" bind:tap="onSelect">
   <view class="qopt__letter">
     <text class="qopt__letter-text">{{letter}}</text>
   </view>
