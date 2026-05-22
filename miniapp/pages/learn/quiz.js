@@ -78,7 +78,6 @@ Page({
     if (this.data.isAnswered) return
 
     var selectedLetter = e.detail.letter
-    var selectedValue = e.detail.text
     var that = this
 
     // 立即标记选中状态
@@ -93,7 +92,7 @@ Page({
 
     // 提交答案
     var currentQ = this.data.questions[this.data.currentIndex]
-    learnApi.submitAnswer(currentQ.id, selectedValue).then(function (res) {
+    learnApi.submitAnswer(currentQ.id, selectedLetter).then(function (res) {
       var result = res.data || {}
       var isCorrect = result.correct || false
       var correctAnswer = result.correct_answer || currentQ.correct_answer || currentQ.answer || ''
