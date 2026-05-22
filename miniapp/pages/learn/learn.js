@@ -1,4 +1,5 @@
 var learnApi = require('../../api/learn')
+var pointsApi = require('../../api/points')
 
 Page({
   data: {
@@ -46,6 +47,7 @@ Page({
   loadAllData() {
     this.fetchDomains()
     this.fetchProgress()
+    this.fetchPoints()
     this.fetchReviewToday()
     this.fetchErrorCount()
   },
@@ -81,12 +83,23 @@ Page({
       var progress = res.data || null
       that.setData({ progress: progress })
       if (progress) {
+        var total = progress.total_learned || 0
+        var mastered = progress.mastered || 0
+        var today = progress.today_learned || 0
+        var acc = total > 0 ? Math.round(mastered / total * 100) : 0
         that.setData({
-          learnedCards: (progress.learned || 0) + '/' + (progress.total || 0),
-          accuracyRate: (progress.accuracy || 0) + '%',
-          points: progress.total_points || progress.points || 0
+          learnedCards: today + ' / ' + total,
+          accuracyRate: acc + '%',
         })
       }
+    }).catch(function () {})
+  },
+
+  fetchPoints() {
+    var that = this
+    pointsApi.getBalance().then(function (res) {
+      var balance = (res.data && res.data.balance) || 0
+      that.setData({ points: balance })
     }).catch(function () {})
   },
 

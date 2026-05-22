@@ -26,7 +26,7 @@
         </view>
 
         <view class="progress-bar">
-          <view class="progress-bar-fill" style="width: {{progress && progress.total > 0 ? (progress.learned || 0) / progress.total * 100 + '%' : '0%'}}" />
+          <view class="progress-bar-fill" style="width: {{progress && progress.total_learned > 0 ? (progress.mastered || 0) / progress.total_learned * 100 + '%' : '0%'}}" />
         </view>
 
         <view class="stats-row">

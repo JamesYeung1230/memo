@@ -31,6 +31,41 @@ async def get_learn_chapters(
     return success(chapters or [])
 
 
+async def _enrich_cards_with_status(cards: list[dict], user_id: str, db: AsyncSession):
+    """Add mastered/favorited/learn_status to a list of cards."""
+    if not cards:
+        return cards
+
+    card_ids = [c["id"] for c in cards]
+
+    # 学习记录 → mastered
+    records = await db.execute(
+        select(LearningRecord.card_id, LearningRecord.status).where(
+            LearningRecord.card_id.in_(card_ids),
+            LearningRecord.user_id == user_id,
+        )
+    )
+    status_map = {r.card_id: r.status for r in records.fetchall()}
+
+    # 收藏
+    favs = await db.execute(
+        select(FavoriteCard.card_id).where(
+            FavoriteCard.card_id.in_(card_ids),
+            FavoriteCard.user_id == user_id,
+        )
+    )
+    fav_set = {r[0] for r in favs.fetchall()}
+
+    for card in cards:
+        cid = card["id"]
+        s = status_map.get(cid, "not_learned")
+        card["learn_status"] = s
+        card["mastered"] = s == "mastered"
+        card["favorited"] = cid in fav_set
+
+    return cards
+
+
 @router.get("/chapters/{chapter_id}/cards")
 async def get_learn_cards(
     chapter_id: str,
@@ -39,20 +74,8 @@ async def get_learn_cards(
     db: AsyncSession = Depends(get_db),
 ):
     cards = await client.get_cards(chapter_id, status="published")
-    card_ids = [c["id"] for c in cards] if cards else []
-
-    if card_ids:
-        records = await db.execute(
-            select(LearningRecord.card_id, LearningRecord.status).where(
-                LearningRecord.card_id.in_(card_ids),
-                LearningRecord.user_id == user_id,
-            )
-        )
-        status_map = {r.card_id: r.status for r in records.fetchall()}
-        for card in cards:
-            card["learn_status"] = status_map.get(card["id"], "not_learned")
-
-    return success(cards or [])
+    cards = await _enrich_cards_with_status(cards or [], user_id, db)
+    return success(cards)
 
 
 @router.get("/cards/{card_id}")
@@ -60,8 +83,12 @@ async def get_learn_card_detail(
     card_id: str,
     client: KnowledgeClient = Depends(get_knowledge_client),
     user_id: str = Depends(get_user_id),
+    db: AsyncSession = Depends(get_db),
 ):
     card = await client.get_card_detail(card_id)
+    if card:
+        cards = await _enrich_cards_with_status([card], user_id, db)
+        card = cards[0]
     return success(card)
 
 
@@ -154,8 +181,6 @@ async def get_card_status(
     })
 
 
-
-
 @router.get("/cards/{card_id}/question")
 async def get_card_question(
     card_id: str,
@@ -186,6 +211,7 @@ async def get_learning_progress(
             func.DATE(LearningRecord.learned_at) == date.today(),
         )
     )
+
     return success({
         "total_learned": total.scalar() or 0,
         "mastered": mastered.scalar() or 0,
