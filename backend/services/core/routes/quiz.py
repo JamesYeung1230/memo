@@ -152,6 +152,54 @@ async def get_wrong_questions(
     return success(items)
 
 
+@router.post("/wrong-questions/{question_id}/practice")
+async def practice_wrong_question(
+    question_id: str,
+    body: WrongPracticeRequest,
+    user_id: str = Depends(get_user_id),
+    db: AsyncSession = Depends(get_db),
+    client: KnowledgeClient = Depends(get_knowledge_client),
+):
+    """Practice a wrong question. Returns correct/incorrect and explanation."""
+    question = await client.get_question_detail(question_id)
+    is_correct = body.selected_option == question.get("correct_option")
+
+    # Record this practice attempt
+    answer = AnswerRecord(
+        user_id=user_id,
+        question_id=question_id,
+        selected_option=body.selected_option,
+        is_correct=is_correct,
+    )
+    db.add(answer)
+
+    # Award points if correct
+    points_earned = 15 if is_correct else 0
+    if points_earned > 0:
+        result_balance = await db.execute(
+            select(func.coalesce(func.sum(PointsRecord.points), 0)).where(PointsRecord.user_id == user_id)
+        )
+        current_balance = result_balance.scalar() or 0
+        points_record = PointsRecord(
+            user_id=user_id,
+            points=points_earned,
+            balance_after=current_balance + points_earned,
+            action_type="practice_wrong",
+            reference_id=question_id,
+            description="错题重练正确",
+        )
+        db.add(points_record)
+
+    await db.commit()
+
+    return success({
+        "correct": is_correct,
+        "correct_option": question.get("correct_option"),
+        "explanation": question.get("explanation", ""),
+        "points_earned": points_earned,
+    })
+
+
 @router.post("/daily-challenge")
 async def get_daily_challenge(
     user_id: str = Depends(get_user_id),

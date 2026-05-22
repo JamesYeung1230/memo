@@ -42,7 +42,21 @@ Page({
           }
         }
       }
-      that.setData({ domains: filteredDomains })
+      // 重新获取章节数据
+      var fetchChapters = filteredDomains.map(function (domain) {
+        return learnApi.getChapters(domain.id).then(function (chRes) {
+          domain.chapters = chRes.data || []
+          domain.chapterCount = domain.chapters.length
+          return domain
+        }).catch(function () {
+          domain.chapters = []
+          domain.chapterCount = 0
+          return domain
+        })
+      })
+      return Promise.all(fetchChapters)
+    }).then(function (domains) {
+      that.setData({ domains: domains })
     }).catch(function () {})
   },
 

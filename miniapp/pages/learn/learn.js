@@ -54,8 +54,16 @@ Page({
     var that = this
     learnApi.getDomains().then(function (res) {
       var domains = res.data || []
+      // 过滤掉无效/垃圾数据（无名称、无ID、或名称为模板占位符的领域）
+      var validDomains = []
+      for (var i = 0; i < domains.length; i++) {
+        var d = domains[i]
+        if (d && d.id && d.name && d.name.indexOf('{') === -1 && d.name.indexOf('domain') === -1 && d.name !== '新领域' && d.name !== '新建领域') {
+          validDomains.push(d)
+        }
+      }
       that.setData({
-        domains: domains,
+        domains: validDomains,
         activeTagIndex: 0,
         _loading: false
       })
