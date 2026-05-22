@@ -131,10 +131,10 @@ Page({
     var activeDomain = this.data.domains[this.data.activeTagIndex]
     if (activeDomain) {
       wx.navigateTo({
-        url: '/pages/learn/knowledge-tree/knowledge-tree'
+        url: '/pages/learn/knowledge-tree'
       })
     } else {
-      wx.navigateTo({ url: '/pages/learn/knowledge-tree/knowledge-tree' })
+      wx.navigateTo({ url: '/pages/learn/knowledge-tree' })
     }
   },
 
@@ -151,7 +151,7 @@ Page({
   },
 
   onReviewSettingsTap() {
-    wx.navigateTo({ url: '/pages/learn/review-settings/review-settings' })
+    wx.navigateTo({ url: '/pages/learn/review-settings' })
   },
 
   onDailyChallengeTap() {
