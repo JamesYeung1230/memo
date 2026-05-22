@@ -112,6 +112,4 @@
       <view class="bottom-safe-area" />
     </view>
   </scroll-view>
-
-  <tab-bar></tab-bar>
 </view>

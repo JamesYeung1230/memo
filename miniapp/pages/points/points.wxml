@@ -43,6 +43,4 @@
       </view>
     </view>
   </scroll-view>
-
-  <tab-bar></tab-bar>
 </view>
