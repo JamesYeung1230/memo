@@ -134,7 +134,7 @@ Page({
     var activeDomain = this.data.domains[this.data.activeTagIndex]
     if (activeDomain) {
       wx.navigateTo({
-        url: '/pages/learn/knowledge-tree?domain_id=' + activeDomain.id + '&domain_name=' + encodeURIComponent(activeDomain.name || '')
+        url: '/pages/learn/knowledge-tree?domain_id=' + activeDomain.id + '&domain_name=' + (activeDomain.name || '')
       })
     } else {
       wx.navigateTo({ url: '/pages/learn/knowledge-tree' })

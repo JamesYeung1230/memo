@@ -88,10 +88,10 @@ Page({
     var currentQ = this.data.questions[this.data.currentIndex]
     if (!currentQ) return
 
-    var questionText = currentQ.question || currentQ.title || currentQ.content || ''
+    var questionText = currentQ.question_text || currentQ.question || currentQ.title || currentQ.content || ''
     var options = (currentQ.options || []).map(function (opt, idx) {
       return {
-        letter: LETTERS[idx] || '',
+        letter: opt.letter || LETTERS[idx] || '',
         text: typeof opt === 'string' ? opt : (opt.text || opt.content || ''),
         value: typeof opt === 'string' ? opt : (opt.value || opt.id || ''),
         status: 'default'
@@ -107,7 +107,7 @@ Page({
       selectedOption: null,
       isAnswered: false,
       isCorrect: false,
-      correctAnswer: currentQ.correct_answer || currentQ.answer || '',
+      correctAnswer: currentQ.correct_answer || currentQ.correct_option || currentQ.answer || '',
       explanation: currentQ.explanation || ''
     })
   },
@@ -135,7 +135,7 @@ Page({
     learnApi.errorPractice(questionId, selectedOption.value || selectedOption.text).then(function (res) {
       var result = res.data || {}
       var isCorrect = result.correct !== undefined ? result.correct : (result.is_correct || false)
-      var correctAnswer = result.correct_answer || currentQ.correct_answer || currentQ.answer || ''
+      var correctAnswer = result.correct_answer || result.correct_option || currentQ.correct_answer || currentQ.correct_option || currentQ.answer || ''
 
       var updatedOptions = that.data.options.map(function (opt) {
         if (opt.letter === selectedOption.letter) {

@@ -6,12 +6,7 @@ Page({
     _saving: false,
     dailyLimit: 20,
     forgotDays: 7,
-    easyInterval: 1,
-    mediumInterval: 3,
-    hardInterval: 7,
     silentMode: false,
-    enableEbbinghaus: true,
-    ebbinghausNodes: [1, 2, 4, 7, 15, 30],
     selectedNodes: [1, 2, 4, 7],
     allNodes: [
       { value: 1, label: '1天' },
@@ -38,7 +33,6 @@ Page({
         dailyLimit: config.daily_limit || 20,
         forgotDays: config.forgotten_alert_days || 7,
         silentMode: config.weekend_quiet || false,
-        enableEbbinghaus: true,
         selectedNodes: config.review_nodes || [1, 2, 4, 7],
         _loading: false
       })
@@ -67,24 +61,6 @@ Page({
     if (isNaN(value) || value < 1) value = 1
     if (value > 30) value = 30
     this.setData({ forgotDays: value })
-  },
-
-  onEasyIntervalChange(e) {
-    this.setData({ easyInterval: parseInt(e.detail.value, 10) || 1 })
-  },
-
-  onMediumIntervalChange(e) {
-    this.setData({ mediumInterval: parseInt(e.detail.value, 10) || 3 })
-  },
-
-  onHardIntervalChange(e) {
-    this.setData({ hardInterval: parseInt(e.detail.value, 10) || 7 })
-  },
-
-  onEbbinghausToggle() {
-    this.setData({
-      enableEbbinghaus: !this.data.enableEbbinghaus
-    })
   },
 
   onNodeToggle(e) {

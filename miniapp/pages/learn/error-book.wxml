@@ -48,7 +48,7 @@
           <view class="question-card-index">#{{index + 1}}</view>
         </view>
 
-        <text class="question-card-text">{{item.question || item.content || ''}}</text>
+        <text class="question-card-text">{{item.question_text || item.question || item.content || ''}}</text>
 
         <view class="question-card-options" wx:if="{{item.options && item.options.length > 0}}">
           <view

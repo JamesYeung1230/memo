@@ -49,68 +49,12 @@
         </view>
       </view>
 
-      <!-- 复习间隔 -->
+      <!-- 复习节点 -->
       <view class="settings-section">
-        <text class="section-title">复习间隔（天）</text>
-        <text class="section-desc">根据掌握程度设置不同的复习间隔</text>
+        <text class="section-title">复习时间节点</text>
+        <text class="section-desc">设置学习后第几天进行复习</text>
 
-        <view class="interval-grid">
-          <view class="interval-item">
-            <text class="interval-label">容易</text>
-            <input
-              class="interval-input"
-              type="number"
-              value="{{easyInterval}}"
-              min="1"
-              max="30"
-              bindinput="onEasyIntervalChange"
-            />
-            <text class="interval-unit">天</text>
-          </view>
-
-          <view class="interval-item">
-            <text class="interval-label">中等</text>
-            <input
-              class="interval-input"
-              type="number"
-              value="{{mediumInterval}}"
-              min="1"
-              max="30"
-              bindinput="onMediumIntervalChange"
-            />
-            <text class="interval-unit">天</text>
-          </view>
-
-          <view class="interval-item">
-            <text class="interval-label">困难</text>
-            <input
-              class="interval-input"
-              type="number"
-              value="{{hardInterval}}"
-              min="1"
-              max="30"
-              bindinput="onHardIntervalChange"
-            />
-            <text class="interval-unit">天</text>
-          </view>
-        </view>
-      </view>
-
-      <!-- 艾宾浩斯记忆节点 -->
-      <view class="settings-section">
-        <view class="section-row">
-          <view class="section-row-left">
-            <text class="section-title">艾宾浩斯记忆法</text>
-            <text class="section-desc">按照遗忘曲线规划复习时间点</text>
-          </view>
-          <switch
-            checked="{{enableEbbinghaus}}"
-            color="var(--color-primary)"
-            bind:change="onEbbinghausToggle"
-          />
-        </view>
-
-        <view class="node-tags" wx:if="{{enableEbbinghaus}}">
+        <view class="node-tags">
           <view
             wx:for="{{allNodes}}"
             wx:key="value"
@@ -129,8 +73,8 @@
 
         <view class="switch-row">
           <view class="switch-row-left">
-            <text class="form-label">静默模式</text>
-            <text class="switch-desc">学习时不显示通知</text>
+            <text class="form-label">周末静默</text>
+            <text class="switch-desc">周末学习时不发送通知提醒</text>
           </view>
           <switch
             checked="{{silentMode}}"
