@@ -77,9 +77,9 @@
         class="submit-btn {{answeredCount === totalQuestions ? 'submit-btn--active' : ''}}"
         bind:tap="onSubmitAll"
       >
-        <text class="submit-btn-text">
+        <view class="submit-btn-text">
           {{_submitting ? '提交中...' : '提交答案'}}
-        </text>
+        </view>
       </view>
     </view>
   </view>

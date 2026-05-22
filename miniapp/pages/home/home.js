@@ -62,10 +62,10 @@ Page({
       learnApi.getDailyChallenge().catch(function () { return {} }),
       pointsApi.getBalance().catch(function () { return {} })
     ]).then(function (results) {
-      var progress = results[0] || {}
-      var review = results[1] || {}
-      var challenge = results[2] || {}
-      var balance = results[3] || {}
+      var progress = (results[0] && results[0].data) || {}
+      var review = (results[1] && results[1].data) || {}
+      var challenge = (results[2] && results[2].data) || {}
+      var balance = (results[3] && results[3].data) || {}
 
       var totalLearned = progress.total_learned || 0
       var mastered = progress.mastered || 0

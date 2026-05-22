@@ -20,7 +20,6 @@
 
 .challenge-body {
   padding: var(--space-lg);
-  padding-bottom: 240rpx;
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
@@ -143,9 +142,13 @@
   color: var(--color-text-on-primary);
   font-size: var(--font-h1);
   font-weight: 600;
-  line-height: 1;
+  line-height: 88rpx;
 }
 
 .submit-btn:not(.submit-btn--active) .submit-btn-text {
   color: var(--color-text-hint);
+}
+
+.challenge-gap {
+  height: 280rpx;
 }
