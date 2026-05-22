@@ -184,7 +184,7 @@ async def practice_wrong_question(
             user_id=user_id,
             points=points_earned,
             balance_after=current_balance + points_earned,
-            action_type="practice_wrong",
+            action_type="learn_card",
             reference_id=question_id,
             description="错题重练正确",
         )
