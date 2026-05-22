@@ -45,6 +45,7 @@
 
 .quiz-scroll {
   flex: 1;
+  min-height: 0;
 }
 
 .quiz-body {

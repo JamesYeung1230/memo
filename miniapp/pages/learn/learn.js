@@ -117,6 +117,9 @@ Page({
       currentDomainStatus: statusMap[domain.status] || domain.status || '学习中',
       activeTagIndex: index
     })
+    // 切换到该领域后刷新进度
+    this.fetchProgress()
+    this.fetchReviewToday()
   },
 
   onTagTap(e) {

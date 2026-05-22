@@ -31,7 +31,16 @@ Page({
     var that = this
     learnApi.getDomains().then(function (res) {
       var domains = res.data || []
-      that.setData({ domains: domains })
+      var filteredDomains = domains
+      if (that.data.activeDomainId) {
+        for (var i = 0; i < domains.length; i++) {
+          if (domains[i].id === that.data.activeDomainId) {
+            filteredDomains = [domains[i]]
+            break
+          }
+        }
+      }
+      that.setData({ domains: filteredDomains })
     }).catch(function () {})
   },
 
@@ -61,20 +70,25 @@ Page({
 
       return Promise.all(fetchChapters)
     }).then(function (domains) {
-      // 自动展开指定的活跃领域
-      var expandedId = that.data.activeDomainId
-      if (expandedId) {
+      // 如果指定了活跃领域，只保留该领域，否则显示全部
+      var filteredDomains = domains
+      var expandedId = null
+      if (that.data.activeDomainId) {
         var found = false
         for (var i = 0; i < domains.length; i++) {
-          if (domains[i].id === expandedId) {
+          if (domains[i].id === that.data.activeDomainId) {
+            filteredDomains = [domains[i]]
+            expandedId = domains[i].id
             found = true
             break
           }
         }
-        if (!found) expandedId = null
+        if (!found) {
+          filteredDomains = domains
+        }
       }
       that.setData({
-        domains: domains,
+        domains: filteredDomains,
         expandedDomainId: expandedId,
         _loading: false
       })
