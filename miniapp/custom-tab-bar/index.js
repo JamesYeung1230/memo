@@ -17,17 +17,23 @@ Component({
     attached() {
       var info = wx.getSystemInfoSync()
       this.setData({ windowWidth: info.windowWidth })
-      this.updateActiveIndex()
+    },
+
+    ready() {
+      // ready 时 DOM 已布局，createSelectorQuery 能拿到有效 rect
+      var that = this
+      wx.nextTick(function () {
+        that.updateActiveIndex()
+      })
     },
   },
 
   pageLifetimes: {
     show() {
-      // switchTab后需要等页面栈更新再读取路由
       var that = this
       setTimeout(function () {
         that.updateActiveIndex()
-      }, 50)
+      }, 100)
     },
   },
 
