@@ -1,12 +1,14 @@
 <view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}" style="padding-top: {{statusBarHeight}}px">
   <view class="nav-bar">
     <text class="nav-title">我的笔记</text>
-    <text class="nav-add" bind:tap="onAddNote">+</text>
   </view>
 
-  <view class="search-bar">
-    <text class="search-icon">🔍</text>
-    <input class="search-input" placeholder="搜索笔记..." placeholder-class="search-placeholder" value="{{searchKeyword}}" bindinput="onSearchInput" />
+  <view class="search-row">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索笔记..." placeholder-class="search-placeholder" value="{{searchKeyword}}" bindinput="onSearchInput" />
+    </view>
+    <text class="search-add" bind:tap="onAddNote">+</text>
   </view>
 
   <view class="filter-tabs">

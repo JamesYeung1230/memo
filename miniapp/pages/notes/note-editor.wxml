@@ -1,59 +1,57 @@
 <navigation-bar title="{{isEdit ? '编辑笔记' : '新建笔记'}}" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="form-wrap">
-    <!-- 标题 -->
-    <view class="form-item">
-      <text class="form-label">标题</text>
-      <input
-        class="form-input {{titleError ? 'form-input--error' : ''}}"
-        placeholder="输入笔记标题"
-        placeholder-class="form-placeholder"
-        value="{{title}}"
-        bindinput="onTitleInput"
-      />
-    </view>
+<view class="form-wrap">
+  <!-- 标题 -->
+  <view class="form-item">
+    <text class="form-label">标题</text>
+    <input
+      class="form-input {{titleError ? 'form-input--error' : ''}}"
+      placeholder="输入笔记标题"
+      placeholder-class="form-placeholder"
+      value="{{title}}"
+      bindinput="onTitleInput"
+    />
+  </view>
 
-    <!-- 标签 -->
-    <view class="form-item">
-      <text class="form-label">标签</text>
-      <input
-        class="form-input"
-        placeholder="多个标签用逗号分隔"
-        placeholder-class="form-placeholder"
-        value="{{tags}}"
-        bindinput="onTagsInput"
-      />
-    </view>
+  <!-- 标签 -->
+  <view class="form-item">
+    <text class="form-label">标签</text>
+    <input
+      class="form-input"
+      placeholder="多个标签用逗号分隔"
+      placeholder-class="form-placeholder"
+      value="{{tags}}"
+      bindinput="onTagsInput"
+    />
+  </view>
 
-    <!-- 关联卡片 ID -->
-    <view class="form-item">
-      <text class="form-label">关联知识卡片</text>
-      <input
-        class="form-input"
-        placeholder="知识卡片 ID（可选）"
-        placeholder-class="form-placeholder"
-        value="{{cardId}}"
-        bindinput="onCardIdInput"
-      />
-    </view>
+  <!-- 关联卡片 ID -->
+  <view class="form-item">
+    <text class="form-label">关联知识卡片</text>
+    <input
+      class="form-input"
+      placeholder="知识卡片 ID（可选）"
+      placeholder-class="form-placeholder"
+      value="{{cardId}}"
+      bindinput="onCardIdInput"
+    />
+  </view>
 
-    <!-- 内容 -->
-    <view class="form-item form-item--content">
-      <text class="form-label">内容</text>
-      <textarea
-        class="form-textarea {{contentError ? 'form-textarea--error' : ''}}"
-        placeholder="输入笔记内容..."
-        placeholder-class="form-placeholder"
-        value="{{content}}"
-        bindinput="onContentInput"
-      ></textarea>
-    </view>
+  <!-- 内容 -->
+  <view class="form-item form-item--content">
+    <text class="form-label">内容</text>
+    <textarea
+      class="form-textarea {{contentError ? 'form-textarea--error' : ''}}"
+      placeholder="输入笔记内容..."
+      placeholder-class="form-placeholder"
+      value="{{content}}"
+      bindinput="onContentInput"
+    ></textarea>
+  </view>
 
-    <!-- 提交按钮 -->
-    <view class="form-submit">
-      <view class="submit-btn {{submitting ? 'submit-btn--disabled' : ''}}" bind:tap="onSubmit">
-        <text class="submit-btn-text">{{submitting ? '保存中...' : (isEdit ? '更新笔记' : '创建笔记')}}</text>
-      </view>
+  <!-- 提交按钮 -->
+  <view class="form-submit">
+    <view class="submit-btn {{submitting ? 'submit-btn--disabled' : ''}}" bind:tap="onSubmit">
+      <text class="submit-btn-text">{{submitting ? '保存中...' : (isEdit ? '更新笔记' : '创建笔记')}}</text>
     </view>
   </view>
-</scroll-view>
+</view>
