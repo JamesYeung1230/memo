@@ -131,6 +131,9 @@ Page({
     learnApi.updateReviewConfig(config).then(function () {
       wx.showToast({ title: '保存成功', icon: 'success' })
       that.setData({ _saving: false })
+      setTimeout(function () {
+        wx.navigateBack()
+      }, 1200)
     }).catch(function () {
       wx.showToast({ title: '保存失败', icon: 'none' })
       that.setData({ _saving: false })

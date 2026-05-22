@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta, time
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
@@ -187,7 +187,7 @@ async def reset_review_config(
     config.review_nodes = [1, 2, 4, 7, 15]
     config.daily_limit = 20
     config.forgotten_alert_days = 7
-    config.reminder_time = "20:00"
+    config.reminder_time = time(20, 0)
     config.weekend_quiet = False
     config.preset = None
     await db.commit()

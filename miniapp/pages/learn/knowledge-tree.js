@@ -8,9 +8,15 @@ Page({
     statusBarHeight: 0
   },
 
-  onLoad() {
+  onLoad(options) {
     var info = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: info.statusBarHeight }, function () {
+    var activeDomainId = options.domain_id || ''
+    var activeDomainName = options.domain_name || ''
+    this.setData({
+      statusBarHeight: info.statusBarHeight,
+      activeDomainId: activeDomainId,
+      activeDomainName: activeDomainName
+    }, function () {
       this.fetchDomains()
     })
   },
@@ -55,8 +61,21 @@ Page({
 
       return Promise.all(fetchChapters)
     }).then(function (domains) {
+      // 自动展开指定的活跃领域
+      var expandedId = that.data.activeDomainId
+      if (expandedId) {
+        var found = false
+        for (var i = 0; i < domains.length; i++) {
+          if (domains[i].id === expandedId) {
+            found = true
+            break
+          }
+        }
+        if (!found) expandedId = null
+      }
       that.setData({
         domains: domains,
+        expandedDomainId: expandedId,
         _loading: false
       })
     }).catch(function () {
