@@ -108,7 +108,9 @@ Page({
     var statusMap = {
       not_started: '未开始',
       in_progress: '学习中',
-      completed: '已学完'
+      completed: '已学完',
+      published: '已发布',
+      draft: '草稿'
     }
     this.setData({
       currentDomainName: domain.name || '',
