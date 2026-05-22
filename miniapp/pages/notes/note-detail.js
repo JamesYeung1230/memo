@@ -9,7 +9,8 @@ var api = require('../../api/notes')
 
 var AUDIT_STATUS_MAP = {
   draft: { label: '草稿', class: 'draft' },
-  pending: { label: '审核中', class: 'pending' },
+  submitted: { label: '审核中', class: 'pending' },
+  reviewing: { label: '审核中', class: 'pending' },
   approved: { label: '已通过', class: 'approved' },
   rejected: { label: '已驳回', class: 'rejected' }
 }
@@ -58,7 +59,7 @@ Page({
         statusLabel: status.label,
         statusClass: status.class,
         canSubmitReview: note.audit_status === 'draft',
-        canWithdrawReview: note.audit_status === 'pending',
+        canWithdrawReview: note.audit_status === 'submitted',
         canEdit: note.audit_status === 'draft' || note.audit_status === 'rejected'
       })
     }).catch(function (err) {
