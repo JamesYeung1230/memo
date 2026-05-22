@@ -85,11 +85,9 @@ Page({
       if (progress) {
         var total = progress.total_learned || 0
         var mastered = progress.mastered || 0
-        var today = progress.today_learned || 0
-        var acc = total > 0 ? Math.round(mastered / total * 100) : 0
         that.setData({
-          learnedCards: today + ' / ' + total,
-          accuracyRate: acc + '%',
+          learnedCards: mastered + ' 张',
+          accuracyRate: '--%',
         })
       }
     }).catch(function () {})
