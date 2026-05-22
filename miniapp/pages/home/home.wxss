@@ -372,10 +372,6 @@
   font-weight: 600;
 }
 
-.bottom-safe-area {
-  height: calc(env(safe-area-inset-bottom));
-}
-
 .page-enter {
   animation: pageEnter 0.35s ease-out;
 }

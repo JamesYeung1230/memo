@@ -224,7 +224,3 @@
 .complete-btn--done .complete-btn-text {
   color: var(--color-text-hint);
 }
-
-.bottom-safe-area {
-  height: calc(env(safe-area-inset-bottom));
-}

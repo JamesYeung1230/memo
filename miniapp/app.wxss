@@ -60,5 +60,5 @@ view {
 }
 
 .bottom-safe-area {
-  height: 100rpx;
+  height: 168rpx;
 }

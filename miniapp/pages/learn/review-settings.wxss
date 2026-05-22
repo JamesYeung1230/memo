@@ -239,7 +239,3 @@
   color: var(--color-text-secondary);
   font-size: var(--font-body);
 }
-
-.bottom-safe-area {
-  height: calc(env(safe-area-inset-bottom));
-}

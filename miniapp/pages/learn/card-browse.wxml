@@ -56,13 +56,6 @@
             <text class="tag-card-text">{{item}}</text>
           </view>
         </view>
-
-        <view class="card-bottom-row">
-          <view class="card-difficulty" wx:if="{{item.difficulty}}">
-            <view class="difficulty-dot difficulty-dot--{{item.difficulty}}"></view>
-            <text class="difficulty-text">{{item.difficulty === 'easy' ? '简单' : item.difficulty === 'medium' ? '中等' : '困难'}}</text>
-          </view>
-        </view>
       </view>
     </view>
 

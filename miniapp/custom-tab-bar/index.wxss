@@ -31,17 +31,25 @@
   align-items: center;
   justify-content: center;
   gap: 4rpx;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
 }
 
 .tab-item--active {
   background-color: var(--color-primary);
+  transform: scale(1.02);
+  box-shadow: 0 4rpx 16rpx rgba(74, 144, 217, 0.3);
+}
+
+.tab-item:active {
+  transform: scale(0.95);
 }
 
 .tab-icon {
   font-size: 28rpx;
   line-height: 1;
   color: var(--color-text-hint);
+  transition: color 0.2s;
 }
 
 .tab-icon--active {
@@ -53,6 +61,7 @@
   font-weight: 600;
   line-height: 1;
   color: var(--color-text-hint);
+  transition: color 0.2s;
 }
 
 .tab-label--active {

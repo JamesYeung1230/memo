@@ -27,11 +27,6 @@
     <text class="kcard__expand-text">{{expanded ? '收起' : '展开全文'}}</text>
   </view>
 
-  <view class="kcard__analogy" wx:if="{{card.analogy}}">
-    <text class="kcard__analogy-label">场景类比：</text>
-    <text class="kcard__analogy-text">{{card.analogy}}</text>
-  </view>
-
   <view class="kcard__actions">
     <view class="kcard__btn-master {{card.mastered ? 'kcard__btn-master--done' : ''}}" bind:tap="onMastered">
       <text class="kcard__btn-master-text">{{card.mastered ? '✓ 已掌握' : '懂了'}}</text>

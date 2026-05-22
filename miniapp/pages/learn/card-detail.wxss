@@ -234,5 +234,5 @@
 }
 
 .bottom-safe {
-  height: 48rpx;
+  height: 168rpx;
 }
