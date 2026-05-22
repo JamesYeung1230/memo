@@ -124,6 +124,36 @@ async def mark_card_mastered(
     return success({"status": "mastered", "points_earned": 1, "balance_after": current_balance + 1})
 
 
+@router.get("/cards/{card_id}/status")
+async def get_card_status(
+    card_id: str,
+    user_id: str = Depends(get_user_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """Check if a card is mastered / favorited by the current user."""
+    record = await db.execute(
+        select(LearningRecord).where(
+            LearningRecord.user_id == user_id,
+            LearningRecord.card_id == card_id,
+            LearningRecord.status == "mastered",
+        )
+    )
+    mastered = record.scalar_one_or_none() is not None
+
+    fav = await db.execute(
+        select(FavoriteCard).where(
+            FavoriteCard.user_id == user_id,
+            FavoriteCard.card_id == card_id,
+        )
+    )
+    favorited = fav.scalar_one_or_none() is not None
+
+    return success({
+        "mastered": mastered,
+        "favorited": favorited,
+    })
+
+
 @router.get("/progress")
 async def get_learning_progress(
     user_id: str = Depends(get_user_id),

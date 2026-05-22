@@ -107,14 +107,25 @@ Page({
       if (!cards || cards.length === 0) return
       var card = cards[0]
       var tags = card.tags || []
+      var cardId = card.id
       self.setData({
-        currentCardId: card.id,
+        currentCardId: cardId,
         cardTagText: tags.length > 0 ? tags[0] : '',
         cardTitle: card.title || '',
         cardConcept: card.core_concept || '',
         cardDesc: (card.detail || '').substring(0, 60) + '...',
         tags: tags
       })
+      // 查询卡片状态（掌握/收藏）
+      learnApi.getCardStatus(cardId).then(function (sr) {
+        var st = sr && sr.data
+        if (st) {
+          self.setData({
+            gotItText: st.mastered ? '已掌握' : '懂了',
+            saveText: st.favorited ? '已收藏' : '收藏',
+          })
+        }
+      }).catch(function () {})
     }).catch(function () {
       // silently fail
     })

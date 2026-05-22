@@ -58,6 +58,14 @@ function favoriteCard(cardId) {
 }
 
 /**
+ * 查询卡片掌握/收藏状态
+ * GET /learn/cards/{cardId}/status
+ */
+function getCardStatus(cardId) {
+  return request.get('/learn/cards/' + cardId + '/status')
+}
+
+/**
  * 获取收藏列表
  * GET /learn/favorites
  */
@@ -194,6 +202,7 @@ module.exports = {
   getCardDetail: getCardDetail,
   masterCard: masterCard,
   favoriteCard: favoriteCard,
+  getCardStatus: getCardStatus,
   getFavorites: getFavorites,
   getProgress: getProgress,
   // 刷题
