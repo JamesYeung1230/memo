@@ -59,7 +59,7 @@ Page({
     var item = this.data.unlockList[index]
     if (item && item.canUnlock) {
       wx.navigateTo({
-        url: '/pages/points/unlock-confirm/unlock-confirm?domain_id=' + item.id + '&name=' + encodeURIComponent(item.name) + '&points_cost=' + item.pointsCost
+        url: '/pages/points/unlock-confirm?domain_id=' + item.id + '&name=' + encodeURIComponent(item.name) + '&points_cost=' + item.pointsCost
       })
     }
   }

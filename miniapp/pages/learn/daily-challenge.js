@@ -59,7 +59,8 @@ Page({
   },
 
   onOptionSelect(e) {
-    var questionIdx = e.currentTarget.dataset.questionIdx
+    var questionIdx = e.mark && e.mark['question-idx']
+    if (questionIdx === undefined) return
     var selectedLetter = e.detail.letter
     var selectedValue = e.detail.text
 
@@ -142,7 +143,7 @@ Page({
       }
 
       wx.redirectTo({
-        url: '/pages/learn/challenge-result/challenge-result?result=' + encodeURIComponent(JSON.stringify(resultData))
+        url: '/pages/learn/challenge-result?result=' + encodeURIComponent(JSON.stringify(resultData))
       })
     }).catch(function () {
       that.setData({ _submitting: false })

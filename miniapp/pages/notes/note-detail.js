@@ -174,7 +174,7 @@ Page({
    */
   onShare: function () {
     var noteId = this.data.noteId
-    wx.navigateTo({ url: '/pages/notes/note-share/note-share?note_id=' + noteId })
+    wx.navigateTo({ url: '/pages/notes/note-share?note_id=' + noteId })
   },
 
   /**

@@ -59,7 +59,7 @@
                   status="{{opt.status}}"
                   showExplanation="{{opt.showExplanation}}"
                   bind:select="onOptionSelect"
-                  data-question-idx="{{index}}"
+                  mark:question-idx="{{index}}"
                 ></quiz-option>
               </view>
             </view>

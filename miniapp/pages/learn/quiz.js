@@ -153,7 +153,7 @@ Page({
         type: 'quiz'
       }
       wx.redirectTo({
-        url: '/pages/learn/quiz-result/quiz-result?result=' + encodeURIComponent(JSON.stringify(result))
+        url: '/pages/learn/quiz-result?result=' + encodeURIComponent(JSON.stringify(result))
       })
       return
     }

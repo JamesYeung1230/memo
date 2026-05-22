@@ -94,7 +94,7 @@ Page({
   onQuizTap(e) {
     var domainId = e.currentTarget.dataset.domainId
     wx.navigateTo({
-      url: '/pages/learn/quiz/quiz?domain_id=' + domainId
+      url: '/pages/learn/quiz?domain_id=' + domainId
     })
   }
 })
