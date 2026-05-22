@@ -30,9 +30,8 @@ Page({
 
       // 再获取笔记列表（包含审核状态）
       notesApi.listNotes({ page: that.data.currentPage, page_size: 20 }).then(function (res) {
-        var data = res.data || {}
-        var notes = data.list || data.notes || data.items || []
-        var totalCount = data.total || data.count || notes.length
+        var notes = res.data || []
+        var totalCount = (res.meta && res.meta.total) || notes.length
 
         // 过滤有审核状态的笔记，或显示所有笔记
         var audits = []
@@ -61,9 +60,8 @@ Page({
     }).catch(function () {
       // 如果获取状态选项失败，直接获取笔记列表
       notesApi.listNotes({ page: that.data.currentPage, page_size: 20 }).then(function (res) {
-        var data = res.data || {}
-        var notes = data.list || data.notes || data.items || []
-        var totalCount = data.total || data.count || notes.length
+        var notes = res.data || []
+        var totalCount = (res.meta && res.meta.total) || notes.length
 
         var audits = []
         for (var i = 0; i < notes.length; i++) {
@@ -108,7 +106,7 @@ Page({
     var noteId = e.currentTarget.dataset.noteId
     if (noteId) {
       wx.navigateTo({
-        url: '/pages/notes/note-detail/note-detail?note_id=' + noteId
+        url: '/pages/notes/note-detail?note_id=' + noteId
       })
     }
   },

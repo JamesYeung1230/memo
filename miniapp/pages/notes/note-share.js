@@ -74,7 +74,7 @@ Page({
 
     return {
       title: title,
-      path: '/pages/notes/note-detail/note-detail?note_id=' + noteId
+      path: '/pages/notes/note-detail?note_id=' + noteId
     }
   },
 

@@ -24,21 +24,25 @@ Page({
     this.setData({ _loading: true })
 
     learnApi.getDailyChallenge().then(function (res) {
-      var questions = res.data || []
-      // 为每道题创建选项映射和答案记录
+      // res.data = { challenge_id, date, is_completed, questions: [...] }
+      var data = res.data || {}
+      var questions = data.questions || []
+      // 将后端返回的选项对象({"A":"text","B":"text"})转为数组
       var processed = questions.map(function (q, qIdx) {
-        var options = (q.options || []).map(function (opt, oIdx) {
+        var opts = q.options || {}
+        var keys = Object.keys(opts)
+        var options = keys.map(function (k) {
           return {
-            letter: LETTERS[oIdx] || '',
-            text: typeof opt === 'string' ? opt : (opt.text || opt.content || ''),
-            value: typeof opt === 'string' ? opt : (opt.value || opt.id || ''),
+            letter: k,
+            text: opts[k],
+            value: k,
             selected: false,
             status: 'default'
           }
         })
         return {
-          id: q.id,
-          question: q.question || q.content || '',
+          id: q.question_id || q.id,
+          question: q.question_text || q.question || '',
           options: options,
           explanation: q.explanation || ''
         }
@@ -113,28 +117,12 @@ Page({
     learnApi.submitDailyChallenge(answers).then(function (res) {
       var result = res.data || {}
 
-      // 标记每道题的正确/错误状态
-      var questionResults = result.results || []
-      var correctCount = 0
-      var questions = that.data.questions
+      var correctCount = result.correct || 0
 
+      // 标记每道题的正确/错误状态
+      var questions = that.data.questions
       questions.forEach(function (q, idx) {
-        var qr = questionResults[idx] || {}
-        if (qr.correct) {
-          correctCount += 1
-        }
-        // 更新选项显示状态
-        q.options.forEach(function (opt) {
-          if (opt.selected) {
-            opt.status = qr.correct ? 'correct' : 'wrong'
-          }
-          if (opt.text === qr.correct_answer || opt.letter === qr.correct_answer) {
-            if (opt.letter !== (q.options.find(function (o) { return o.selected }) || {}).letter || !qr.correct) {
-              opt.status = 'correct'
-            }
-          }
-        })
-        q.showExplanation = true
+        q.showExplanation = false
       })
 
       that.setData({
@@ -146,10 +134,10 @@ Page({
       // 跳转到结果页面
       var resultData = {
         total: that.data.totalQuestions,
-        correct: result.correct_count || correctCount,
-        wrong: that.data.totalQuestions - (result.correct_count || correctCount),
+        correct: correctCount,
+        wrong: that.data.totalQuestions - correctCount,
         type: 'challenge',
-        points: result.points || 0,
+        points: result.points_earned || 0,
         streak_days: result.streak_days || 0
       }
 

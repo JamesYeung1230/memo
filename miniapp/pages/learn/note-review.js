@@ -60,7 +60,7 @@ Page({
     var cardId = e.currentTarget.dataset.cardId
     if (noteId) {
       wx.navigateTo({
-        url: '/pages/notes/note-detail/note-detail?note_id=' + noteId
+        url: '/pages/notes/note-detail?note_id=' + noteId
       })
     } else if (cardId) {
       wx.navigateTo({

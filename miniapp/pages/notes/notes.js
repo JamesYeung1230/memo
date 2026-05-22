@@ -91,9 +91,8 @@ Page({
     }
 
     api.listNotes(params).then(function (res) {
-      var data = res.data || {}
-      var items = data.items || []
-      var total = data.total || 0
+      var items = res.data || []
+      var total = (res.meta && res.meta.total) || 0
 
       var formattedItems = items.map(function (item) {
         return that.formatNoteItem(item)
@@ -187,7 +186,7 @@ Page({
   onNoteTap: function (e) {
     var noteId = e.currentTarget.dataset.noteId
     if (!noteId) return
-    wx.navigateTo({ url: '/pages/notes/note-detail/note-detail?note_id=' + noteId })
+    wx.navigateTo({ url: '/pages/notes/note-detail?note_id=' + noteId })
   },
 
   onSearchInput: function (e) {
