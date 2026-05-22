@@ -1,7 +1,101 @@
 <navigation-bar title="答题统计" back="{{true}}" color="black" background="#FFF"></navigation-bar>
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
-    <text>答题统计</text>
+
+    <!-- 加载骨架 -->
+    <loading-skeleton wx:if="{{_loading}}" count="4" type="card"></loading-skeleton>
+
+    <!-- 空状态 -->
+    <empty-state
+      wx:elif="{{!_loading && totalQuestions === 0}}"
+      icon="📊"
+      message="暂无答题数据，快去刷题吧"
+      actionText="刷新"
+      showAction="{{true}}"
+      bind:action="onRefresh"
+    ></empty-state>
+
+    <!-- 统计数据 -->
+    <view wx:else class="stats-container">
+
+      <!-- 顶部统计卡片网格：正确 / 错误 / 正确率 / 总题数 -->
+      <view class="stats-grid">
+        <view class="stats-card stats-card--correct">
+          <text class="stats-card-icon">✓</text>
+          <text class="stats-card-value">{{correctCount}}</text>
+          <text class="stats-card-label">正确</text>
+        </view>
+        <view class="stats-card stats-card--wrong">
+          <text class="stats-card-icon">✗</text>
+          <text class="stats-card-value">{{wrongCount}}</text>
+          <text class="stats-card-label">错误</text>
+        </view>
+        <view class="stats-card stats-card--accuracy">
+          <text class="stats-card-icon">%</text>
+          <text class="stats-card-value">{{accuracy}}</text>
+          <text class="stats-card-label">正确率</text>
+        </view>
+        <view class="stats-card stats-card--total">
+          <text class="stats-card-icon">#</text>
+          <text class="stats-card-value">{{totalQuestions}}</text>
+          <text class="stats-card-label">总题数</text>
+        </view>
+      </view>
+
+      <!-- 连续记录面板：连续天数 / 最佳记录 / 总积分 -->
+      <view class="streak-panel">
+        <text class="section-title">学习连续记录</text>
+        <view class="streak-grid">
+          <view class="streak-item">
+            <text class="streak-item-value">{{currentStreak}}</text>
+            <text class="streak-item-label">连续天数</text>
+          </view>
+          <view class="streak-item streak-item--highlight">
+            <text class="streak-item-value">{{bestStreak}}</text>
+            <text class="streak-item-label">最佳记录</text>
+          </view>
+          <view class="streak-item">
+            <text class="streak-item-value">{{totalPoints}}</text>
+            <text class="streak-item-label">总积分</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 领域统计 -->
+      <view class="domain-section" wx:if="{{domainStats.length > 0}}">
+        <text class="section-title">领域统计</text>
+        <view class="domain-stats-list">
+          <view class="domain-stat-item" wx:for="{{domainStats}}" wx:key="name">
+            <view class="domain-stat-header">
+              <text class="domain-stat-name">{{item.name}}</text>
+              <text class="domain-stat-accuracy">{{item.accuracy}}</text>
+            </view>
+            <view class="domain-stat-bar">
+              <view class="domain-stat-bar-fill" style="width: {{item.accuracy}}"></view>
+            </view>
+            <view class="domain-stat-footer">
+              <text class="domain-stat-count">正确 {{item.correct}}</text>
+              <text class="domain-stat-count domain-stat-count--wrong">错误 {{item.wrong}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 最近成绩历史列表 -->
+      <view class="recent-section" wx:if="{{recentScores.length > 0}}">
+        <text class="section-title">最近成绩</text>
+        <view class="recent-list">
+          <view class="recent-item" wx:for="{{recentScores}}" wx:key="date" wx:for-item="scoreItem">
+            <text class="recent-item-date">{{scoreItem.date}}</text>
+            <view class="recent-item-stats">
+              <text class="recent-item-score">{{scoreItem.score}}</text>
+              <text class="recent-item-accuracy">{{scoreItem.accuracy}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
   </view>
 </scroll-view>
-

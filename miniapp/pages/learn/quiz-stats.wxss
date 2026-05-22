@@ -4,5 +4,231 @@
 }
 
 .page-content {
-  padding: var(--space-lg);
+  padding: var(--space-md);
+}
+
+/* ===== 统计卡片网格 ===== */
+.stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.stats-card {
+  flex: 0 0 calc(50% - var(--space-sm));
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stats-card-icon {
+  font-size: var(--font-h2);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.stats-card-value {
+  font-size: var(--font-number);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-xs);
+}
+
+.stats-card-label {
+  font-size: var(--font-caption);
+  color: var(--color-text-secondary);
+}
+
+.stats-card--correct .stats-card-icon,
+.stats-card--correct .stats-card-value {
+  color: var(--color-success);
+}
+
+.stats-card--wrong .stats-card-icon,
+.stats-card--wrong .stats-card-value {
+  color: var(--color-error);
+}
+
+.stats-card--accuracy .stats-card-icon,
+.stats-card--accuracy .stats-card-value {
+  color: var(--color-primary);
+}
+
+.stats-card--total .stats-card-icon,
+.stats-card--total .stats-card-value {
+  color: var(--color-secondary);
+}
+
+/* ===== 通用章节标题 ===== */
+.section-title {
+  display: block;
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+/* ===== 连续记录面板 ===== */
+.streak-panel {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.streak-grid {
+  display: flex;
+  align-items: center;
+}
+
+.streak-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-sm) 0;
+  position: relative;
+}
+
+.streak-item + .streak-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background: var(--color-divider);
+}
+
+.streak-item-value {
+  font-size: var(--font-number);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+  margin-bottom: var(--space-xs);
+}
+
+.streak-item--highlight .streak-item-value {
+  color: var(--color-warning);
+}
+
+.streak-item-label {
+  font-size: var(--font-caption);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 领域统计 ===== */
+.domain-section {
+  margin-bottom: var(--space-lg);
+}
+
+.domain-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.domain-stat-item {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.domain-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.domain-stat-name {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.domain-stat-accuracy {
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.domain-stat-bar {
+  height: 8rpx;
+  background: var(--color-divider);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-sm);
+  overflow: hidden;
+}
+
+.domain-stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-primary));
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.domain-stat-footer {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.domain-stat-count {
+  font-size: var(--font-caption);
+  color: var(--color-success);
+}
+
+.domain-stat-count--wrong {
+  color: var(--color-error);
+}
+
+/* ===== 最近成绩列表 ===== */
+.recent-section {
+  margin-bottom: var(--space-xl);
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.recent-item-date {
+  font-size: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.recent-item-stats {
+  display: flex;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.recent-item-score {
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.recent-item-accuracy {
+  font-size: var(--font-caption);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-bg-page);
+  padding: 4rpx 12rpx;
+  border-radius: var(--radius-full);
 }

@@ -1,7 +1,164 @@
 <navigation-bar title="复习计划配置" back="{{true}}" color="black" background="#FFF"></navigation-bar>
-<scroll-view class="page-scroll" scroll-y type="list">
-  <view class="page-content">
-    <text>复习计划配置</text>
-  </view>
-</scroll-view>
 
+<view class="page-wrapper">
+  <!-- 加载骨架 -->
+  <loading-skeleton wx:if="{{_loading}}" count="4" type="card"></loading-skeleton>
+
+  <!-- 配置表单 -->
+  <scroll-view wx:else class="page-scroll" scroll-y type="list">
+    <view class="settings-body">
+
+      <!-- 基础配置 -->
+      <view class="settings-section">
+        <text class="section-title">基础配置</text>
+
+        <view class="form-item">
+          <view class="form-item-header">
+            <text class="form-label">每日复习上限</text>
+            <text class="form-value">{{dailyLimit}} 题</text>
+          </view>
+          <slider
+            min="5"
+            max="100"
+            step="5"
+            value="{{dailyLimit}}"
+            bind:change="onDailyLimitChange"
+            bind:changing="onDailyLimitChange"
+            color="var(--color-primary)"
+            block-size="20"
+            activeColor="var(--color-primary)"
+          />
+        </view>
+
+        <view class="form-item">
+          <view class="form-item-header">
+            <text class="form-label">遗忘判定天数</text>
+            <text class="form-value">{{forgotDays}} 天</text>
+          </view>
+          <slider
+            min="1"
+            max="30"
+            step="1"
+            value="{{forgotDays}}"
+            bind:change="onForgotDaysChange"
+            bind:changing="onForgotDaysChange"
+            color="var(--color-primary)"
+            block-size="20"
+            activeColor="var(--color-primary)"
+          />
+        </view>
+      </view>
+
+      <!-- 复习间隔 -->
+      <view class="settings-section">
+        <text class="section-title">复习间隔（天）</text>
+        <text class="section-desc">根据掌握程度设置不同的复习间隔</text>
+
+        <view class="interval-grid">
+          <view class="interval-item">
+            <text class="interval-label">容易</text>
+            <input
+              class="interval-input"
+              type="number"
+              value="{{easyInterval}}"
+              min="1"
+              max="30"
+              bindinput="onEasyIntervalChange"
+            />
+            <text class="interval-unit">天</text>
+          </view>
+
+          <view class="interval-item">
+            <text class="interval-label">中等</text>
+            <input
+              class="interval-input"
+              type="number"
+              value="{{mediumInterval}}"
+              min="1"
+              max="30"
+              bindinput="onMediumIntervalChange"
+            />
+            <text class="interval-unit">天</text>
+          </view>
+
+          <view class="interval-item">
+            <text class="interval-label">困难</text>
+            <input
+              class="interval-input"
+              type="number"
+              value="{{hardInterval}}"
+              min="1"
+              max="30"
+              bindinput="onHardIntervalChange"
+            />
+            <text class="interval-unit">天</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 艾宾浩斯记忆节点 -->
+      <view class="settings-section">
+        <view class="section-row">
+          <view class="section-row-left">
+            <text class="section-title">艾宾浩斯记忆法</text>
+            <text class="section-desc">按照遗忘曲线规划复习时间点</text>
+          </view>
+          <switch
+            checked="{{enableEbbinghaus}}"
+            color="var(--color-primary)"
+            bind:change="onEbbinghausToggle"
+          />
+        </view>
+
+        <view class="node-tags" wx:if="{{enableEbbinghaus}}">
+          <view
+            wx:for="{{allNodes}}"
+            wx:key="value"
+            class="node-tag {{selectedNodes.indexOf(item.value) > -1 ? 'node-tag--active' : ''}}"
+            data-value="{{item.value}}"
+            bind:tap="onNodeToggle"
+          >
+            <text class="node-tag-text {{selectedNodes.indexOf(item.value) > -1 ? 'node-tag-text--active' : ''}}">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 开关配置 -->
+      <view class="settings-section">
+        <text class="section-title">其他设置</text>
+
+        <view class="switch-row">
+          <view class="switch-row-left">
+            <text class="form-label">静默模式</text>
+            <text class="switch-desc">学习时不显示通知</text>
+          </view>
+          <switch
+            checked="{{silentMode}}"
+            color="var(--color-primary)"
+            bind:change="onSilentModeToggle"
+          />
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="settings-actions">
+        <button
+          class="save-btn"
+          loading="{{_saving}}"
+          disabled="{{_saving}}"
+          bind:tap="onSave"
+        >
+          <text class="save-btn-text">保存配置</text>
+        </button>
+        <button
+          class="reset-btn"
+          bind:tap="onReset"
+        >
+          <text class="reset-btn-text">恢复默认</text>
+        </button>
+      </view>
+
+      <view class="bottom-safe-area" />
+    </view>
+  </scroll-view>
+</view>

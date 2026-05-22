@@ -1,8 +1,245 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .page-scroll {
   flex: 1;
   height: 100%;
 }
 
 .page-content {
-  padding: var(--space-lg);
+  padding: var(--space-md);
+}
+
+/* ===== 题目 ===== */
+.analysis-question {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.analysis-question-label {
+  display: block;
+  font-size: var(--font-caption);
+  color: var(--color-text-hint);
+  margin-bottom: var(--space-xs);
+}
+
+.analysis-question-text {
+  display: block;
+  font-size: var(--font-body);
+  color: var(--color-text-primary);
+  line-height: 1.7;
+}
+
+/* ===== 回答结果标识 ===== */
+.analysis-result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+}
+
+.analysis-result--correct {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.analysis-result--wrong {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.analysis-result-icon {
+  font-size: var(--font-h2);
+  font-weight: 700;
+  margin-right: var(--space-sm);
+}
+
+.analysis-result--correct .analysis-result-icon {
+  color: var(--color-success);
+}
+
+.analysis-result--wrong .analysis-result-icon {
+  color: var(--color-error);
+}
+
+.analysis-result-text {
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+}
+
+.analysis-result--correct .analysis-result-text {
+  color: var(--color-success);
+}
+
+.analysis-result--wrong .analysis-result-text {
+  color: var(--color-error);
+}
+
+/* ===== 通用段落标签 ===== */
+.analysis-section-label {
+  display: block;
+  font-size: var(--font-caption);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+/* ===== 选项列表 ===== */
+.analysis-options {
+  margin-bottom: var(--space-md);
+}
+
+.analysis-option-item {
+  margin-bottom: var(--space-sm);
+}
+
+.analysis-option-item:last-child {
+  margin-bottom: 0;
+}
+
+.analysis-option-row {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border: 2rpx solid var(--color-divider);
+  transition: border-color 0.2s ease;
+}
+
+.analysis-option-row--correct-selected {
+  border-color: var(--color-success);
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.analysis-option-row--wrong-selected {
+  border-color: var(--color-error);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.analysis-option-row--correct-unselected {
+  border-color: var(--color-primary-light);
+  background: rgba(74, 144, 217, 0.05);
+}
+
+.analysis-option-row--default {
+  border-color: var(--color-divider);
+}
+
+.analysis-option-letter {
+  width: 44rpx;
+  height: 44rpx;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--space-md);
+  flex-shrink: 0;
+  font-size: var(--font-caption-bold);
+  font-weight: 600;
+  background: var(--color-bg-page);
+  color: var(--color-text-secondary);
+}
+
+.analysis-option-letter--correct {
+  background: var(--color-success);
+  color: var(--color-text-on-primary);
+}
+
+.analysis-option-letter--wrong {
+  background: var(--color-error);
+  color: var(--color-text-on-primary);
+}
+
+.analysis-option-letter--show-correct {
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+.analysis-option-text {
+  flex: 1;
+  font-size: var(--font-body);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.analysis-option-badge {
+  font-size: var(--font-tag);
+  font-weight: 600;
+  padding: 4rpx 10rpx;
+  border-radius: var(--radius-full);
+  margin-left: var(--space-sm);
+  flex-shrink: 0;
+}
+
+.analysis-option-badge--correct {
+  background: rgba(34, 197, 94, 0.15);
+  color: var(--color-success);
+}
+
+.analysis-option-badge--wrong {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error);
+}
+
+.analysis-option-badge--missed {
+  background: rgba(74, 144, 217, 0.15);
+  color: var(--color-primary);
+}
+
+/* ===== 正确答案 ===== */
+.analysis-answer {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.analysis-answer-text {
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+/* ===== 解析内容 ===== */
+.analysis-explanation {
+  margin-bottom: var(--space-lg);
+}
+
+.analysis-explanation-box {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  border-left: 6rpx solid var(--color-primary-light);
+}
+
+.analysis-explanation-text {
+  font-size: var(--font-body);
+  color: var(--color-text-primary);
+  line-height: 1.7;
+}
+
+/* ===== 返回按钮 ===== */
+.analysis-action {
+  padding-bottom: var(--space-xl);
+}
+
+.analysis-action-btn {
+  background: var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analysis-action-btn-text {
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+  color: var(--color-text-on-primary);
 }

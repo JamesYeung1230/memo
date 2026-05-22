@@ -1,8 +1,223 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
+}
+
 .page-scroll {
   flex: 1;
   height: 100%;
 }
 
-.page-content {
+.error-book-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
   padding: var(--space-lg);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 40rpx);
+}
+
+/* ========== 统计头部 ========== */
+.stats-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.stats-header-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.stats-header-icon {
+  font-size: 48rpx;
+}
+
+.stats-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.stats-header-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-h2);
+  font-weight: 600;
+}
+
+.stats-header-sub {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+}
+
+.practice-all-btn {
+  height: 64rpx;
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-md);
+  border: none;
+  line-height: normal;
+}
+
+.practice-all-btn::after {
+  border: none;
+}
+
+.practice-all-btn-text {
+  color: var(--color-text-on-primary);
+  font-size: var(--font-caption);
+  font-weight: 600;
+}
+
+/* ========== 错题卡片 ========== */
+.question-card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.question-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.question-card-badge {
+  padding: 4rpx 16rpx;
+  border-radius: 9999rpx;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
+  font-size: 20rpx;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.question-card-index {
+  color: var(--color-text-hint);
+  font-size: 20rpx;
+}
+
+.question-card-text {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 选项预览 */
+.question-card-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.question-card-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8rpx 0;
+}
+
+.qco-letter {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background-color: var(--color-bg-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  font-size: 20rpx;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.qco-text {
+  flex: 1;
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 答案信息 */
+.question-card-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background-color: var(--color-bg-page);
+  border-radius: var(--radius-sm);
+}
+
+.question-card-wrong-label {
+  color: var(--color-text-hint);
+  font-size: 20rpx;
+}
+
+.question-card-wrong-value {
+  color: var(--color-error);
+  font-size: 20rpx;
+  font-weight: 600;
+  margin-right: var(--space-sm);
+}
+
+.question-card-correct-label {
+  color: var(--color-text-hint);
+  font-size: 20rpx;
+}
+
+.question-card-correct-value {
+  color: var(--color-success);
+  font-size: 20rpx;
+  font-weight: 600;
+}
+
+/* 操作按钮 */
+.question-card-action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-xs);
+  padding-top: var(--space-sm);
+  border-top: 2rpx solid var(--color-divider);
+}
+
+.question-card-action-text {
+  color: var(--color-primary);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.question-card-action-arrow {
+  color: var(--color-text-hint);
+  font-size: 32rpx;
+}
+
+.bottom-safe-area {
+  height: calc(env(safe-area-inset-bottom));
 }
