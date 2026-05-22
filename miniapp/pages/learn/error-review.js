@@ -132,7 +132,7 @@ Page({
     var currentQ = this.data.questions[this.data.currentIndex]
     var questionId = currentQ.id || currentQ.question_id
 
-    learnApi.errorPractice(questionId, selectedOption.value || selectedOption.text).then(function (res) {
+    learnApi.errorPractice(questionId, selectedOption.letter).then(function (res) {
       var result = res.data || {}
       var isCorrect = result.correct !== undefined ? result.correct : (result.is_correct || false)
       var correctAnswer = result.correct_answer || result.correct_option || currentQ.correct_answer || currentQ.correct_option || currentQ.answer || ''
