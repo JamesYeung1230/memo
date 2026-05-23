@@ -143,6 +143,14 @@ function getQuizStats() {
 }
 
 /**
+ * 获取打卡历史（日历用）
+ * GET /quiz/checkin-history
+ */
+function getCheckinHistory(year, month) {
+  return request.get('/quiz/checkin-history', { data: { year: year, month: month } })
+}
+
+/**
  * 错题练习
  * POST /quiz/wrong-questions/{id}/practice
  */
@@ -221,6 +229,7 @@ module.exports = {
   getDailyChallenge: getDailyChallenge,
   submitDailyChallenge: submitDailyChallenge,
   getQuizStats: getQuizStats,
+  getCheckinHistory: getCheckinHistory,
   errorPractice: errorPractice,
   // 复习
   getReviewToday: getReviewToday,

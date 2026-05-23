@@ -367,6 +367,43 @@ async def submit_daily_challenge(
     })
 
 
+@router.get("/checkin-history")
+async def get_checkin_history(
+    user_id: str = Depends(get_user_id),
+    db: AsyncSession = Depends(get_db),
+    year: int = Query(...),
+    month: int = Query(..., ge=1, le=12),
+):
+    """Get check-in history for a given year/month based on DailyChallengeRecord."""
+    month_str = f"{year:04d}-{month:02d}"
+
+    records = await db.execute(
+        select(DailyChallengeRecord.challenge_date).where(
+            DailyChallengeRecord.user_id == user_id,
+            DailyChallengeRecord.challenge_date.like(f"{month_str}%"),
+            DailyChallengeRecord.is_completed == True,
+        )
+    )
+
+    checked_dates = [r[0] for r in records.fetchall()]
+
+    # Also get current streak
+    streak = await db.execute(
+        select(func.max(DailyChallengeRecord.streak_days)).where(
+            DailyChallengeRecord.user_id == user_id,
+        )
+    )
+    current_streak = streak.scalar() or 0
+
+    return success({
+        "year": year,
+        "month": month,
+        "checked_dates": checked_dates,
+        "current_streak": current_streak,
+        "total_days": len(checked_dates),
+    })
+
+
 @router.get("/statistics")
 async def get_quiz_statistics(
     user_id: str = Depends(get_user_id),
