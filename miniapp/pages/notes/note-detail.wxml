@@ -16,7 +16,7 @@
       <view class="detail-status detail-status--{{statusClass}}">
         <text class="detail-status-text">{{statusLabel}}</text>
       </view>
-      <text class="detail-time">更新于 {{formatTime(note.updated_at || note.created_at)}}</text>
+      <text class="detail-time">更新于 {{displayTime}}</text>
     </view>
 
     <!-- 标签 -->

@@ -21,6 +21,7 @@ Page({
     loading: true,
     statusLabel: '',
     statusClass: '',
+    displayTime: '',
     canSubmitReview: false,
     canWithdrawReview: false,
     canEdit: false,
@@ -58,6 +59,7 @@ Page({
         loading: false,
         statusLabel: status.label,
         statusClass: status.class,
+        displayTime: that.formatTime(note.updated_at || note.created_at),
         canSubmitReview: note.audit_status === 'draft',
         canWithdrawReview: note.audit_status === 'submitted',
         canEdit: note.audit_status === 'draft' || note.audit_status === 'rejected'
@@ -184,7 +186,14 @@ Page({
   formatTime: function (timeStr) {
     if (!timeStr) return ''
     try {
-      var date = new Date(timeStr)
+      // Handle PG timestamp format: "2024-01-15 10:30:00+08:00" → ISO format
+      var iso = timeStr.replace(' ', 'T')
+      var date = new Date(iso)
+      if (isNaN(date.getTime())) {
+        // Fallback: try original string
+        date = new Date(timeStr)
+      }
+      if (isNaN(date.getTime())) return timeStr
       var month = (date.getMonth() + 1).toString().padStart(2, '0')
       var day = date.getDate().toString().padStart(2, '0')
       var h = date.getHours().toString().padStart(2, '0')
