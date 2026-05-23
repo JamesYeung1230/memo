@@ -40,17 +40,10 @@
             wx:for-item="opt"
             wx:key="letter"
           >
-            <view class="analysis-option-row
-              {{opt.isSelected && opt.isCorrect ? 'analysis-option-row--correct-selected' : ''}}
-              {{opt.isSelected && !opt.isCorrect ? 'analysis-option-row--wrong-selected' : ''}}
-              {{!opt.isSelected && opt.isCorrect ? 'analysis-option-row--correct-unselected' : ''}}
-              {{!opt.isSelected && !opt.isCorrect ? 'analysis-option-row--default' : ''}}">
+            <view class="analysis-option-row {{opt.isSelected && opt.isCorrect ? 'analysis-option-row--correct-selected' : ''}} {{opt.isSelected && !opt.isCorrect ? 'analysis-option-row--wrong-selected' : ''}} {{!opt.isSelected && opt.isCorrect ? 'analysis-option-row--correct-unselected' : ''}} {{!opt.isSelected && !opt.isCorrect ? 'analysis-option-row--default' : ''}}">
 
               <!-- 序号 -->
-              <view class="analysis-option-letter
-                {{opt.isSelected && opt.isCorrect ? 'analysis-option-letter--correct' : ''}}
-                {{opt.isSelected && !opt.isCorrect ? 'analysis-option-letter--wrong' : ''}}
-                {{!opt.isSelected && opt.isCorrect ? 'analysis-option-letter--show-correct' : ''}}">
+              <view class="analysis-option-letter {{opt.isSelected && opt.isCorrect ? 'analysis-option-letter--correct' : ''}} {{opt.isSelected && !opt.isCorrect ? 'analysis-option-letter--wrong' : ''}} {{!opt.isSelected && opt.isCorrect ? 'analysis-option-letter--show-correct' : ''}}">
                 <text>{{opt.letter}}</text>
               </view>
 
