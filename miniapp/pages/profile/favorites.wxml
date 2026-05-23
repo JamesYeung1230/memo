@@ -26,7 +26,7 @@
         bind:tap="onCardTap"
       >
         <view class="fav-info">
-          <text class="fav-card-id">卡片 #{{item.card_id}}</text>
+          <text class="fav-card-id">{{item.cardTitle}}</text>
           <text class="fav-time">{{item.created_at}}</text>
         </view>
         <view

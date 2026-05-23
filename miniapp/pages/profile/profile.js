@@ -14,20 +14,35 @@ Page({
   },
 
   onLoad() {
-    this.loadUserData()
-    this.loadStats()
+    this.checkLoginAndLoad()
   },
 
   onShow() {
+    this.checkLoginAndLoad()
+
     if (this._hasShown) {
       this.setData({ _pageEnter: false }, function () {
         this.setData({ _pageEnter: true })
       })
-      this.loadUserData()
-      this.loadStats()
     } else {
       this._hasShown = true
     }
+  },
+
+  checkLoginAndLoad() {
+    if (!app.globalData.isLoggedIn) {
+      this.setData({
+        userName: '未登录',
+        userLevel: '点击登录',
+        avatarText: '?',
+        masteredCount: 0,
+        accuracyRate: '--%',
+        streakDays: '--天'
+      })
+      return
+    }
+    this.loadUserData()
+    this.loadStats()
   },
 
   loadUserData() {

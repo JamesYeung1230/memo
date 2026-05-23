@@ -38,29 +38,23 @@ Page({
 
     learnApi.getProgress().then(function (res) {
       var progress = res.data || {}
-      var totalDays = progress.total_days || progress.days || 0
-      var currentStreak = progress.current_streak || progress.streak_days || 0
 
-      that.setData({
-        totalDays: totalDays,
-        currentStreak: currentStreak
-      })
+      // 保存 API 返回的统计值
+      that._apiTotalLearned = progress.total_learned || 0
+      that._apiTodayLearned = progress.today_learned || 0
 
-      // 有 real checked_days 字段则使用，否则生成模拟
-      var checkedDays = progress.checked_days || null
-      if (checkedDays) {
-        that._checkedDays = checkedDays
-        that.buildCalendarDays()
-      } else {
-        that.generateMockData()
-      }
+      that.generateMockData()
     }).catch(function () {
+      // API 不可用时，使用纯模拟数据
+      that._apiTotalLearned = 0
+      that._apiTodayLearned = 0
       that.generateMockData()
     })
   },
 
   /**
    * 生成当月模拟打卡数据
+   * 基于日期奇偶性（偶数日打卡，奇数日不打卡），确保每次生成相同结果
    */
   generateMockData() {
     var year = this.data.year
@@ -70,22 +64,36 @@ Page({
     var count = 0
 
     for (var d = 1; d <= daysInMonth; d++) {
-      // 模拟约 65% 的日期已打卡
-      checkedDays[d] = Math.random() < 0.65
+      // 偶数日打卡，奇数日不打卡（基于日期奇偶性，结果稳定）
+      checkedDays[d] = d % 2 === 0
       if (checkedDays[d]) count++
     }
 
-    // 确保今天在当月且已打卡
+    // 根据 API 返回的 today_learned 修正今天打卡状态
     var today = new Date()
     if (year === today.getFullYear() && month === today.getMonth() + 1) {
-      checkedDays[today.getDate()] = true
+      var dayOfMonth = today.getDate()
+      if (this._apiTodayLearned > 0) {
+        // today_learned > 0 则确保今天标记为已打卡
+        if (!checkedDays[dayOfMonth]) {
+          checkedDays[dayOfMonth] = true
+          count++
+        }
+      } else {
+        // today_learned === 0 则今天不打卡
+        if (checkedDays[dayOfMonth]) {
+          checkedDays[dayOfMonth] = false
+          count--
+        }
+      }
     }
 
     this._checkedDays = checkedDays
 
     this.setData({
-      totalDays: count,
-      currentStreak: 7
+      // API 成功时使用 total_learned（总学习记录数），失败时使用当月模拟打卡天数
+      totalDays: this._apiTotalLearned || count,
+      currentStreak: 0
     })
 
     this.buildCalendarDays()

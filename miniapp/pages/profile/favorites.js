@@ -29,10 +29,25 @@ Page({
       var favorites = Array.isArray(data) ? data : (data.list || data.cards || [])
       var totalCount = data.total || data.count || favorites.length
 
-      that.setData({
-        favorites: favorites,
-        totalCount: totalCount,
-        _loading: false
+      // 获取每项收藏卡片的标题
+      var detailPromises = favorites.map(function (item) {
+        return learnApi.getCardDetail(item.card_id).then(function (detailRes) {
+          var cardData = detailRes.data || detailRes
+          item.cardTitle = cardData.title || cardData.concept || cardData.core_concept || ('卡片 #' + item.card_id)
+          return item
+        }).catch(function () {
+          // getCardDetail 失败时回退显示 card_id
+          item.cardTitle = '卡片 #' + item.card_id
+          return item
+        })
+      })
+
+      return Promise.all(detailPromises).then(function (favoritesWithTitle) {
+        that.setData({
+          favorites: favoritesWithTitle,
+          totalCount: totalCount,
+          _loading: false
+        })
       })
     }).catch(function () {
       that.setData({ _loading: false })

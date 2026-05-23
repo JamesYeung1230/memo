@@ -36,6 +36,13 @@
   50% { opacity: 0.4; }
 }
 
+/* ===== 主内容区（卡片间距） ===== */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
 /* ===== 概览卡片行 ===== */
 .stats-row--three {
   display: flex;
