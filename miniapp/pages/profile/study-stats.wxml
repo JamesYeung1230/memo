@@ -46,10 +46,10 @@
       <view class="stats-card">
         <view class="stats-card-header">
           <text class="stats-card-title">📖 掌握卡片</text>
-          <text class="stats-card-count">{{learnedCards}}/{{totalCards}}</text>
+          <text class="stats-card-count">{{masteredCards}}/{{totalLearned}}</text>
         </view>
         <view class="progress-track">
-          <view class="progress-fill" style="width: {{totalCards > 0 ? (learnedCards / totalCards * 100) : 0}}%;" />
+          <view class="progress-fill" style="width: {{totalLearned > 0 ? (masteredCards / totalLearned * 100) : 0}}%;" />
         </view>
       </view>
 
