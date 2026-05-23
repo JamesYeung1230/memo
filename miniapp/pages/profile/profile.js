@@ -30,7 +30,9 @@ Page({
   },
 
   checkLoginAndLoad() {
-    if (!app.globalData.isLoggedIn) {
+    // 双重确认: globalData + storage
+    var isLoggedIn = app.globalData.isLoggedIn || !!wx.getStorageSync('token')
+    if (!isLoggedIn) {
       this.setData({
         userName: '未登录',
         userLevel: '点击登录',

@@ -39,14 +39,11 @@ Page({
     learnApi.getProgress().then(function (res) {
       var progress = res.data || {}
 
-      // 保存 API 返回的统计值
-      that._apiTotalLearned = progress.total_learned || 0
       that._apiTodayLearned = progress.today_learned || 0
 
       that.generateMockData()
     }).catch(function () {
       // API 不可用时，使用纯模拟数据
-      that._apiTotalLearned = 0
       that._apiTodayLearned = 0
       that.generateMockData()
     })
@@ -91,8 +88,8 @@ Page({
     this._checkedDays = checkedDays
 
     this.setData({
-      // API 成功时使用 total_learned（总学习记录数），失败时使用当月模拟打卡天数
-      totalDays: this._apiTotalLearned || count,
+      // 本月已打卡天数 = 当月格子中 checked=true 的数量
+      totalDays: count,
       currentStreak: 0
     })
 
