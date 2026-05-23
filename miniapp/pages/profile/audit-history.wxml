@@ -1,7 +1,59 @@
 <navigation-bar title="笔记审核记录" back="{{true}}" color="black" background="#FFF"></navigation-bar>
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
-    <text>笔记审核记录</text>
+
+    <!-- 加载骨架屏 -->
+    <view wx:if="{{_loading && audits.length === 0}}" class="skeleton-wrap">
+      <view wx:for="{{[1,2,3,4]}}" wx:key="index" class="skeleton-card">
+        <view class="skeleton-row" style="width: 55%; height: 30rpx" />
+        <view class="skeleton-row" style="width: 35%; height: 22rpx; margin-top: 12rpx" />
+        <view class="skeleton-row" style="width: 80%; height: 22rpx; margin-top: 12rpx" />
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:elif="{{!audits || audits.length === 0}}" class="empty-wrap">
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">暂无审核记录</text>
+    </view>
+
+    <!-- 审核记录列表 -->
+    <view wx:else class="audit-list">
+      <view
+        wx:for="{{audits}}"
+        wx:key="id"
+        class="audit-item"
+        data-note-id="{{item.id}}"
+        bind:tap="onNoteTap"
+      >
+        <view class="audit-header">
+          <text class="audit-title">{{item.title}}</text>
+          <view
+            class="audit-status audit-status--{{item.auditStatus}}"
+            data-status="{{item.auditStatus}}"
+            catch:tap="onAuditStatus"
+          >
+            <text class="audit-status-text">
+              <text wx:if="{{item.auditStatus === 'draft'}}">草稿</text>
+              <text wx:elif="{{item.auditStatus === 'pending'}}">待审核</text>
+              <text wx:elif="{{item.auditStatus === 'submitted'}}">待审核</text>
+              <text wx:elif="{{item.auditStatus === 'approved'}}">已通过</text>
+              <text wx:elif="{{item.auditStatus === 'rejected'}}">已驳回</text>
+              <text wx:else>{{item.auditStatus}}</text>
+            </text>
+          </view>
+        </view>
+        <text class="audit-time">{{item.submitTime}}</text>
+        <text class="audit-content">{{item.content}}</text>
+
+        <!-- 审核备注 -->
+        <view wx:if="{{item.auditRemark}}" class="audit-remark">
+          <text class="audit-remark-label">审核备注：</text>
+          <text class="audit-remark-text">{{item.auditRemark}}</text>
+        </view>
+      </view>
+
+      <view class="bottom-safe-area" />
+    </view>
   </view>
 </scroll-view>
-

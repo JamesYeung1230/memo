@@ -1,8 +1,196 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg-page);
+}
+
 .page-scroll {
   flex: 1;
-  height: 100%;
+  height: 0;
 }
 
 .page-content {
-  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+  padding: 0 32rpx 48rpx 32rpx;
+}
+
+/* ==================== 月份切换行 ==================== */
+
+.month-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0 16rpx 0;
+}
+
+.month-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background-color: var(--color-bg-card);
+  cursor: pointer;
+}
+
+.month-nav-btn:active {
+  opacity: 0.6;
+}
+
+.month-nav-arrow {
+  font-size: 44rpx;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.month-nav-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ==================== 星期行 ==================== */
+
+.weekday-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  padding: 8rpx 0;
+}
+
+.weekday-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56rpx;
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* ==================== 日历网格 ==================== */
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  border-radius: 24rpx;
+  background-color: var(--color-bg-card);
+  padding: 12rpx 0;
+}
+
+.calendar-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+}
+
+.cell-empty {
+  visibility: hidden;
+}
+
+.cell-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  width: 72rpx;
+  height: 76rpx;
+  border-radius: 16rpx;
+  position: relative;
+}
+
+.inner-today {
+  border: 2rpx solid var(--color-error);
+  background-color: rgba(239, 68, 68, 0.04);
+}
+
+.cell-day {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.day-empty {
+  color: transparent;
+}
+
+.day-today {
+  font-weight: 700;
+  color: var(--color-error);
+}
+
+/* 打卡标记圆点 */
+
+.cell-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.dot-checked {
+  background-color: var(--color-primary);
+}
+
+/* ==================== 底部统计 ==================== */
+
+.stats-section {
+  margin-top: 8rpx;
+}
+
+.stats-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 160rpx;
+  border-radius: 24rpx;
+  background-color: var(--color-bg-card);
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.stats-number {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.stats-number--streak {
+  color: var(--color-success);
+}
+
+.stats-label {
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+}
+
+.stats-divider {
+  width: 1rpx;
+  height: 64rpx;
+  background-color: var(--color-divider);
+}
+
+/* ==================== 底部安全区 ==================== */
+
+.bottom-safe-area {
+  height: env(safe-area-inset-bottom);
 }

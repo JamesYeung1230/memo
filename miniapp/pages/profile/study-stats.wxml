@@ -1,7 +1,102 @@
 <navigation-bar title="学习统计总览" back="{{true}}" color="black" background="#FFF"></navigation-bar>
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
-    <text>学习统计总览</text>
+
+    <!-- 加载骨架屏 -->
+    <view wx:if="{{_loading}}" class="skeleton-wrap">
+      <view class="skeleton-card">
+        <view class="skeleton-row" style="width: 70%; height: 32rpx" />
+        <view class="skeleton-row" style="width: 50%; height: 28rpx; margin-top: 16rpx" />
+      </view>
+      <view class="skeleton-card">
+        <view class="skeleton-row" style="width: 60%; height: 32rpx" />
+        <view class="skeleton-row" style="width: 40%; height: 28rpx; margin-top: 16rpx" />
+      </view>
+      <view class="skeleton-card">
+        <view class="skeleton-row" style="width: 80%; height: 32rpx" />
+        <view class="skeleton-row" style="width: 45%; height: 28rpx; margin-top: 16rpx" />
+      </view>
+    </view>
+
+    <!-- 主要内容 -->
+    <view wx:else class="main-content">
+
+      <!-- 概览卡片行: 学习天数、连续打卡、总积分 -->
+      <view class="stats-row--three">
+        <view class="stats-item--icon">
+          <text class="stats-icon">📅</text>
+          <text class="stats-value">{{totalDays}}</text>
+          <text class="stats-label">学习天数</text>
+        </view>
+        <view class="stats-divider" />
+        <view class="stats-item--icon">
+          <text class="stats-icon">🔥</text>
+          <text class="stats-value stats-value--green">{{currentStreak}}</text>
+          <text class="stats-label">连续打卡</text>
+        </view>
+        <view class="stats-divider" />
+        <view class="stats-item--icon">
+          <text class="stats-icon">⭐</text>
+          <text class="stats-value stats-value--amber">{{totalPoints}}</text>
+          <text class="stats-label">总积分</text>
+        </view>
+      </view>
+
+      <!-- 掌握卡片卡片 -->
+      <view class="stats-card">
+        <view class="stats-card-header">
+          <text class="stats-card-title">📖 掌握卡片</text>
+          <text class="stats-card-count">{{learnedCards}}/{{totalCards}}</text>
+        </view>
+        <view class="progress-track">
+          <view class="progress-fill" style="width: {{totalCards > 0 ? (learnedCards / totalCards * 100) : 0}}%;" />
+        </view>
+      </view>
+
+      <!-- 答题统计卡片 -->
+      <view class="stats-card">
+        <view class="stats-card-header">
+          <text class="stats-card-title">📝 答题统计</text>
+          <text class="stats-card-count stats-card-count--primary">{{accuracy}}</text>
+        </view>
+        <view class="quiz-stats-grid">
+          <view class="quiz-stat-item">
+            <text class="quiz-stat-value">{{totalQuestions}}</text>
+            <text class="quiz-stat-label">总题数</text>
+          </view>
+          <view class="quiz-stat-item">
+            <text class="quiz-stat-value quiz-stat-value--green">{{correctCount}}</text>
+            <text class="quiz-stat-label">正确数</text>
+          </view>
+          <view class="quiz-stat-item">
+            <text class="quiz-stat-value quiz-stat-value--red">{{wrongCount}}</text>
+            <text class="quiz-stat-label">错误数</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 复习统计卡片 -->
+      <view class="stats-card">
+        <view class="stats-card-header">
+          <text class="stats-card-title">🔄 复习统计</text>
+          <text class="stats-card-count">{{completedReviews}}/{{totalReviews}}</text>
+        </view>
+        <view class="progress-track">
+          <view class="progress-fill progress-fill--green" style="width: {{totalReviews > 0 ? (completedReviews / totalReviews * 100) : 0}}%;" />
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <view class="action-btn action-btn--primary" bind:tap="onViewCalendar">
+          <text class="action-btn-text">📆 查看打卡日历</text>
+        </view>
+        <view class="action-btn action-btn--outline" bind:tap="onRefresh">
+          <text class="action-btn-text action-btn-text--outline">🔄 刷新数据</text>
+        </view>
+      </view>
+
+      <view class="bottom-safe-area" />
+    </view>
   </view>
 </scroll-view>
-

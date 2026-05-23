@@ -4,5 +4,120 @@
 }
 
 .page-content {
-  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  padding: 0 32rpx 48rpx 32rpx;
+}
+
+/* ===== 骨架屏 ===== */
+.skeleton-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  padding-top: 8rpx;
+}
+
+.skeleton-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 120rpx;
+  padding: 24rpx;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+}
+
+.skeleton-block {
+  height: 28rpx;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-divider);
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ===== 空状态 ===== */
+.empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 32rpx;
+}
+
+.empty-icon {
+  font-size: 96rpx;
+  line-height: 1;
+  margin-bottom: var(--space-md);
+}
+
+.empty-text {
+  font-size: var(--font-body);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* ===== 收藏卡片列表 ===== */
+.fav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  padding-top: 8rpx;
+}
+
+.fav-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 112rpx;
+  padding: 0 24rpx;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.fav-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  flex: 1;
+  min-width: 0;
+  padding-right: 16rpx;
+}
+
+.fav-card-id {
+  font-size: var(--font-body);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fav-time {
+  font-size: var(--font-tag);
+  color: var(--color-text-hint);
+}
+
+.fav-remove-btn {
+  flex-shrink: 0;
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #FEE2E2;
+}
+
+.fav-remove-icon {
+  font-size: 28rpx;
+  line-height: 1;
+  color: var(--color-error);
 }

@@ -8,12 +8,9 @@ Page({
     userName: '未登录',
     userLevel: '点击登录',
     avatarText: '?',
-    learnedCards: '--/--',
-    accuracyRate: '--%',
-    streakDays: '--天',
     masteredCount: 0,
-    accuracy: 0,
-    streak: 0
+    accuracyRate: '--%',
+    streakDays: '--天'
   },
 
   onLoad() {
@@ -38,13 +35,8 @@ Page({
     if (userInfo) {
       var nickName = userInfo.nickName || userInfo.nickname || '用户'
       var firstChar = nickName.charAt(0).toUpperCase()
-      var levelText = ''
-
-      if (userInfo.level || userInfo.user_level) {
-        var lvl = userInfo.level || userInfo.user_level
-        levelText = 'Lv.' + lvl + ' · '
-      }
-      levelText += (userInfo.title || '编程学习者')
+      var level = userInfo.level || userInfo.user_level || 1
+      var levelText = 'Lv.' + level + ' · 编程学习者'
 
       this.setData({
         userInfo: userInfo,
@@ -60,32 +52,21 @@ Page({
 
     learnApi.getProgress().then(function (res) {
       var progress = res.data || {}
-      var learned = progress.learned || 0
-      var total = progress.total || 0
-      var accuracy = progress.accuracy || 0
-      var streak = progress.streak_days || progress.current_streak || 0
+      var mastered = progress.mastered || 0
+      var streak = progress.current_streak || 0
 
       that.setData({
-        learnedCards: learned + '/' + total,
-        accuracyRate: accuracy + '%',
-        streakDays: streak + '天',
-        masteredCount: learned,
-        accuracy: accuracy,
-        streak: streak
+        masteredCount: mastered,
+        streakDays: streak > 0 ? streak + '天' : '--天'
       })
     }).catch(function () {})
 
     learnApi.getQuizStats().then(function (res) {
-      var stats = res.data || {}
-      var accuracy = stats.total_questions > 0
-        ? Math.round((stats.correct_count / stats.total_questions) * 100)
-        : (stats.accuracy || 0)
-      var streak = stats.current_streak || stats.streak_days || 0
+      var quizStats = res.data || {}
+      var accuracy = quizStats.accuracy || 0
 
       that.setData({
-        accuracy: accuracy,
-        streak: streak,
-        streakDays: streak + '天'
+        accuracyRate: accuracy + '%'
       })
     }).catch(function () {})
   },
@@ -110,9 +91,5 @@ Page({
     if (url) {
       wx.navigateTo({ url: url })
     }
-  },
-
-  onSettingsTap() {
-    wx.navigateTo({ url: '/pages/profile/settings' })
   }
 })
