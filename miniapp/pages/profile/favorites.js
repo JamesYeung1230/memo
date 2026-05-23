@@ -31,6 +31,8 @@ Page({
 
       // 获取每项收藏卡片的标题
       var detailPromises = favorites.map(function (item) {
+        // 先格式化时间
+        item.displayTime = that.formatTime(item.created_at)
         return learnApi.getCardDetail(item.card_id).then(function (detailRes) {
           var cardData = detailRes.data || detailRes
           item.cardTitle = cardData.title || cardData.concept || cardData.core_concept || ('卡片 #' + item.card_id)
@@ -85,5 +87,25 @@ Page({
 
   onRefresh() {
     this.fetchFavorites()
+  },
+
+  formatTime(timeStr) {
+    if (!timeStr) return ''
+    try {
+      var iso = timeStr.replace(' ', 'T')
+      var date = new Date(iso)
+      if (isNaN(date.getTime())) {
+        date = new Date(timeStr)
+      }
+      if (isNaN(date.getTime())) return timeStr
+      var y = date.getFullYear()
+      var m = (date.getMonth() + 1).toString().padStart(2, '0')
+      var d = date.getDate().toString().padStart(2, '0')
+      var h = date.getHours().toString().padStart(2, '0')
+      var min = date.getMinutes().toString().padStart(2, '0')
+      return y + '-' + m + '-' + d + ' ' + h + ':' + min
+    } catch (e) {
+      return timeStr
+    }
   }
 })

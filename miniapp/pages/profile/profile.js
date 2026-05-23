@@ -61,6 +61,13 @@ Page({
         userLevel: levelText,
         avatarText: firstChar
       })
+    } else {
+      // 已登录但userInfo为null时仍显示合理占位
+      this.setData({
+        userName: '用户',
+        userLevel: '已登录',
+        avatarText: 'U'
+      })
     }
   },
 

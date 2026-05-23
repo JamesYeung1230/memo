@@ -27,7 +27,7 @@
       >
         <view class="fav-info">
           <text class="fav-card-id">{{item.cardTitle}}</text>
-          <text class="fav-time">{{item.created_at}}</text>
+          <text class="fav-time">{{item.displayTime}}</text>
         </view>
         <view
           class="fav-remove-btn"

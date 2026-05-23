@@ -87,12 +87,6 @@ Page({
 
     this._checkedDays = checkedDays
 
-    this.setData({
-      // 本月已打卡天数 = 当月格子中 checked=true 的数量
-      totalDays: count,
-      currentStreak: 0
-    })
-
     this.buildCalendarDays()
   },
 
@@ -115,11 +109,14 @@ Page({
     }
 
     // 当月日期格
+    var checkedCount = 0
     for (var d = 1; d <= daysInMonth; d++) {
       var isToday = year === today.getFullYear() && month === today.getMonth() + 1 && d === today.getDate()
+      var checked = !!checkedDays[d]
+      if (checked) checkedCount++
       days.push({
         day: d,
-        checked: !!checkedDays[d],
+        checked: checked,
         isToday: isToday,
         isEmpty: false
       })
@@ -132,6 +129,8 @@ Page({
 
     this.setData({
       days: days,
+      // 从 days 数组重新统计确保与网格一致
+      totalDays: checkedCount,
       _loading: false
     })
   },
