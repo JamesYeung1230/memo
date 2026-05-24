@@ -1,0 +1,86 @@
+<navigation-bar title="单题解析" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<view class="page-wrapper">
+  <scroll-view class="page-scroll" scroll-y type="list">
+    <view class="page-content">
+
+      <!-- 加载骨架 -->
+      <loading-skeleton wx:if="{{_loading}}" count="2" type="card"></loading-skeleton>
+
+      <!-- 空状态 -->
+      <empty-state
+        wx:elif="{{!_loading && !questionText}}"
+        icon="🔍"
+        message="无法获取题目信息"
+        actionText="返回"
+        showAction="{{true}}"
+        bind:action="onGoBack"
+      ></empty-state>
+
+      <!-- 解析内容 -->
+      <view wx:else class="analysis-container">
+
+        <!-- 题目文本 -->
+        <view class="analysis-question">
+          <text class="analysis-question-label">题目</text>
+          <text class="analysis-question-text">{{questionText}}</text>
+        </view>
+
+        <!-- 回答结果标识 -->
+        <view class="analysis-result {{isCorrect ? 'analysis-result--correct' : 'analysis-result--wrong'}}">
+          <text class="analysis-result-icon">{{isCorrect ? '✓' : '✗'}}</text>
+          <text class="analysis-result-text">{{isCorrect ? '回答正确' : '回答错误'}}</text>
+        </view>
+
+        <!-- 选项列表 -->
+        <view class="analysis-options">
+          <text class="analysis-section-label">选项</text>
+          <view
+            class="analysis-option-item"
+            wx:for="{{options}}"
+            wx:for-item="opt"
+            wx:key="letter"
+          >
+            <view class="analysis-option-row {{opt.isSelected && opt.isCorrect ? 'analysis-option-row--correct-selected' : ''}} {{opt.isSelected && !opt.isCorrect ? 'analysis-option-row--wrong-selected' : ''}} {{!opt.isSelected && opt.isCorrect ? 'analysis-option-row--correct-unselected' : ''}} {{!opt.isSelected && !opt.isCorrect ? 'analysis-option-row--default' : ''}}">
+
+              <!-- 序号 -->
+              <view class="analysis-option-letter {{opt.isSelected && opt.isCorrect ? 'analysis-option-letter--correct' : ''}} {{opt.isSelected && !opt.isCorrect ? 'analysis-option-letter--wrong' : ''}} {{!opt.isSelected && opt.isCorrect ? 'analysis-option-letter--show-correct' : ''}}">
+                <text>{{opt.letter}}</text>
+              </view>
+
+              <!-- 选项文本 -->
+              <text class="analysis-option-text">{{opt.text}}</text>
+
+              <!-- 状态标识 -->
+              <text wx:if="{{opt.isSelected && opt.isCorrect}}" class="analysis-option-badge analysis-option-badge--correct">正确</text>
+              <text wx:elif="{{opt.isSelected && !opt.isCorrect}}" class="analysis-option-badge analysis-option-badge--wrong">错误</text>
+              <text wx:elif="{{!opt.isSelected && opt.isCorrect}}" class="analysis-option-badge analysis-option-badge--missed">正确答案</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 正确答案 -->
+        <view class="analysis-answer" wx:if="{{correctAnswer}}">
+          <text class="analysis-section-label">正确答案</text>
+          <text class="analysis-answer-text">{{correctAnswer}}</text>
+        </view>
+
+        <!-- 解析内容 -->
+        <view class="analysis-explanation" wx:if="{{explanation}}">
+          <text class="analysis-section-label">解析</text>
+          <view class="analysis-explanation-box">
+            <text class="analysis-explanation-text">{{explanation}}</text>
+          </view>
+        </view>
+
+        <!-- 返回按钮 -->
+        <view class="analysis-action">
+          <view class="analysis-action-btn" bind:tap="onGoBack">
+            <text class="analysis-action-btn-text">返回</text>
+          </view>
+        </view>
+
+      </view>
+
+    </view>
+  </scroll-view>
+</view>

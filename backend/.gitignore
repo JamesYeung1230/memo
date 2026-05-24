@@ -32,9 +32,17 @@ tmp/
 temp/
 *.tmp
 
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
 # Coverage
 coverage/
 *.coverprofile
+
+# SSH keys for VM access (used by sync-backend.sh in Trae sandbox)
+.ssh/
 
 # Certificates
 *.pem

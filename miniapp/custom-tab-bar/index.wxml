@@ -1,0 +1,15 @@
+<view class="tab-bar">
+  <view class="tab-pill">
+    <view class="tab-indicator" style="left: {{indicatorLeft}}px; width: {{indicatorWidth}}px;"></view>
+    <view
+      wx:for="{{list}}"
+      wx:key="index"
+      class="tab-item"
+      data-index="{{index}}"
+      bind:tap="onTabTap"
+    >
+      <text class="tab-icon {{activeIndex === index ? 'tab-icon--active' : ''}}">{{activeIndex === index ? item.selectedIcon : item.icon}}</text>
+      <text class="tab-label {{activeIndex === index ? 'tab-label--active' : ''}}">{{item.text}}</text>
+    </view>
+  </view>
+</view>

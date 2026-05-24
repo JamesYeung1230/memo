@@ -1,0 +1,145 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg-page);
+}
+
+.filter-bar {
+  padding: 16rpx 32rpx;
+  background-color: var(--color-bg-page);
+}
+
+.filter-tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 12rpx;
+}
+
+.filter-tab {
+  padding: 12rpx 24rpx;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-card);
+}
+
+.filter-tab--active {
+  background-color: var(--color-primary);
+}
+
+.filter-tab-text {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+.filter-tab-text--active {
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+}
+
+.loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+}
+
+.empty-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.empty-text {
+  color: var(--color-text-hint);
+  font-size: var(--font-body);
+}
+
+.list-scroll {
+  flex: 1;
+  height: 0;
+}
+
+.record-list {
+  padding: 0 32rpx 32rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 2rpx;
+}
+
+.record-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+}
+
+.record-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  flex: 1;
+}
+
+.record-action {
+  font-size: 28rpx;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.record-desc {
+  font-size: 22rpx;
+  color: var(--color-text-hint);
+}
+
+.record-time {
+  font-size: 20rpx;
+  color: var(--color-text-hint);
+}
+
+.record-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4rpx;
+}
+
+.record-points {
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.points-positive {
+  color: var(--color-primary);
+}
+
+.points-negative {
+  color: var(--color-error);
+}
+
+.record-balance {
+  font-size: 20rpx;
+  color: var(--color-text-hint);
+}
+
+.load-more-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx 0;
+}
+
+.no-more-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 0;
+}
+
+.no-more-text {
+  font-size: 24rpx;
+  color: var(--color-text-hint);
+}

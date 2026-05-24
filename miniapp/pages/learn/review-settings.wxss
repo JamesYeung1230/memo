@@ -1,0 +1,241 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg-page);
+  overflow: hidden;
+}
+
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+}
+
+.settings-section {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.section-title {
+  color: var(--color-text-primary);
+  font-size: var(--font-h2);
+  font-weight: 600;
+}
+
+.section-desc {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+  margin-top: -8rpx;
+}
+
+.section-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-row-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+/* 表单条目 */
+.form-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-item-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-label {
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+}
+
+.form-value {
+  color: var(--color-primary);
+  font-size: var(--font-body-bold);
+  font-weight: 600;
+}
+
+/* 间隔网格 */
+.interval-grid {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+}
+
+.interval-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  background-color: var(--color-bg-page);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.interval-label {
+  color: var(--color-text-secondary);
+  font-size: var(--font-caption);
+}
+
+.interval-control {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.interval-btn {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background-color: var(--color-bg-card);
+  border: 2rpx solid var(--color-divider);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.interval-btn-text {
+  color: var(--color-text-primary);
+  font-size: 36rpx;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.interval-input {
+  width: 72rpx;
+  height: 64rpx;
+  text-align: center;
+  color: var(--color-text-primary);
+  font-size: var(--font-h2);
+  font-weight: 600;
+  background-color: transparent;
+}
+
+.interval-unit {
+  color: var(--color-text-hint);
+  font-size: var(--font-caption);
+}
+
+/* 节点标签 */
+.node-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.node-tag {
+  padding: 12rpx 28rpx;
+  border-radius: 9999rpx;
+  background-color: var(--color-bg-page);
+  border: 2rpx solid var(--color-divider);
+}
+
+.node-tag--active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.node-tag-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body);
+}
+
+.node-tag-text--active {
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+}
+
+/* 开关行 */
+.switch-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch-row-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.switch-desc {
+  color: var(--color-text-hint);
+  font-size: var(--font-caption);
+}
+
+/* 操作按钮 */
+.settings-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.save-btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+}
+
+.save-btn::after {
+  border: none;
+}
+
+.save-btn-text {
+  color: var(--color-text-on-primary);
+  font-size: var(--font-h1);
+  font-weight: 600;
+}
+
+.reset-btn {
+  width: 100%;
+  height: 88rpx;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  border: 2rpx solid var(--color-divider);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.reset-btn::after {
+  border: none;
+}
+
+.reset-btn-text {
+  color: var(--color-text-secondary);
+  font-size: var(--font-body);
+}

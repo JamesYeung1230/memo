@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.pytest_cache/
+htmlcov/
+*.egg-info/
+dist/
+.pip_fix/

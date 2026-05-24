@@ -8,16 +8,21 @@
 
 ## 项目状态
 
-🔴 **项目初始化** — 当前处于项目初始化阶段，已完成 PRD 文档初稿，尚未开始工程开发。
+🟡 **项目初始化（技术选型已完成）** — 已完成 PRD、技术可行性分析和前端开发规范文档，准备进入工程搭建阶段。
 
 ## 目录结构
 
 ```
 webapp/
-├── project.md                 # 项目总览（里程碑、规范、原则）
-├── README.md                  # 本文件
+├── .trae/
+│   └── rules/
+│       └── project_rules.md     # 项目开发规则锚点（核心文件，每次开发前必读）
+├── project.md                   # 项目总览（里程碑、规范、原则）
+├── README.md                    # 本文件
 └── docs/
-    └── PRD.md                 # Web 管理端产品需求规格说明书
+    ├── PRD.md                   # Web 管理端产品需求规格说明书
+    ├── 技术可行性分析报告.md      # 技术选型与架构设计
+    └── 前端技术开发指导及规范.md   # 前端开发详细规范指南
 ```
 
 ## 关联项目
@@ -29,8 +34,11 @@ webapp/
 
 ## 相关文档
 
+- [项目开发规则锚点](./.trae/rules/project_rules.md) — **🔴 每次开发前必读**
 - [Web 管理端 PRD](./docs/PRD.md)
 - [小程序 PRD](../miniapp/docs/PRD.md)
+- [技术可行性分析报告](./docs/技术可行性分析报告.md)
+- [前端技术开发指导及规范](./docs/前端技术开发指导及规范.md)
 - [项目总览与开发规范](./project.md)
 
 ## 核心功能模块
@@ -46,8 +54,17 @@ webapp/
 
 ## 技术栈
 
-待确定（Web 前端框架 + UI 组件库）
+| 类别 | 技术 |
+|------|------|
+| 框架 | React 19 + TypeScript |
+| 构建 | Vite 6 |
+| UI 库 | Ant Design 5.x |
+| 状态管理 | TanStack React Query + Zustand |
+| 表单 | React Hook Form + Zod |
+| 图表 | Apache ECharts |
+| 富文本 | Tiptap |
+| 拖拽 | @dnd-kit |
+| HTTP | Axios |
+| 样式 | Tailwind CSS 4 |
 
-## 快速开始
-
-> 项目初始化阶段，开发环境搭建指南将在技术选型后补充。
+> 详细技术选型见 [技术可行性分析报告](./docs/技术可行性分析报告.md)、完整开发规范见 [前端技术开发指导及规范](./docs/前端技术开发指导及规范.md)

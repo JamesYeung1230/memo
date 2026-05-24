@@ -1,0 +1,77 @@
+<navigation-bar title="今日复习" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="page-wrapper">
+  <!-- 加载骨架 -->
+  <loading-skeleton wx:if="{{_loading}}" count="3" type="card"></loading-skeleton>
+
+  <!-- 空状态 -->
+  <empty-state
+    wx:elif="{{!_loading && reviews.length === 0}}"
+    icon="🎉"
+    message="今日复习已完成！"
+    actionText="刷新"
+    showAction="{{true}}"
+    bind:action="fetchReviewToday"
+  ></empty-state>
+
+  <!-- 复习列表 -->
+  <scroll-view wx:else class="page-scroll" scroll-y type="list" refresher-enabled="{{true}}" refresher-triggered="{{_loading}}" bind:refresherrefresh="fetchReviewToday">
+    <view class="review-body">
+
+      <!-- 进度概览 -->
+      <view class="progress-overview">
+        <view class="progress-header">
+          <text class="progress-title">今日复习进度</text>
+          <text class="progress-percent">{{reviewProgress}}%</text>
+        </view>
+        <view class="progress-bar-track">
+          <view class="progress-bar-fill" style="width: {{reviewProgress}}%" />
+        </view>
+        <view class="progress-info">
+          <text class="progress-info-text">已完成 {{completedCount}} / {{totalCount}} 张</text>
+          <text class="progress-info-sub">每日目标 {{dailyLimit}} 张</text>
+        </view>
+      </view>
+
+      <!-- 复习卡片列表 -->
+      <view class="review-card" wx:for="{{reviews}}" wx:for-item="item" wx:key="id" data-card-id="{{item.id}}" bind:tap="onCardTap">
+        <view class="review-card-header">
+          <text class="review-card-title">{{item.title || item.concept || ''}}</text>
+          <view
+            class="review-card-status {{item.status === 'completed' ? 'review-card-status--done' : 'review-card-status--pending'}}"
+            wx:if="{{item.status}}"
+          >
+            <text class="review-card-status-text">{{item.status === 'completed' ? '已完成' : '待复习'}}</text>
+          </view>
+        </view>
+
+        <text class="review-card-concept" wx:if="{{item.concept}}">{{item.concept}}</text>
+
+        <view class="review-card-footer">
+          <view class="review-card-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+            <text
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:key="{{index}}"
+              class="review-card-tag"
+            >{{tag}}</text>
+          </view>
+
+          <view class="review-card-difficulty" wx:if="{{item.difficulty}}">
+            <text class="difficulty-dot difficulty-dot--{{item.difficulty}}" />
+            <text class="difficulty-text">{{item.difficulty === 'easy' ? '简单' : item.difficulty === 'medium' ? '中等' : '困难'}}</text>
+          </view>
+        </view>
+
+        <!-- 完成按钮 -->
+        <view class="review-card-action" data-card-id="{{item.id}}" bind:tap="onCompleteReview" catch:tap>
+          <view class="complete-btn {{item.status === 'completed' ? 'complete-btn--done' : ''}}">
+            <text class="complete-btn-text">{{item.status === 'completed' ? '已完成' : '标记完成'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="bottom-safe-area" />
+    </view>
+  </scroll-view>
+</view>

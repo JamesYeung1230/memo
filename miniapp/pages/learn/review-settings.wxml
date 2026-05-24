@@ -1,0 +1,108 @@
+<navigation-bar title="复习计划配置" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="page-wrapper">
+  <!-- 加载骨架 -->
+  <loading-skeleton wx:if="{{_loading}}" count="4" type="card"></loading-skeleton>
+
+  <!-- 配置表单 -->
+  <scroll-view wx:else class="page-scroll" scroll-y type="list">
+    <view class="settings-body">
+
+      <!-- 基础配置 -->
+      <view class="settings-section">
+        <text class="section-title">基础配置</text>
+
+        <view class="form-item">
+          <view class="form-item-header">
+            <text class="form-label">每日复习上限</text>
+            <text class="form-value">{{dailyLimit}} 题</text>
+          </view>
+          <slider
+            min="5"
+            max="100"
+            step="5"
+            value="{{dailyLimit}}"
+            bind:change="onDailyLimitChange"
+            bind:changing="onDailyLimitChange"
+            color="var(--color-primary)"
+            block-size="20"
+            activeColor="var(--color-primary)"
+          />
+        </view>
+
+        <view class="form-item">
+          <view class="form-item-header">
+            <text class="form-label">遗忘判定天数</text>
+            <text class="form-value">{{forgotDays}} 天</text>
+          </view>
+          <slider
+            min="1"
+            max="30"
+            step="1"
+            value="{{forgotDays}}"
+            bind:change="onForgotDaysChange"
+            bind:changing="onForgotDaysChange"
+            color="var(--color-primary)"
+            block-size="20"
+            activeColor="var(--color-primary)"
+          />
+        </view>
+      </view>
+
+      <!-- 复习节点 -->
+      <view class="settings-section">
+        <text class="section-title">复习时间节点</text>
+        <text class="section-desc">设置学习后第几天进行复习</text>
+
+        <view class="node-tags">
+          <view
+            wx:for="{{allNodes}}"
+            wx:key="value"
+            class="node-tag {{selectedNodes.indexOf(item.value) > -1 ? 'node-tag--active' : ''}}"
+            data-value="{{item.value}}"
+            bind:tap="onNodeToggle"
+          >
+            <text class="node-tag-text {{selectedNodes.indexOf(item.value) > -1 ? 'node-tag-text--active' : ''}}">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 开关配置 -->
+      <view class="settings-section">
+        <text class="section-title">其他设置</text>
+
+        <view class="switch-row">
+          <view class="switch-row-left">
+            <text class="form-label">周末静默</text>
+            <text class="switch-desc">周末学习时不发送通知提醒</text>
+          </view>
+          <switch
+            checked="{{silentMode}}"
+            color="var(--color-primary)"
+            bind:change="onSilentModeToggle"
+          />
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="settings-actions">
+        <button
+          class="save-btn"
+          loading="{{_saving}}"
+          disabled="{{_saving}}"
+          bind:tap="onSave"
+        >
+          <text class="save-btn-text">保存配置</text>
+        </button>
+        <button
+          class="reset-btn"
+          bind:tap="onReset"
+        >
+          <text class="reset-btn-text">恢复默认</text>
+        </button>
+      </view>
+
+      <view class="bottom-safe-area" />
+    </view>
+  </scroll-view>
+</view>

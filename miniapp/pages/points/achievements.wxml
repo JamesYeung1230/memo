@@ -1,0 +1,44 @@
+<navigation-bar title="成就徽章墙" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="page-wrapper">
+  <!-- 用户积分信息 -->
+  <view class="balance-bar" wx:if="{{!_loading}}">
+    <text class="balance-label">当前积分</text>
+    <text class="balance-amount">{{userBalance}}</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-wrap" wx:if="{{_loading}}">
+    <loading-component></loading-component>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-wrap" wx:elif="{{badges.length === 0}}">
+    <text class="empty-text">暂无成就徽章</text>
+  </view>
+
+  <!-- 徽章网格 -->
+  <scroll-view class="badge-scroll" scroll-y wx:elif="{{badges.length > 0}}" type="list">
+    <view class="badge-grid">
+      <view
+        class="badge-item"
+        wx:for="{{badges}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bind:tap="onBadgeTap"
+      >
+        <view class="badge-card {{item.unlocked ? '' : 'badge-card--locked'}}">
+          <text class="badge-icon">{{item.iconUrl}}</text>
+          <text class="badge-name {{item.unlocked ? '' : 'badge-text--muted'}}">{{item.name}}</text>
+          <text class="badge-desc {{item.unlocked ? '' : 'badge-text--muted'}}">{{item.description}}</text>
+          <view class="badge-status" wx:if="{{!item.unlocked && item.pointsRequired}}">
+            <text class="badge-status-text">需 {{item.pointsRequired}} 积分</text>
+          </view>
+          <view class="badge-status badge-status--earned" wx:elif="{{item.unlocked}}">
+            <text class="badge-status-text badge-status-text--earned">已获得</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

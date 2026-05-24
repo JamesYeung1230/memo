@@ -1,0 +1,32 @@
+.loading-spinner {
+  border: 4rpx solid var(--color-divider);
+  border-top-color: var(--color-primary);
+  border-right-color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+.loading-spinner--sm {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.loading-spinner--md {
+  width: 48rpx;
+  height: 48rpx;
+}
+
+.loading-spinner--lg {
+  width: 64rpx;
+  height: 64rpx;
+}
+
+@keyframes spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

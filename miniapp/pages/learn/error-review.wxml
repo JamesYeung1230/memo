@@ -1,0 +1,131 @@
+<navigation-bar title="错题再练" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="page-wrapper">
+  <!-- 加载骨架 -->
+  <loading-skeleton wx:if="{{_loading}}" count="3" type="card"></loading-skeleton>
+
+  <!-- 空状态 -->
+  <empty-state
+    wx:elif="{{!_loading && questions.length === 0}}"
+    icon="✅"
+    message="暂无错题"
+    actionText="返回"
+    showAction="{{true}}"
+    bind:action="onGoBack"
+  ></empty-state>
+
+  <!-- 结果页 -->
+  <view wx:elif="{{showResult}}" class="result-content">
+    <view class="result-card">
+      <view class="result-icon-wrapper">
+        <text class="result-icon">{{correctCount === totalQuestions ? '🎉' : '💪'}}</text>
+      </view>
+      <text class="result-title">{{correctCount === totalQuestions ? '全部答对！' : '练习完成'}}</text>
+      <view class="result-stats">
+        <view class="result-stat-item">
+          <text class="result-stat-num result-stat-num--correct">{{correctCount}}</text>
+          <text class="result-stat-label">答对</text>
+        </view>
+        <view class="result-stat-divider" />
+        <view class="result-stat-item">
+          <text class="result-stat-num result-stat-num--wrong">{{totalQuestions - correctCount}}</text>
+          <text class="result-stat-label">答错</text>
+        </view>
+        <view class="result-stat-divider" />
+        <view class="result-stat-item">
+          <text class="result-stat-num result-stat-num--total">{{totalQuestions}}</text>
+          <text class="result-stat-label">总题</text>
+        </view>
+      </view>
+      <view class="result-actions">
+        <button class="retry-btn" bind:tap="onRetry">
+          <text class="retry-btn-text">重新练习</text>
+        </button>
+        <button class="back-btn" bind:tap="onGoBack">
+          <text class="back-btn-text">返回错题本</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 答题内容 -->
+  <view wx:else class="quiz-content">
+    <!-- 顶部进度 -->
+    <view class="quiz-progress">
+      <progress-bar
+        percent="{{totalQuestions > 0 ? ((currentIndex + 1) / totalQuestions) * 100 : 0}}"
+        height="8"
+        color="var(--color-primary)"
+      ></progress-bar>
+      <view class="quiz-progress-info">
+        <text class="quiz-progress-text">第 {{currentIndex + 1}} / {{totalQuestions}} 题</text>
+        <text class="quiz-correct-text">正确 {{correctCount}} 题</text>
+      </view>
+    </view>
+
+    <!-- 题目区域 -->
+    <scroll-view class="quiz-scroll" scroll-y type="list">
+      <view class="quiz-body">
+
+        <!-- 题目内容 -->
+        <view class="quiz-question" wx:if="{{question}}">
+          <text class="question-label">题目</text>
+          <text class="question-text">{{question.text || ''}}</text>
+        </view>
+
+        <!-- 选项列表 -->
+        <view class="quiz-options" wx:if="{{options.length > 0}}">
+          <view
+            wx:for="{{options}}"
+            wx:for-item="opt"
+            wx:key="letter"
+            class="quiz-option-item"
+          >
+            <view
+              class="option-btn option-btn--{{opt.status}} {{opt.selected ? 'option-btn--selected' : ''}}"
+              data-index="{{index}}"
+              bind:tap="onOptionSelect"
+            >
+              <view class="option-letter option-letter--{{opt.status}} {{opt.selected ? 'option-letter--selected' : ''}}">
+                <text class="option-letter-text">{{opt.letter}}</text>
+              </view>
+              <text class="option-text">{{opt.text}}</text>
+              <text class="option-icon" wx:if="{{opt.status === 'correct'}}">✓</text>
+              <text class="option-icon" wx:elif="{{opt.status === 'wrong'}}">✗</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 反馈区域 -->
+        <view class="quiz-feedback" wx:if="{{isAnswered}}">
+          <view class="feedback-banner {{isCorrect ? 'feedback-banner--correct' : 'feedback-banner--wrong'}}">
+            <text class="feedback-icon">{{isCorrect ? '✓' : '✗'}}</text>
+            <text class="feedback-text">{{isCorrect ? '回答正确！' : '回答错误'}}</text>
+          </view>
+          <view class="feedback-answer" wx:if="{{!isCorrect && correctAnswer}}">
+            <text class="feedback-answer-label">正确答案：</text>
+            <text class="feedback-answer-text">{{correctAnswer}}</text>
+          </view>
+          <view class="feedback-explanation" wx:if="{{explanation}}">
+            <text class="feedback-explanation-label">解析：</text>
+            <text class="feedback-explanation-text">{{explanation}}</text>
+          </view>
+        </view>
+
+      </view>
+    </scroll-view>
+
+    <!-- 底部操作栏 -->
+    <view class="quiz-footer">
+      <view
+        class="next-btn {{isAnswered ? 'next-btn--active' : ''}}"
+        bind:tap="onNext"
+      >
+        <view class="next-btn-text">
+          {{currentIndex + 1 >= totalQuestions ? '查看结果' : '下一题'}}
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>

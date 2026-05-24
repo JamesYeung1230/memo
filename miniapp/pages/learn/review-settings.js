@@ -1,0 +1,129 @@
+var learnApi = require('../../api/learn')
+
+Page({
+  data: {
+    _loading: true,
+    _saving: false,
+    dailyLimit: 20,
+    forgotDays: 7,
+    silentMode: false,
+    selectedNodes: [1, 2, 4, 7],
+    allNodes: [
+      { value: 1, label: '1天' },
+      { value: 2, label: '2天' },
+      { value: 4, label: '4天' },
+      { value: 7, label: '7天' },
+      { value: 15, label: '15天' },
+      { value: 30, label: '30天' }
+    ]
+  },
+
+  onLoad() {
+    this.fetchConfig()
+  },
+
+  fetchConfig() {
+    var that = this
+    this.setData({ _loading: true })
+
+    learnApi.getReviewConfig().then(function (res) {
+      var config = res.data || {}
+
+      that.setData({
+        dailyLimit: config.daily_limit || 20,
+        forgotDays: config.forgotten_alert_days || 7,
+        silentMode: config.weekend_quiet || false,
+        selectedNodes: config.review_nodes || [1, 2, 4, 7],
+        _loading: false
+      })
+    }).catch(function () {
+      that.setData({ _loading: false })
+    })
+  },
+
+  onDailyLimitChange(e) {
+    this.setData({ dailyLimit: e.detail.value })
+  },
+
+  onDailyLimitBlur(e) {
+    var value = parseInt(e.detail.value, 10)
+    if (isNaN(value) || value < 1) value = 1
+    if (value > 100) value = 100
+    this.setData({ dailyLimit: value })
+  },
+
+  onForgotDaysChange(e) {
+    this.setData({ forgotDays: e.detail.value })
+  },
+
+  onForgotDaysBlur(e) {
+    var value = parseInt(e.detail.value, 10)
+    if (isNaN(value) || value < 1) value = 1
+    if (value > 30) value = 30
+    this.setData({ forgotDays: value })
+  },
+
+  onNodeToggle(e) {
+    var nodeValue = e.currentTarget.dataset.value
+    var selectedNodes = this.data.selectedNodes
+    var index = selectedNodes.indexOf(nodeValue)
+
+    if (index > -1) {
+      if (selectedNodes.length <= 1) {
+        wx.showToast({ title: '至少选择一个节点', icon: 'none' })
+        return
+      }
+      selectedNodes.splice(index, 1)
+    } else {
+      selectedNodes.push(nodeValue)
+      selectedNodes.sort(function (a, b) { return a - b })
+    }
+
+    this.setData({ selectedNodes: selectedNodes })
+  },
+
+  onSilentModeToggle() {
+    this.setData({ silentMode: !this.data.silentMode })
+  },
+
+  onSave() {
+    var that = this
+    this.setData({ _saving: true })
+
+    var config = {
+      daily_limit: this.data.dailyLimit,
+      forgotten_alert_days: this.data.forgotDays,
+      review_nodes: this.data.selectedNodes,
+      weekend_quiet: this.data.silentMode
+    }
+
+    learnApi.updateReviewConfig(config).then(function () {
+      wx.showToast({ title: '保存成功', icon: 'success' })
+      that.setData({ _saving: false })
+      setTimeout(function () {
+        wx.navigateBack()
+      }, 1200)
+    }).catch(function () {
+      wx.showToast({ title: '保存失败', icon: 'none' })
+      that.setData({ _saving: false })
+    })
+  },
+
+  onReset() {
+    var that = this
+    wx.showModal({
+      title: '确认重置',
+      content: '将恢复出厂默认设置，确定重置？',
+      success: function (res) {
+        if (res.confirm) {
+          learnApi.resetReviewConfig().then(function () {
+            wx.showToast({ title: '重置成功', icon: 'success' })
+            that.fetchConfig()
+          }).catch(function () {
+            wx.showToast({ title: '重置失败', icon: 'none' })
+          })
+        }
+      }
+    })
+  }
+})

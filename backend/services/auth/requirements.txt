@@ -1,0 +1,25 @@
+# ============================================================
+# Auth 服务依赖清单（port 8001）
+# 共享库 shared/ 无需在此列出，Dockerfile 中设置 PYTHONPATH
+# ============================================================
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
+sqlalchemy[asyncio]>=2.0.0
+asyncpg>=0.29.0
+alembic>=1.13.0
+
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+redis[hiredis]>=5.0.0
+
+httpx>=0.27.0
+
+PyJWT>=2.8.0
+bcrypt>=4.0.0
+
+python-dotenv>=1.0.0
+
+loguru>=0.7.0

@@ -1,0 +1,2 @@
+<view class="loading-spinner loading-spinner--{{size}}" style="{{color ? 'border-top-color: ' + color + '; border-right-color: ' + color + '; border-bottom-color: ' + color + ';' : ''}}">
+</view>

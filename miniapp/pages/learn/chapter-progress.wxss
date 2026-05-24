@@ -1,0 +1,104 @@
+.page-scroll {
+  flex: 1;
+  height: 100%;
+}
+
+.page-content {
+  padding: var(--space-md);
+}
+
+/* ===== 章节头部 ===== */
+.chapter-header {
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chapter-header-name {
+  font-size: var(--font-h2);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+/* ===== 标签卡片网格 ===== */
+.label-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.label-card {
+  flex: 0 0 calc(50% - var(--space-sm));
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg) var(--space-md);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: 6rpx solid var(--label-color, var(--color-primary));
+}
+
+.label-card-value {
+  font-size: var(--font-number);
+  font-weight: 700;
+  color: var(--label-color, var(--color-primary));
+  line-height: 1.2;
+  margin-bottom: var(--space-xs);
+}
+
+.label-card-unit {
+  font-size: var(--font-caption);
+  font-weight: 400;
+  color: var(--color-text-hint);
+  margin-left: 4rpx;
+}
+
+.label-card-name {
+  font-size: var(--font-caption);
+  color: var(--color-text-secondary);
+}
+
+/* ===== 掌握率进度条 ===== */
+.mastery-section {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.mastery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.mastery-title {
+  font-size: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.mastery-percent {
+  font-size: var(--font-h1);
+  font-weight: 700;
+}
+
+.mastery-bar {
+  height: 12rpx;
+  background: var(--color-divider);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.mastery-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}

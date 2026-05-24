@@ -1,0 +1,12 @@
+<view class="qopt {{status === 'default' && selected ? 'qopt--selected' : 'qopt--' + status}}" bind:tap="onSelect">
+  <view class="qopt__letter">
+    <text class="qopt__letter-text">{{letter}}</text>
+  </view>
+  <text class="qopt__text">{{text}}</text>
+  <view class="qopt__icon" wx:if="{{status === 'correct' || status === 'wrong'}}">
+    <text class="qopt__icon-text">{{status === 'correct' ? '✓' : '✗'}}</text>
+  </view>
+</view>
+<view class="qopt__explanation" wx:if="{{showExplanation && explanation}}">
+  <text class="qopt__explanation-text">{{explanation}}</text>
+</view>

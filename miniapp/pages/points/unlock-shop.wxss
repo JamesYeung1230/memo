@@ -1,0 +1,154 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg-page);
+}
+
+.balance-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 24rpx 32rpx;
+}
+
+.balance-label {
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+}
+
+.balance-amount {
+  font-size: 36rpx;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.empty-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160rpx 0;
+}
+
+.empty-text {
+  color: var(--color-text-hint);
+  font-size: var(--font-body);
+}
+
+.list-scroll {
+  flex: 1;
+  height: 0;
+}
+
+.unlock-list {
+  padding: 0 32rpx 32rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.unlock-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 32rpx;
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+}
+
+.unlock-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20rpx;
+  flex: 1;
+}
+
+.unlock-icon {
+  font-size: 48rpx;
+}
+
+.unlock-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.unlock-name {
+  font-size: 28rpx;
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.unlock-desc {
+  font-size: 22rpx;
+  color: var(--color-text-hint);
+}
+
+.unlock-text--muted {
+  color: var(--color-text-hint);
+}
+
+.unlock-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+}
+
+.unlock-price {
+  padding: 4rpx 0;
+}
+
+.unlock-price-text {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+}
+
+.unlock-btn {
+  padding: 12rpx 28rpx;
+  border-radius: var(--radius-full);
+}
+
+.unlock-btn--active {
+  background-color: var(--color-primary);
+}
+
+.unlock-btn--disabled {
+  background-color: var(--color-bg-page);
+}
+
+.unlock-btn-text {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.unlock-btn--active .unlock-btn-text {
+  color: var(--color-text-on-primary);
+}
+
+.unlock-btn--disabled .unlock-btn-text {
+  color: var(--color-text-hint);
+}
+
+.unlock-badge {
+  padding: 8rpx 20rpx;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+}
+
+.unlock-badge-text {
+  font-size: 22rpx;
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+}

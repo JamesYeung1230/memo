@@ -1,0 +1,83 @@
+<navigation-bar title="笔记回顾" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+
+    <!-- 加载骨架 -->
+    <loading-skeleton wx:if="{{_loading}}" count="3" type="list"></loading-skeleton>
+
+    <!-- 空状态 -->
+    <empty-state
+      wx:elif="{{!_loading && notes.length === 0}}"
+      icon="📝"
+      message="暂无待复习的笔记"
+      actionText="刷新"
+      showAction="{{true}}"
+      bind:action="onRefresh"
+    ></empty-state>
+
+    <!-- 笔记列表 -->
+    <view wx:else class="notes-container">
+
+      <!-- 统计头部 -->
+      <view class="notes-header">
+        <text class="notes-header-count">共 {{totalCount}} 条笔记待复习</text>
+      </view>
+
+      <!-- 笔记卡片列表 -->
+      <view class="notes-list">
+        <view
+          class="note-card"
+          wx:for="{{notes}}"
+          wx:key="id"
+          data-note-id="{{item.id}}"
+          data-card-id="{{item.cardId}}"
+        >
+          <!-- 标题 -->
+          <view class="note-card-header" bind:tap="onNoteTap" data-note-id="{{item.id}}" data-card-id="{{item.cardId}}">
+            <text class="note-card-title">{{item.title}}</text>
+            <text class="note-card-arrow">›</text>
+          </view>
+
+          <!-- 内容摘要 -->
+          <view class="note-card-content" wx:if="{{item.content}}" bind:tap="onNoteTap" data-note-id="{{item.id}}" data-card-id="{{item.cardId}}">
+            <text class="note-card-summary">{{item.content}}</text>
+          </view>
+
+          <!-- 笔记内容（高亮） -->
+          <view class="note-card-mynote" wx:if="{{item.noteContent}}">
+            <text class="note-card-mynote-label">我的笔记</text>
+            <view class="note-card-mynote-bubble">
+              <text class="note-card-mynote-text">{{item.noteContent}}</text>
+            </view>
+          </view>
+
+          <!-- 标签 -->
+          <view class="note-card-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+            <text
+              class="note-card-tag"
+              wx:for="{{item.tags}}"
+              wx:for-item="tag"
+              wx:key="this"
+            >{{tag}}</text>
+          </view>
+
+          <!-- 底部：下次复习时间 + 完成按钮 -->
+          <view class="note-card-footer">
+            <text class="note-card-next" wx:if="{{item.nextReview}}">
+              下次复习：{{item.nextReview}}
+            </text>
+            <view
+              class="note-card-review-btn"
+              data-card-id="{{item.cardId}}"
+              bind:tap="onReviewCard"
+            >
+              <text class="note-card-review-btn-text">完成复习</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+</scroll-view>

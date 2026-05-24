@@ -1,0 +1,59 @@
+<navigation-bar title="积分明细" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="page-wrapper">
+  <!-- 筛选标签 -->
+  <view class="filter-bar">
+    <view class="filter-tabs">
+      <view
+        class="filter-tab {{activeFilterIndex === index ? 'filter-tab--active' : ''}}"
+        wx:for="{{filterTabs}}"
+        wx:key="index"
+        data-index="{{index}}"
+        bind:tap="onFilterTabTap"
+      >
+        <text class="filter-tab-text {{activeFilterIndex === index ? 'filter-tab-text--active' : ''}}">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-wrap" wx:if="{{_loading}}">
+    <loading-component></loading-component>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-wrap" wx:elif="{{records.length === 0 && !_loading}}">
+    <text class="empty-text">暂无积分记录</text>
+  </view>
+
+  <!-- 记录列表 -->
+  <scroll-view
+    class="list-scroll"
+    scroll-y
+    wx:elif="{{records.length > 0}}"
+    bind:scrolltolower="onScrollToLower"
+    type="list"
+  >
+    <view class="record-list">
+      <view class="record-item" wx:for="{{records}}" wx:key="id">
+        <view class="record-left">
+          <text class="record-action">{{item.actionTypeLabel}}</text>
+          <text class="record-desc">{{item.description}}</text>
+          <text class="record-time">{{item.createdAt}}</text>
+        </view>
+        <view class="record-right">
+          <text class="record-points {{item.pointsClass}}">{{item.pointsText}}</text>
+          <text class="record-balance">余额 {{item.balanceAfter}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more-wrap" wx:if="{{_loadingMore}}">
+      <loading-component></loading-component>
+    </view>
+    <view class="no-more-wrap" wx:elif="{{_noMore}}">
+      <text class="no-more-text">没有更多了</text>
+    </view>
+  </scroll-view>
+</view>

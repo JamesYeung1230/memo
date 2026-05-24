@@ -1,0 +1,43 @@
+<navigation-bar title="收藏夹" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+
+    <!-- 加载骨架屏 -->
+    <view wx:if="{{_loading && favorites.length === 0}}" class="skeleton-wrap">
+      <view wx:for="{{[1,2,3,4,5]}}" wx:key="index" class="skeleton-item">
+        <view class="skeleton-block" style="width: 60%; height: 32rpx" />
+        <view class="skeleton-block" style="width: 56rpx; height: 56rpx; border-radius: 50%" />
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:elif="{{!favorites || favorites.length === 0}}" class="empty-wrap">
+      <text class="empty-icon">⭐</text>
+      <text class="empty-text">暂无收藏卡片</text>
+    </view>
+
+    <!-- 收藏卡片列表 -->
+    <view wx:else class="fav-list">
+      <view
+        wx:for="{{favorites}}"
+        wx:key="id"
+        class="fav-item"
+        data-card-id="{{item.card_id}}"
+        bind:tap="onCardTap"
+      >
+        <view class="fav-info">
+          <text class="fav-card-id">{{item.cardTitle}}</text>
+          <text class="fav-time">{{item.displayTime}}</text>
+        </view>
+        <view
+          class="fav-remove-btn"
+          data-card-id="{{item.card_id}}"
+          catch:tap="onRemoveFavorite"
+        >
+          <text class="fav-remove-icon">✕</text>
+        </view>
+      </view>
+      <view class="bottom-safe-area" />
+    </view>
+  </view>
+</scroll-view>

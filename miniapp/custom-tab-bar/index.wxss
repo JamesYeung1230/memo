@@ -1,0 +1,79 @@
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding: 8rpx 24rpx 32rpx 24rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  background-color: var(--color-bg-page);
+  border-top: 2rpx solid var(--color-divider);
+}
+
+.tab-pill {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100rpx;
+  padding: 6rpx;
+  gap: 4rpx;
+  background-color: #FFFFFF;
+  border-radius: 50rpx;
+  border: 1rpx solid var(--color-divider);
+  overflow: hidden;
+}
+
+/* 滑动指示器 */
+.tab-indicator {
+  position: absolute;
+  top: 6rpx;
+  bottom: 6rpx;
+  border-radius: 40rpx;
+  background-color: var(--color-primary);
+  box-shadow: 0 4rpx 16rpx rgba(74, 144, 217, 0.3);
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  will-change: left, width;
+}
+
+.tab-item {
+  flex: 1;
+  height: 100%;
+  border-radius: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.tab-item:active {
+  transform: scale(0.92);
+}
+
+.tab-icon {
+  font-size: 28rpx;
+  line-height: 1;
+  color: var(--color-text-hint);
+  transition: color 0.25s;
+}
+
+.tab-icon--active {
+  color: var(--color-text-on-primary);
+}
+
+.tab-label {
+  font-size: 20rpx;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-text-hint);
+  transition: color 0.25s;
+}
+
+.tab-label--active {
+  color: var(--color-text-on-primary);
+}

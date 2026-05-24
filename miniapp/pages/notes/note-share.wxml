@@ -1,0 +1,41 @@
+<navigation-bar title="笔记分享预览" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<!-- 加载中 -->
+<view wx:if="{{loading}}" class="loading-wrap">
+  <loading-spinner></loading-spinner>
+</view>
+
+<!-- 分享卡片 -->
+<scroll-view wx:elif="{{cardData}}" class="page-scroll" scroll-y type="list">
+  <view class="share-wrap">
+    <!-- 分享预览卡片 -->
+    <view class="share-card">
+      <view class="share-card-header">
+        <text class="share-card-icon">📝</text>
+        <text class="share-card-badge">笔记分享</text>
+      </view>
+
+      <text class="share-card-title">{{shareTitle}}</text>
+
+      <text class="share-card-preview">{{sharePreview}}</text>
+
+      <view wx:if="{{tags.length > 0}}" class="share-card-tags">
+        <tag wx:for="{{tags}}" wx:key="index" text="{{item}}" variant="default" size="sm"></tag>
+      </view>
+
+      <view class="share-card-footer">
+        <text class="share-card-footer-text">来自 CodeSail 知识管理</text>
+      </view>
+    </view>
+
+    <!-- 操作提示 -->
+    <view class="share-hint">
+      <text class="share-hint-text">点击右上角 "..." 转发给朋友或保存到相册</text>
+    </view>
+
+    <!-- 保存到相册按钮 -->
+    <view wx:if="{{cardData.share_image_url}}" class="share-save-btn" bind:tap="onShare">
+      <text class="share-save-btn-text">保存分享图片</text>
+    </view>
+  </view>
+</scroll-view>

@@ -1,0 +1,86 @@
+<navigation-bar title="每日挑战" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+
+<view class="page-wrapper">
+
+  <!-- 加载骨架 -->
+  <loading-skeleton wx:if="{{_loading}}" count="5" type="list"></loading-skeleton>
+
+  <!-- 挑战内容 -->
+  <view wx:else class="challenge-content">
+    <scroll-view class="challenge-scroll" scroll-y type="list">
+      <view class="challenge-body">
+
+        <!-- 顶部信息 -->
+        <view class="challenge-header">
+          <view class="challenge-info">
+            <text class="challenge-icon">🏆</text>
+            <text class="challenge-title">每日挑战</text>
+          </view>
+          <view class="challenge-progress-text">
+            <text>已答 {{answeredCount}} / {{totalQuestions}} 题</text>
+          </view>
+        </view>
+
+        <!-- 进度条 -->
+        <view class="challenge-progress-bar">
+          <progress-bar
+            percent="{{totalQuestions > 0 ? (answeredCount / totalQuestions) * 100 : 0}}"
+            height="8"
+          ></progress-bar>
+        </view>
+
+        <!-- 题目列表 -->
+        <view class="challenge-questions">
+          <view
+            class="challenge-question-item"
+            wx:for="{{questions}}"
+            wx:for-item="q"
+            wx:for-index="qIdx"
+            wx:key="id"
+          >
+            <view class="cq-header">
+              <text class="cq-number">第 {{qIdx + 1}} 题</text>
+            </view>
+
+            <view class="cq-question">
+              <text class="cq-question-text">{{q.question}}</text>
+            </view>
+
+            <view class="cq-options">
+              <view
+                wx:for="{{q.options}}"
+                wx:for-item="opt"
+                wx:key="letter"
+                class="cq-option-item"
+              >
+                <quiz-option
+                  letter="{{opt.letter}}"
+                  text="{{opt.text}}"
+                  selected="{{opt.selected}}"
+                  status="{{opt.status}}"
+                  showExplanation="{{opt.showExplanation}}"
+                  bind:select="onOptionSelect"
+                  mark:question-idx="{{qIdx}}"
+                ></quiz-option>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="challenge-gap" />
+      </view>
+    </scroll-view>
+
+    <!-- 底部提交按钮 -->
+    <view class="challenge-footer">
+      <view
+        class="submit-btn {{answeredCount === totalQuestions ? 'submit-btn--active' : ''}}"
+        bind:tap="onSubmitAll"
+      >
+        <view class="submit-btn-text">
+          {{_submitting ? '提交中...' : '提交答案'}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

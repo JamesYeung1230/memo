@@ -1,0 +1,42 @@
+.tag {
+  display: inline-flex;
+  border-radius: var(--radius-sm);
+  padding: 2rpx 8rpx;
+}
+
+.tag__text {
+  font-size: var(--font-tag);
+  font-weight: 500;
+}
+
+.tag--default {
+  background-color: var(--color-bg-page);
+}
+
+.tag--default .tag__text {
+  color: var(--color-text-secondary);
+}
+
+.tag--primary {
+  background-color: var(--color-primary-light);
+}
+
+.tag--primary .tag__text {
+  color: var(--color-primary-dark);
+}
+
+.tag--success {
+  background-color: rgba(34, 197, 94, 0.12);
+}
+
+.tag--success .tag__text {
+  color: var(--color-success);
+}
+
+.tag--warning {
+  background-color: rgba(245, 158, 11, 0.12);
+}
+
+.tag--warning .tag__text {
+  color: var(--color-warning);
+}

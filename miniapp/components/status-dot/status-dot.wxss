@@ -1,0 +1,20 @@
+.status-dot {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.status-dot__circle {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: var(--radius-full);
+  background-color: var(--dot-color);
+  flex-shrink: 0;
+}
+
+.status-dot__label {
+  margin-left: var(--space-xs);
+  font-size: var(--font-caption);
+  color: var(--color-text-secondary);
+  line-height: 1;
+}

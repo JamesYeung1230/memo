@@ -1,0 +1,4 @@
+<view class="status-dot">
+  <view class="status-dot__circle" style="--dot-color: {{dotColor}};"></view>
+  <text class="status-dot__label">{{label}}</text>
+</view>

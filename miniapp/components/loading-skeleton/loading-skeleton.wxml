@@ -1,0 +1,3 @@
+<view class="loading-skeleton loading-skeleton--{{type}}">
+  <view wx:for="{{count}}" wx:key="index" class="loading-skeleton__item loading-skeleton__item--{{type}}"></view>
+</view>

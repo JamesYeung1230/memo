@@ -1,0 +1,50 @@
+<navigation-bar title="章节学习进度" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page-content">
+
+    <!-- 加载骨架 -->
+    <loading-skeleton wx:if="{{loading}}" count="3" type="card"></loading-skeleton>
+
+    <!-- 空状态 -->
+    <empty-state
+      wx:elif="{{!loading && labels.length === 0}}"
+      icon="📖"
+      message="暂无章节数据"
+    ></empty-state>
+
+    <!-- 进度内容 -->
+    <view wx:else class="progress-container">
+
+      <!-- 章节名称标题 -->
+      <view class="chapter-header">
+        <text class="chapter-header-name">{{currentChapterName}}</text>
+      </view>
+
+      <!-- 4个数据标签卡片 -->
+      <view class="label-grid">
+        <view
+          class="label-card"
+          wx:for="{{labels}}"
+          wx:key="name"
+          style="--label-color: {{item.color || 'var(--color-primary)'}}"
+        >
+          <text class="label-card-value">{{item.value}}<text class="label-card-unit">{{item.unit}}</text></text>
+          <text class="label-card-name">{{item.name}}</text>
+        </view>
+      </view>
+
+      <!-- 掌握率进度条 -->
+      <view class="mastery-section" wx:if="{{labels.length >= 4}}">
+        <view class="mastery-header">
+          <text class="mastery-title">掌握率</text>
+          <text class="mastery-percent" style="color: {{labels[3].color}}">{{labels[3].value}}%</text>
+        </view>
+        <view class="mastery-bar">
+          <view class="mastery-bar-fill" style="width: {{labels[3].value}}%; background: {{labels[3].color || 'var(--color-primary)'}}"></view>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+</scroll-view>

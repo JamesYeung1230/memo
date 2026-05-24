@@ -1,10 +1,64 @@
-/**app.wxss**/
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+page {
+  --color-primary: #4A90D9;
+  --color-primary-light: #7AB8F5;
+  --color-primary-dark: #2D6EC9;
+  --color-secondary: #6C63FF;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-bg-page: #F5F6FA;
+  --color-bg-card: #FFFFFF;
+  --color-bg-elevated: #FFFFFF;
+  --color-text-primary: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-text-hint: #94A3B8;
+  --color-text-on-primary: #FFFFFF;
+  --color-divider: #E2E8F0;
+  --color-mask: rgba(0, 0, 0, 0.5);
+
+  --font-display: 36rpx;
+  --font-h1: 32rpx;
+  --font-h2: 28rpx;
+  --font-body: 28rpx;
+  --font-body-bold: 28rpx;
+  --font-caption: 24rpx;
+  --font-caption-bold: 24rpx;
+  --font-tag: 20rpx;
+  --font-number: 48rpx;
+
+  --space-xs: 8rpx;
+  --space-sm: 16rpx;
+  --space-md: 24rpx;
+  --space-lg: 32rpx;
+  --space-xl: 48rpx;
+
+  --radius-sm: 8rpx;
+  --radius-md: 16rpx;
+  --radius-lg: 24rpx;
+  --radius-xl: 30rpx;
+  --radius-full: 9999rpx;
+
+  --shadow-sm: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+
+  background-color: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-size: var(--font-body);
+  line-height: 1.6;
+}
+
+view {
   box-sizing: border-box;
-} 
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.bottom-safe-area {
+  height: 168rpx;
+}

@@ -1,0 +1,23 @@
+<view wx:if="{{showOverlay}}" class="modal-overlay {{entering ? 'modal-overlay--enter' : ''}} {{leaving ? 'modal-overlay--leave' : ''}}" bind:tap="onMaskTap">
+  <view
+    class="modal-dialog {{entering ? 'modal-dialog--enter' : ''}} {{leaving ? 'modal-dialog--leave' : ''}}"
+    catch:tap="noop"
+  >
+    <view wx:if="{{title}}" class="modal-title">
+      <text class="modal-title-text">{{title}}</text>
+    </view>
+
+    <view class="modal-content">
+      <text class="modal-content-text">{{content}}</text>
+    </view>
+
+    <view class="modal-footer">
+      <view wx:if="{{showCancel}}" class="modal-btn modal-btn--cancel" bind:tap="onCancel">
+        <text class="modal-btn-text">{{cancelText}}</text>
+      </view>
+      <view class="modal-btn modal-btn--confirm {{showCancel ? 'modal-btn--with-cancel' : 'modal-btn--single'}}" bind:tap="onConfirm">
+        <text class="modal-btn-text modal-btn-text--confirm">{{confirmText}}</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+<view class="progress-ring" style="width: {{size}}rpx; height: {{size}}rpx;">
+  <canvas type="2d" id="progressCanvas" class="progress-ring__canvas" style="width: {{size}}rpx; height: {{size}}rpx;"></canvas>
+  <view class="progress-ring__center">
+    <text class="progress-ring__percent">{{percent}}</text>
+    <text wx:if="{{subtitle}}" class="progress-ring__subtitle">{{subtitle}}</text>
+  </view>
+</view>

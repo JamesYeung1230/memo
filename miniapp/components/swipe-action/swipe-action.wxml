@@ -1,0 +1,20 @@
+<view class="swipe-action">
+  <view class="swipe-action__actions" style="width: {{actionButtonsWidth}}rpx;">
+    <view
+      wx:for="{{actions}}"
+      wx:key="index"
+      class="swipe-action__btn swipe-action__btn--{{item.type}}"
+      data-index="{{index}}"
+      bindtap="onActionTap"
+    >{{item.text}}</view>
+  </view>
+  <view
+    class="swipe-action__content"
+    style="transform: translateX({{translateX}}rpx); transition: {{swiping ? 'none' : 'transform 0.3s ease-out'}};"
+    bindtouchstart="onTouchStart"
+    bindtouchmove="onTouchMove"
+    bindtouchend="onTouchEnd"
+  >
+    <slot></slot>
+  </view>
+</view>

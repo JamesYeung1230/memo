@@ -1,0 +1,121 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+}
+
+.modal-overlay--enter {
+  background-color: var(--color-mask);
+}
+
+.modal-overlay--leave {
+  background-color: transparent;
+}
+
+.modal-dialog {
+  width: 560rpx;
+  max-width: 560rpx;
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-xl) var(--space-lg);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.modal-dialog--enter {
+  animation: modalEnter 250ms ease-out forwards;
+}
+
+.modal-dialog--leave {
+  animation: modalLeave 200ms ease-in forwards;
+}
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalLeave {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.modal-title {
+  text-align: center;
+}
+
+.modal-title-text {
+  font-size: var(--font-h2);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.modal-content-text {
+  font-size: var(--font-body);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+}
+
+.modal-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 0;
+  border-radius: var(--radius-md);
+  box-sizing: border-box;
+}
+
+.modal-btn--cancel {
+  background-color: var(--color-bg-page);
+}
+
+.modal-btn--confirm {
+  background-color: var(--color-primary);
+}
+
+.modal-btn--single {
+  background-color: var(--color-primary);
+}
+
+.modal-btn-text {
+  font-size: var(--font-body);
+  color: var(--color-text-secondary);
+}
+
+.modal-btn-text--confirm {
+  color: var(--color-text-on-primary);
+  font-weight: 600;
+}

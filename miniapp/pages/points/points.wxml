@@ -1,0 +1,47 @@
+<view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}">
+  <view class="nav-bar">
+    <text class="nav-title">{{navTitle}}</text>
+  </view>
+
+  <scroll-view class="page-scroll" scroll-y type="list">
+    <view class="content-scroll">
+      <view class="points-card">
+        <text class="points-label">当前积分</text>
+        <text class="points-amount">{{pointsAmount}}</text>
+        <text class="points-hint">{{pointsHint}}</text>
+      </view>
+
+      <view class="ad-card" bind:tap="onWatchAd">
+        <view class="ad-left">
+          <text class="ad-icon">{{adIcon}}</text>
+          <text class="ad-text">{{adText}}</text>
+        </view>
+        <view class="ad-btn">
+          <text class="ad-btn-text">{{adBtnText}}</text>
+        </view>
+      </view>
+
+      <view class="section-wrap">
+        <text class="section-label">{{storeLabel}}</text>
+        <view class="store-row">
+          <view class="store-item" wx:for="{{storeList}}" wx:key="index" data-index="{{index}}" bind:tap="onStoreTap">
+            <text class="store-icon">{{item.icon}}</text>
+            <text class="store-name">{{item.name}}</text>
+            <text class="store-price {{item.unlocked ? 'store-price--unlocked' : 'store-price--locked'}}">{{item.price}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-wrap">
+        <text class="section-label">{{achLabel}}</text>
+        <view class="ach-row">
+          <view class="ach-item" wx:for="{{achList}}" wx:key="index">
+            <text class="ach-icon" style="{{item.iconStyle}}">{{item.icon}}</text>
+            <text class="ach-name" style="{{item.nameStyle}}">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="bottom-safe-area" />
+    </view>
+  </scroll-view>
+</view>
