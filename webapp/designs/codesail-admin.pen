@@ -5188,8 +5188,8 @@
                       "fill": "$bg-white",
                       "cornerRadius": "$radius-sm",
                       "padding": [
-                        8,
-                        16
+                        6,
+                        20
                       ],
                       "justifyContent": "center",
                       "alignItems": "center",
@@ -5212,7 +5212,8 @@
                           "fontSize": 13,
                           "fontWeight": "600"
                         }
-                      ]
+                      ],
+                      "height": 32
                     },
                     {
                       "type": "text",
@@ -5224,8 +5225,8 @@
                       "fontSize": 13,
                       "fontWeight": "normal",
                       "padding": [
-                        8,
-                        16
+                        6,
+                        20
                       ]
                     }
                   ]
@@ -5250,8 +5251,8 @@
                       "fontSize": 14,
                       "fontWeight": "600",
                       "padding": [
-                        8,
-                        12
+                        6,
+                        20
                       ]
                     },
                     {
@@ -5261,7 +5262,7 @@
                       "width": 56,
                       "height": 2,
                       "fill": "$brand-primary",
-                      "y": 38
+                      "y": 36
                     },
                     {
                       "type": "text",
@@ -5273,8 +5274,8 @@
                       "fontSize": 14,
                       "fontWeight": "normal",
                       "padding": [
-                        8,
-                        12
+                        6,
+                        20
                       ]
                     }
                   ]
@@ -6642,7 +6643,7 @@
                   "id": "9b0cf",
                   "name": "table_sample",
                   "width": 700,
-                  "height": 220,
+                  "height": 260,
                   "fill": "$bg-white",
                   "cornerRadius": "$radius-md",
                   "layout": "vertical",
@@ -6653,7 +6654,7 @@
                       "id": "b47a3",
                       "name": "table_header",
                       "width": "fill_container",
-                      "height": 40,
+                      "height": 44,
                       "fill": "$bg-light",
                       "padding": [
                         0,
@@ -6714,10 +6715,10 @@
                       "id": "41284",
                       "name": "table_row1",
                       "width": "fill_container",
-                      "height": 40,
+                      "height": 48,
                       "padding": [
                         0,
-                        16
+                        20
                       ],
                       "fill": "#F4F2FA",
                       "justifyContent": "flex_start",
@@ -6790,11 +6791,11 @@
                       "id": "5088c",
                       "name": "table_row2",
                       "width": "fill_container",
-                      "height": 40,
+                      "height": 48,
                       "fill": "$bg-white",
                       "padding": [
                         0,
-                        16
+                        20
                       ],
                       "justifyContent": "flex_start",
                       "alignItems": "center",
@@ -6866,11 +6867,11 @@
                       "id": "93d51",
                       "name": "table_row3",
                       "width": "fill_container",
-                      "height": 40,
+                      "height": 48,
                       "fill": "#F4F2FA",
                       "padding": [
                         0,
-                        16
+                        20
                       ],
                       "justifyContent": "flex_start",
                       "alignItems": "center",
@@ -6942,7 +6943,7 @@
                       "id": "d3766",
                       "name": "table_pagination",
                       "width": "fill_container",
-                      "height": 40,
+                      "height": 44,
                       "fill": "$bg-white",
                       "stroke": "$border-default",
                       "strokeWidth": 0,
