@@ -204,6 +204,7 @@ webapp/
 │   └── /operation/review               # 复习默认配置
 │
 ├── /analytics                          # 数据看板
+│   ├── /analytics/overview             # 核心指标概览
 │   ├── /analytics/content              # 内容数据
 │   ├── /analytics/users                # 用户数据
 │   └── /analytics/revenue              # 积分与广告数据
