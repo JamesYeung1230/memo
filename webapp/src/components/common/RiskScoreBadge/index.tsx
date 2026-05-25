@@ -5,8 +5,8 @@ interface RiskScoreBadgeProps {
 }
 
 function getRiskLevel(score: number): { label: string; color: string; bg: string } {
-  if (score >= 70) return { label: '高风险', color: '#EF4444', bg: '#FEE2E2' }
-  if (score >= 40) return { label: '中风险', color: '#F59E0B', bg: '#FEF3C7' }
+  if (score >= 61) return { label: '高风险', color: '#EF4444', bg: '#FEE2E2' }
+  if (score >= 31) return { label: '中风险', color: '#F59E0B', bg: '#FEF3C7' }
   return { label: '低风险', color: '#10B981', bg: '#D1FAE5' }
 }
 

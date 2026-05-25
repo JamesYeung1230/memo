@@ -38,6 +38,7 @@ export function DataTable<T extends object>({
     current: pagination.current,
     pageSize: pagination.pageSize,
     total: pagination.total,
+    defaultPageSize: 10,
     showSizeChanger: true,
     showQuickJumper: true,
     showTotal: (total) => `共 ${total} 条`,
@@ -66,6 +67,8 @@ export function DataTable<T extends object>({
         rowKey={rowKey}
         pagination={tablePagination}
         scroll={{ x: 'max-content' }}
+        rowClassName={(_, index) => (index % 2 === 1 ? 'bg-[#F4F2FA]' : '')}
+        className="[&_.ant-table-thead>tr>th]:bg-[#F8FAFC] [&_.ant-table-thead>tr>th]:text-sm [&_.ant-table-thead>tr>th]:font-semibold [&_.ant-table-thead>tr>th]:h-12 [&_.ant-table-thead>tr>th]:px-5 [&_.ant-table-tbody>tr>td]:h-[52px] [&_.ant-table-tbody>tr>td]:px-5 [&_.ant-table-tbody>tr:hover>td]:!bg-[#F4F2FA] [&_.ant-table-pagination.ant-pagination]:h-12 [&_.ant-table-row-selected>td]:!bg-[#EEF2FF]"
       />
     </div>
   )

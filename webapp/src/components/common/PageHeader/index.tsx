@@ -1,7 +1,5 @@
-import { Button, Typography } from 'antd'
+import { Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-
-const { Title } = Typography
 
 interface PageHeaderProps {
   title: string
@@ -12,7 +10,7 @@ interface PageHeaderProps {
 export function PageHeader({ title, onAdd, extra }: PageHeaderProps) {
   return (
     <div className="flex items-center justify-between mb-6">
-      <Title level={4} style={{ margin: 0 }}>{title}</Title>
+      <h1 className="m-0 text-[28px] font-bold text-[#0F172A] leading-tight">{title}</h1>
       <div className="flex items-center gap-2">
         {extra}
         {onAdd && (

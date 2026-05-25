@@ -1,8 +1,6 @@
 import { memo } from 'react'
-import { Card, Skeleton, Typography } from 'antd'
+import { Card, Skeleton } from 'antd'
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'
-
-const { Text, Title } = Typography
 
 interface StatCardProps {
   title: string
@@ -29,32 +27,32 @@ export const StatCard = memo(function StatCard({
     <Card
       hoverable={!!onClick}
       onClick={onClick}
-      className="cursor-pointer"
+      className="cursor-pointer [&>.ant-card-body]:!p-4"
     >
       {loading ? (
         <Skeleton active paragraph={{ rows: 1 }} />
       ) : (
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Text type="secondary" className="text-sm">{title}</Text>
+            <span className="text-[13px] text-[#475569]">{title}</span>
             {icon && <span className="text-brand-primary">{icon}</span>}
           </div>
           <div className="flex items-baseline gap-1">
-            {prefix && <Text type="secondary" className="text-sm">{prefix}</Text>}
-            <Title level={3} style={{ margin: 0 }}>{value}</Title>
-            {suffix && <Text type="secondary" className="text-sm">{suffix}</Text>}
+            {prefix && <span className="text-[13px] text-[#475569]">{prefix}</span>}
+            <span className="text-[36px] font-bold text-[#0F172A] leading-none">{value}</span>
+            {suffix && <span className="text-[13px] text-[#475569]">{suffix}</span>}
           </div>
           {trend && (
             <div className="flex items-center gap-1">
               {trend.isUp ? (
-                <ArrowUpOutlined className="text-success text-xs" />
+                <ArrowUpOutlined className="text-[#10B981] text-xs" />
               ) : (
-                <ArrowDownOutlined className="text-danger text-xs" />
+                <ArrowDownOutlined className="text-[#EF4444] text-xs" />
               )}
-              <Text className={trend.isUp ? 'text-success text-xs' : 'text-danger text-xs'}>
+              <span className={trend.isUp ? 'text-[#10B981] text-xs' : 'text-[#EF4444] text-xs'}>
                 {trend.value}%
-              </Text>
-              <Text type="secondary" className="text-xs">较昨日</Text>
+              </span>
+              <span className="text-xs text-[#94A3B8]">较昨日</span>
             </div>
           )}
         </div>

@@ -26,8 +26,17 @@ export function LoadingSkeleton({ type = 'table' }: LoadingSkeletonProps) {
   }
 
   return (
-    <Card>
-      <Skeleton active paragraph={{ rows: 8 }} />
-    </Card>
+    <div className="space-y-2">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <div key={i} className="flex items-center gap-4 h-12 px-5">
+          <div className="h-4 w-4 rounded animate-pulse bg-gray-200" />
+          <div className="h-3 flex-1 rounded animate-pulse bg-gray-200" />
+          <div className="h-3 w-24 rounded animate-pulse bg-gray-200" />
+          <div className="h-3 w-20 rounded animate-pulse bg-gray-200" />
+          <div className="h-6 w-16 rounded-full animate-pulse bg-gray-200" />
+          <div className="h-3 w-24 rounded animate-pulse bg-gray-200" />
+        </div>
+      ))}
+    </div>
   )
 }

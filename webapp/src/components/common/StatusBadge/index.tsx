@@ -12,8 +12,10 @@ const statusStyles: Record<string, string> = {
   inactive: 'bg-[#FEE2E2] text-[#991B1B]',
   disabled: 'bg-[#FEE2E2] text-[#991B1B]',
   rejected: 'bg-[#FEE2E2] text-[#991B1B]',
+  auto_rejected: 'bg-[#FEE2E2] text-[#991B1B]',
   reviewing: 'bg-[#FEF3C7] text-[#92400E]',
   pending: 'bg-[#FEF3C7] text-[#92400E]',
+  pending_manual: 'bg-[#FEF3C7] text-[#92400E]',
   draft: 'bg-[#F1F5F9] text-[#475569]',
   free: 'bg-[#DBEAFE] text-[#1E40AF]',
 }
@@ -26,8 +28,10 @@ const statusLabels: Record<string, string> = {
   inactive: '下架',
   disabled: '停用',
   rejected: '驳回',
+  auto_rejected: '自动驳回',
   reviewing: '审核中',
   pending: '待处理',
+  pending_manual: '待审核',
   draft: '草稿',
   free: '免费',
 }
