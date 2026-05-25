@@ -9,7 +9,7 @@ export const ROUTE_PATHS = {
 
   CONTENT_DOMAINS: '/content/domains',
   CONTENT_CHAPTERS: '/content/domains/:id/chapters',
-  CONTENT_CARDS: '/content/chapters/:id/cards',
+  CONTENT_CARDS: '/content/cards',
   CONTENT_QUESTIONS: '/content/questions',
 
   OPERATION_POINTS: '/operation/points',

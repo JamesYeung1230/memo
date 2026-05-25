@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Menu } from 'antd'
 import {
@@ -53,24 +54,14 @@ const menuItems = [
     ],
   },
   {
-    key: 'analytics',
+    key: ROUTE_PATHS.ANALYTICS_OVERVIEW,
     icon: <BarChartOutlined />,
     label: '数据看板',
-    children: [
-      { key: ROUTE_PATHS.ANALYTICS_OVERVIEW, label: '核心指标' },
-      { key: ROUTE_PATHS.ANALYTICS_CONTENT, label: '内容数据' },
-      { key: ROUTE_PATHS.ANALYTICS_USERS, label: '用户数据' },
-      { key: ROUTE_PATHS.ANALYTICS_REVENUE, label: '积分与广告' },
-    ],
   },
   {
-    key: 'users',
+    key: ROUTE_PATHS.USERS,
     icon: <UserOutlined />,
     label: '用户管理',
-    children: [
-      { key: ROUTE_PATHS.USERS, label: '用户列表' },
-      { key: ROUTE_PATHS.USER_DETAIL, label: '用户详情' },
-    ],
   },
   {
     key: 'system',
@@ -83,14 +74,30 @@ const menuItems = [
   },
 ]
 
+/** 获取给定路径对应的所有父菜单 key */
+function getParentKeys(pathname: string): string[] {
+  return menuItems
+    .filter((item) => item.children?.some((child) => child.key === pathname))
+    .map((item) => item.key)
+}
+
 export function Sidebar() {
   const navigate = useNavigate()
   const location = useLocation()
-
   const selectedKey = location.pathname
-  const openKeys = menuItems
-    .filter((item) => item.children?.some((child) => child.key === selectedKey))
-    .map((item) => item.key)
+
+  const [openKeys, setOpenKeys] = useState<string[]>(() => getParentKeys(selectedKey))
+
+  // 路由变化时自动展开对应的父菜单（不覆盖用户手动折叠）
+  useEffect(() => {
+    const keys = getParentKeys(location.pathname)
+    if (keys.length > 0) {
+      setOpenKeys((prev) => {
+        const merged = new Set([...prev, ...keys])
+        return Array.from(merged)
+      })
+    }
+  }, [location.pathname])
 
   return (
     <div className="flex flex-col h-full" style={{ background: '#160C57' }}>
@@ -101,7 +108,8 @@ export function Sidebar() {
         theme="dark"
         mode="inline"
         selectedKeys={[selectedKey]}
-        defaultOpenKeys={openKeys}
+        openKeys={openKeys}
+        onOpenChange={setOpenKeys}
         items={menuItems}
         onClick={({ key }) => navigate(key)}
         style={{ background: 'transparent', borderInlineEnd: 'none' }}

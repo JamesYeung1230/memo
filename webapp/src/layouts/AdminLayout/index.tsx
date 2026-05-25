@@ -13,7 +13,7 @@ export function AdminLayout() {
       </Sider>
       <Layout>
         <Header />
-        <Content className="overflow-auto p-6" style={{ maxWidth: 1280 }}>
+        <Content className="overflow-auto p-4 lg:p-6">
           <Outlet />
         </Content>
       </Layout>

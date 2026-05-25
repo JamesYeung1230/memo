@@ -2,6 +2,7 @@ import { memo } from 'react'
 
 interface RiskScoreBadgeProps {
   score: number
+  type?: string
 }
 
 function getRiskLevel(score: number): { label: string; color: string; bg: string } {
@@ -10,7 +11,7 @@ function getRiskLevel(score: number): { label: string; color: string; bg: string
   return { label: '低风险', color: '#10B981', bg: '#D1FAE5' }
 }
 
-export const RiskScoreBadge = memo(function RiskScoreBadge({ score }: RiskScoreBadgeProps) {
+export const RiskScoreBadge = memo(function RiskScoreBadge({ score, type }: RiskScoreBadgeProps) {
   const { label, color, bg } = getRiskLevel(score)
   return (
     <span
@@ -18,7 +19,7 @@ export const RiskScoreBadge = memo(function RiskScoreBadge({ score }: RiskScoreB
       style={{ color, background: bg }}
     >
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: color }} />
-      {label}
+      {type || label}
       <span>{score}分</span>
     </span>
   )
