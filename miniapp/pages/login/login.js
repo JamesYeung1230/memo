@@ -2,7 +2,8 @@ var authApi = require('../../api/auth')
 
 Page({
   data: {
-    isLogging: false
+    isLogging: false,
+    privacyAgreed: false
   },
 
   onLoad() {},
@@ -13,6 +14,26 @@ Page({
     if (app.globalData.isLoggedIn) {
       wx.reLaunch({ url: '/pages/home/home' })
     }
+  },
+
+  togglePrivacyAgreed() {
+    this.setData({ privacyAgreed: !this.data.privacyAgreed })
+  },
+
+  onPrivacyTap() {
+    wx.showModal({
+      title: '隐私政策',
+      content: '本应用（"码上启航"）重视您的隐私。我们仅收集您的微信昵称和头像用于展示个人资料，以及您的学习记录（答题、笔记、积分等）用于提供学习服务。我们不会将您的个人信息用于任何其他目的或分享给第三方。详细内容请访问我们的官方网站。',
+      showCancel: false,
+    })
+  },
+
+  onAgreementTap() {
+    wx.showModal({
+      title: '用户服务协议',
+      content: '欢迎使用码上启航。本应用提供编程知识学习、答题练习、记忆强化等学习服务。用户应遵守相关法律法规，不得利用本应用从事违法违规活动。我们保留更新本协议条款的权利。继续使用即表示您接受更新后的条款。',
+      showCancel: false,
+    })
   },
 
   handleLogin() {

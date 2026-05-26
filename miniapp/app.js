@@ -82,7 +82,7 @@ App({
     wx.removeStorageSync('token')
     wx.removeStorageSync('refreshToken')
     wx.removeStorageSync('userInfo')
-    wx.reLaunch({ url: '/pages/login/login' })
+    wx.reLaunch({ url: '/pages/home/home' })
   },
 
   /**

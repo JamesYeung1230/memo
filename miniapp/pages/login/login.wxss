@@ -54,3 +54,46 @@
   color: var(--color-text-hint);
   font-size: var(--font-caption);
 }
+
+.privacy-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  padding: 0 40rpx;
+  flex-wrap: wrap;
+}
+
+.checkbox-box {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 6rpx;
+  border: 2rpx solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.checkbox-checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.checkbox-icon {
+  color: #FFFFFF;
+  font-size: 20rpx;
+  font-weight: 700;
+}
+
+.privacy-label {
+  color: var(--color-text-hint);
+  font-size: var(--font-caption);
+}
+
+.privacy-link {
+  color: var(--color-primary);
+  font-size: var(--font-caption);
+  text-decoration: underline;
+}

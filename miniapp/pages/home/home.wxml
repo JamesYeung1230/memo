@@ -3,6 +3,20 @@
     <text class="nav-title">{{navTitle}}</text>
   </view>
 
+  <!-- 游客登录提示 -->
+  <view wx:if="{{_isGuest}}" class="guest-login-bar" bind:tap="onGuestLoginTap">
+    <view class="guest-login-content">
+      <text class="guest-login-icon">👤</text>
+      <view class="guest-login-info">
+        <text class="guest-login-title">登录后同步学习数据</text>
+        <text class="guest-login-sub">一键微信登录，云端保存进度</text>
+      </view>
+      <view class="guest-login-btn">
+        <text class="guest-login-btn-text">登录</text>
+      </view>
+    </view>
+  </view>
+
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="content-scroll">
       <view class="banner" bind:tap="onBannerTap">

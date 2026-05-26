@@ -4,6 +4,7 @@ var pointsApi = require('../../api/points')
 Page({
   data: {
     _pageEnter: true,
+    _isGuest: true,
     navTitle: '码上启航',
     bannerText: '新知识领域上线！',
     ringPercent: '0%',
@@ -31,17 +32,16 @@ Page({
   },
 
   onLoad() {
-    this.loadHomeData()
-    this.loadRecommendedCard()
+    var app = getApp()
+    var loggedIn = app.globalData.isLoggedIn
+    this.setData({ _isGuest: !loggedIn })
+    if (loggedIn) {
+      this.loadHomeData()
+      this.loadRecommendedCard()
+    }
   },
 
   onShow() {
-    var app = getApp()
-    if (!app.globalData.isLoggedIn) {
-      wx.reLaunch({ url: '/pages/login/login' })
-      return
-    }
-
     if (this._hasShown) {
       this.setData({ _pageEnter: false }, function () {
         this.setData({ _pageEnter: true })
@@ -50,7 +50,13 @@ Page({
       this._hasShown = true
     }
 
-    this.loadHomeData()
+    var app = getApp()
+    var loggedIn = app.globalData.isLoggedIn
+    this.setData({ _isGuest: !loggedIn })
+    if (loggedIn) {
+      this.loadHomeData()
+      this.loadRecommendedCard()
+    }
   },
 
   loadHomeData() {
@@ -132,6 +138,10 @@ Page({
   },
 
   onBannerTap() {},
+
+  onGuestLoginTap() {
+    wx.navigateTo({ url: '/pages/login/login' })
+  },
 
   onReviewTap() {
     wx.navigateTo({ url: '/pages/learn/review-today' })

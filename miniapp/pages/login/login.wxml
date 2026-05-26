@@ -6,9 +6,17 @@
     <text class="app-title">码上启航 CodeSail</text>
     <text class="subtitle">让非开发者掌握编程基础</text>
     <text class="subtitle">从而更好地用AI写代码</text>
-    <view class="btn-wrapper">
-      <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" bind:click="handleLogin" />
+    <view class="privacy-checkbox" bind:tap="togglePrivacyAgreed">
+      <view class="checkbox-box {{privacyAgreed ? 'checkbox-checked' : ''}}">
+        <text wx:if="{{privacyAgreed}}" class="checkbox-icon">✓</text>
+      </view>
+      <text class="privacy-label">我已阅读并同意</text>
+      <text class="privacy-link" catch:tap="onPrivacyTap">《隐私政策》</text>
+      <text class="privacy-label">及</text>
+      <text class="privacy-link" catch:tap="onAgreementTap">《用户服务协议》</text>
     </view>
-    <text class="privacy-text">登录即表示同意《隐私政策》《用户协议》</text>
+    <view class="btn-wrapper">
+      <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" disabled="{{!privacyAgreed}}" bind:click="handleLogin" />
+    </view>
   </view>
 </scroll-view>

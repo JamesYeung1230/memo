@@ -100,7 +100,7 @@ Page({
       wx.navigateTo({ url: '/pages/login/login' })
       return
     }
-    wx.showToast({ title: '个人资料', icon: 'none' })
+    wx.navigateTo({ url: '/pages/profile/general-settings' })
   },
 
   onMenuTap(e) {

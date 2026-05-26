@@ -26,6 +26,58 @@
   font-weight: 600;
 }
 
+/* 游客登录提示条 */
+.guest-login-bar {
+  margin: 16rpx 32rpx;
+  padding: 20rpx 24rpx;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-primary) 100%);
+  border-radius: 16rpx;
+}
+
+.guest-login-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.guest-login-icon {
+  font-size: 48rpx;
+  flex-shrink: 0;
+}
+
+.guest-login-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.guest-login-title {
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.guest-login-sub {
+  color: rgba(255,255,255,0.8);
+  font-size: 22rpx;
+}
+
+.guest-login-btn {
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 32rpx;
+  padding: 12rpx 32rpx;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+
+.guest-login-btn-text {
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
 .content-scroll {
   flex: 1;
   display: flex;

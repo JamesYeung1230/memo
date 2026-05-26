@@ -101,7 +101,7 @@ function redirectToLogin() {
   if (hasRedirected) return
   hasRedirected = true
   clearToken()
-  wx.reLaunch({ url: '/pages/login/login' })
+  wx.reLaunch({ url: '/pages/home/home' })
 }
 
 // ==================== 核心请求方法 ====================
