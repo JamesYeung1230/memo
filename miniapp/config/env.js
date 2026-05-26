@@ -9,7 +9,7 @@ const ENV = {
 }
 
 // 当前环境：开发时使用 DEV，上线前改为 PROD
-const currentEnv = ENV.PROD
+const currentEnv = ENV.DEV
 
 const API_BASE = {
   [ENV.DEV]: {
