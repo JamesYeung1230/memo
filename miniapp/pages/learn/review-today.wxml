@@ -1,4 +1,4 @@
-<navigation-bar title="今日复习" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="今日复习">
 
 <view class="page-wrapper">
   <!-- 加载骨架 -->

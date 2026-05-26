@@ -1,4 +1,4 @@
-<navigation-bar title="笔记分享预览" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="分享笔记">
 
 <!-- 加载中 -->
 <view wx:if="{{loading}}" class="loading-wrap">

@@ -1,0 +1,68 @@
+/* 导航栏组件 — 设计稿还原 */
+
+.nav-bar-wrapper {
+  flex-shrink: 0;
+  background-color: var(--color-bg-page);
+}
+
+.nav-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 44px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.nav-bar--center {
+  justify-content: center;
+}
+
+.nav-bar--back {
+  justify-content: flex-start;
+}
+
+.nav-bar-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-left: -12px;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.nav-bar-hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.nav-back-icon {
+  font-size: 18px;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.nav-bar-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar--back .nav-bar-center {
+  justify-content: flex-start;
+}
+
+.nav-title {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-text-primary);
+}
+
+.nav-bar-right {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}

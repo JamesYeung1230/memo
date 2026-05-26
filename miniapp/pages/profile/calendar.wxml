@@ -1,4 +1,4 @@
-<navigation-bar title="打卡日历" back="{{true}}" color="#1E293B" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="打卡日历">
 
 <view class="page-wrapper">
   <scroll-view class="page-scroll" scroll-y type="list">

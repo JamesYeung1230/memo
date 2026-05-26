@@ -10,23 +10,6 @@
   background-color: var(--color-bg-page);
 }
 
-.nav-bar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 88rpx;
-  padding: 0 32rpx;
-  background-color: var(--color-bg-page);
-}
-
-.nav-title {
-  color: var(--color-text-primary);
-  font-size: 34rpx;
-  font-weight: 600;
-}
-
-/* 游客登录提示条 */
 .guest-login-bar {
   margin: 16rpx 32rpx;
   padding: 20rpx 24rpx;

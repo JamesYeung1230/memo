@@ -1,8 +1,5 @@
-<view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}" style="padding-top: {{statusBarHeight}}px">
-  <view class="nav-bar">
-    <text class="nav-title">学习</text>
-    <text class="nav-search-icon">🔍</text>
-  </view>
+<view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}">
+  <nav-bar mode="center" title="学习" />
 
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="content-scroll">

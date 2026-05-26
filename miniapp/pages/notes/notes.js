@@ -40,8 +40,6 @@ Page({
   },
 
   onLoad() {
-    var info = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: info.statusBarHeight })
     this.loadNotes()
   },
 

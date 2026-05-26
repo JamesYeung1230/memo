@@ -1,4 +1,4 @@
-<navigation-bar title="成就徽章墙" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="成就徽章">
 
 <view class="page-wrapper">
   <!-- 用户积分信息 -->

@@ -1,4 +1,4 @@
-<navigation-bar title="单题解析" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="答题解析">
 <view class="page-wrapper">
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="page-content">

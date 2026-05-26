@@ -1,4 +1,4 @@
-<navigation-bar title="答题练习" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="答题">
 
 <view class="page-wrapper">
 

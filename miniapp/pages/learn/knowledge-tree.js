@@ -5,8 +5,7 @@ Page({
     _loading: true,
     domains: [],
     expandedDomainId: null,
-    statusBarHeight: 0,
-    activeDomainId: '',
+        activeDomainId: '',
     activeDomainName: ''
   },
 

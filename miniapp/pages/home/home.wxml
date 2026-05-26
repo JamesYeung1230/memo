@@ -1,7 +1,5 @@
 <view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}">
-  <view class="nav-bar">
-    <text class="nav-title">{{navTitle}}</text>
-  </view>
+  <nav-bar mode="center" title="码上启航" />
 
   <!-- 游客登录提示 -->
   <view wx:if="{{_isGuest}}" class="guest-login-bar" bind:tap="onGuestLoginTap">

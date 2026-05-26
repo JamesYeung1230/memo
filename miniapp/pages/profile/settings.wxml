@@ -1,4 +1,4 @@
-<navigation-bar title="设置" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="设置">
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
     <text>设置</text>

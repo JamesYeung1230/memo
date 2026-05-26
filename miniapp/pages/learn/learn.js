@@ -30,10 +30,7 @@ Page({
   onLoad() {
     var app = getApp()
     this.setData({ _isGuest: !app.globalData.isLoggedIn })
-    var info = wx.getSystemInfoSync()
-    this.setData({ statusBarHeight: info.statusBarHeight }, function () {
-      this.loadAllData()
-    })
+    this.loadAllData()
   },
 
   onShow() {

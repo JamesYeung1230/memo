@@ -1,4 +1,4 @@
-<navigation-bar title="知识解锁商店" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="知识解锁">
 
 <view class="page-wrapper">
   <!-- 用户积分信息 -->

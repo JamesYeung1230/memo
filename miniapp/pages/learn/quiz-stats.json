@@ -1,8 +1,8 @@
 {
   "usingComponents": {
-    "navigation-bar": "/components/navigation-bar/navigation-bar",
     "loading-skeleton": "/components/loading-skeleton/loading-skeleton",
     "empty-state": "/components/empty-state/empty-state",
-    "progress-bar": "/components/progress-bar/progress-bar"
+    "progress-bar": "/components/progress-bar/progress-bar",
+    "nav-bar": "/components/nav-bar/nav-bar"
   }
 }

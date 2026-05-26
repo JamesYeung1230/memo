@@ -1,4 +1,4 @@
-<navigation-bar title="挑战结果" back="{{false}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="挑战结果">
 
 <view class="page-wrapper">
   <scroll-view class="page-scroll" scroll-y type="list">

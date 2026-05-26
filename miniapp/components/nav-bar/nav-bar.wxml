@@ -1,0 +1,22 @@
+<!-- 导航栏组件 — 居中标题模式 -->
+<view class="nav-bar-wrapper" style="padding-top: {{statusBarHeight}}px; background: {{background || 'var(--color-bg-page)'}};">
+  <!-- 子页面模式: back 箭头 + 标题 -->
+  <view wx:if="{{mode === 'back'}}" class="nav-bar nav-bar--back">
+    <view class="nav-bar-left" bind:tap="onBack" hover-class="nav-bar-hover">
+      <text class="nav-back-icon">←</text>
+    </view>
+    <view class="nav-bar-center">
+      <text class="nav-title" style="color: {{color || 'var(--color-text-primary)'}};">{{title}}</text>
+    </view>
+    <view class="nav-bar-right">
+      <slot name="right"></slot>
+    </view>
+  </view>
+
+  <!-- Tab主页面模式: 居中标题 -->
+  <view wx:else class="nav-bar nav-bar--center">
+    <view class="nav-bar-center">
+      <text class="nav-title" style="color: {{color || 'var(--color-text-primary)'}};">{{title}}</text>
+    </view>
+  </view>
+</view>

@@ -1,7 +1,7 @@
 {
   "usingComponents": {
-    "navigation-bar": "/components/navigation-bar/navigation-bar",
     "tag": "/components/tag/tag",
-    "loading-spinner": "/components/loading-spinner/loading-spinner"
+    "loading-spinner": "/components/loading-spinner/loading-spinner",
+    "nav-bar": "/components/nav-bar/nav-bar"
   }
 }

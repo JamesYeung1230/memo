@@ -1,8 +1,8 @@
 {
   "usingComponents": {
-    "navigation-bar": "/components/navigation-bar/navigation-bar",
     "search-bar": "/components/search-bar/search-bar",
     "loading-skeleton": "/components/loading-skeleton/loading-skeleton",
-    "empty-state": "/components/empty-state/empty-state"
+    "empty-state": "/components/empty-state/empty-state",
+    "nav-bar": "/components/nav-bar/nav-bar"
   }
 }

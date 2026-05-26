@@ -10,27 +10,6 @@
   background-color: var(--color-bg-page);
 }
 
-.nav-bar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 88rpx;
-  padding: 0 32rpx;
-  background-color: var(--color-bg-page);
-}
-
-.nav-title {
-  color: var(--color-text-primary);
-  font-size: 34rpx;
-  font-weight: 600;
-}
-
-.nav-search-icon {
-  color: var(--color-text-primary);
-  font-size: 36rpx;
-}
-
 .content-scroll {
   flex: 1;
   display: flex;

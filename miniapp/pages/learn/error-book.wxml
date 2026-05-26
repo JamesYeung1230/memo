@@ -1,4 +1,4 @@
-<navigation-bar title="错题本" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="错题本">
 
 <view class="page-wrapper">
   <!-- 加载骨架 -->

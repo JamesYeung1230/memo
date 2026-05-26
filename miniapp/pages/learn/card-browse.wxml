@@ -1,4 +1,4 @@
-<navigation-bar title="{{chapterName || '知识卡片浏览'}}" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="知识卡片">
 
 <scroll-view class="page-scroll" scroll-y type="list">
   <!-- 搜索栏 -->

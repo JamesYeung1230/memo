@@ -1,4 +1,4 @@
-<navigation-bar title="积分明细" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="积分明细">
 
 <view class="page-wrapper">
   <!-- 筛选标签 -->

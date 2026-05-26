@@ -1,7 +1,5 @@
 <view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}">
-  <view class="nav-bar">
-    <text class="nav-title">{{navTitle}}</text>
-  </view>
+  <nav-bar mode="center" title="积分与成就" />
 
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="content-scroll">

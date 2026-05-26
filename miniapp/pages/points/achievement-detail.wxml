@@ -1,4 +1,4 @@
-<navigation-bar title="成就徽章详情" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="徽章详情">
 
 <view class="page-wrapper">
   <!-- 加载中 -->

@@ -1,4 +1,4 @@
-<navigation-bar title="知识领域解锁确认" back="{{true}}" color="black" background="#FFF"></navigation-bar>
+<nav-bar mode="back" title="确认解锁">
 
 <view class="page-wrapper">
   <view class="confirm-card">

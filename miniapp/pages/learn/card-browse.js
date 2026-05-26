@@ -8,8 +8,7 @@ Page({
     cards: [],
     filteredCards: [],
     searchKeyword: '',
-    statusBarHeight: 0
-  },
+      },
 
   onLoad(options) {
     var chapterId = options.chapter_id

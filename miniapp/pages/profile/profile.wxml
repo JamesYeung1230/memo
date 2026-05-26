@@ -1,5 +1,5 @@
 <view class="page-wrapper {{_pageEnter ? 'page-enter' : ''}}">
-  <navigation-bar title="我的" back="{{false}}" background="#F5F6FA" color="#1E293B" />
+  <nav-bar mode="center" title="我的" />
 
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="page-content">
