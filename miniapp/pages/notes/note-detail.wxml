@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="笔记详情">
+<nav-bar mode="back" title="笔记详情" />
 
 <!-- 加载中 -->
 <view wx:if="{{loading}}" class="loading-wrap">

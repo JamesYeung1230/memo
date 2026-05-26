@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="分享笔记">
+<nav-bar mode="back" title="分享笔记" />
 
 <!-- 加载中 -->
 <view wx:if="{{loading}}" class="loading-wrap">

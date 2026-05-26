@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="答题">
+<nav-bar mode="back" title="答题" />
 
 <view class="page-wrapper">
 

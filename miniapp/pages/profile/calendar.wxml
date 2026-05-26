@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="打卡日历">
+<nav-bar mode="back" title="打卡日历" />
 
 <view class="page-wrapper">
   <scroll-view class="page-scroll" scroll-y type="list">

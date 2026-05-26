@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="答题解析">
+<nav-bar mode="back" title="答题解析" />
 <view class="page-wrapper">
   <scroll-view class="page-scroll" scroll-y type="list">
     <view class="page-content">

@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="通用设置">
+<nav-bar mode="back" title="通用设置" />
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
     <text>通用设置</text>

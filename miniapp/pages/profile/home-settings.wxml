@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="首页设置">
+<nav-bar mode="back" title="首页设置" />
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
     <text>首页模块设置</text>

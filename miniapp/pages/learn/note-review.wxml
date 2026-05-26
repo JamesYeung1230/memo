@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="笔记回顾">
+<nav-bar mode="back" title="笔记回顾" />
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
 

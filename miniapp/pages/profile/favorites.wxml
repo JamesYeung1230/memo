@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="收藏夹">
+<nav-bar mode="back" title="收藏夹" />
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">
 

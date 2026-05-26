@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="错题本">
+<nav-bar mode="back" title="错题本" />
 
 <view class="page-wrapper">
   <!-- 加载骨架 -->

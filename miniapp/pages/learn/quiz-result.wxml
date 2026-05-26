@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="答题结果">
+<nav-bar mode="back" title="答题结果" />
 
 <view class="page-wrapper">
   <scroll-view class="page-scroll" scroll-y type="list">

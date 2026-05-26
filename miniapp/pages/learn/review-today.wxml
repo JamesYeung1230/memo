@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="今日复习">
+<nav-bar mode="back" title="今日复习" />
 
 <view class="page-wrapper">
   <!-- 加载骨架 -->

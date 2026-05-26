@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="知识解锁">
+<nav-bar mode="back" title="知识解锁" />
 
 <view class="page-wrapper">
   <!-- 用户积分信息 -->

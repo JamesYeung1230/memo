@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="错题再练">
+<nav-bar mode="back" title="错题再练" />
 
 <view class="page-wrapper">
   <!-- 加载骨架 -->

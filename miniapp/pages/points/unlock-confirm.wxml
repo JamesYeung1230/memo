@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="确认解锁">
+<nav-bar mode="back" title="确认解锁" />
 
 <view class="page-wrapper">
   <view class="confirm-card">

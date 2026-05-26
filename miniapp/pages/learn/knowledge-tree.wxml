@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="知识目录">
+<nav-bar mode="back" title="知识目录" />
 
 <scroll-view class="page-scroll" scroll-y type="list">
   <view class="page-content">

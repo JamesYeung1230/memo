@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="编辑笔记">
+<nav-bar mode="back" title="编辑笔记" />
 <view class="form-wrap">
   <!-- 标题 -->
   <view class="form-item">

@@ -1,4 +1,4 @@
-<nav-bar mode="back" title="徽章详情">
+<nav-bar mode="back" title="徽章详情" />
 
 <view class="page-wrapper">
   <!-- 加载中 -->
