@@ -25,8 +25,8 @@
       <view class="divider-line"></view>
     </view>
 
-    <view class="guest-link" bind:tap="onGuestEntry">
-      <text class="guest-link-text">先看看学什么 ></text>
+    <view class="guest-btn" bind:tap="onGuestEntry">
+      <text class="guest-btn-text">游客模式</text>
     </view>
   </view>
 </scroll-view>
