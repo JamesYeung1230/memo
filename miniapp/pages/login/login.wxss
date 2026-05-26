@@ -98,24 +98,26 @@
 }
 
 .checkbox-box {
-  width: 32rpx;
-  height: 32rpx;
-  border-radius: 6rpx;
-  border: 2rpx solid var(--color-border);
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 8rpx;
+  border: 3rpx solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: all 0.2s;
 }
 
 .checkbox-checked {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
+  box-shadow: 0 2rpx 8rpx var(--color-primary);
 }
 
 .checkbox-icon {
   color: #FFFFFF;
-  font-size: 20rpx;
+  font-size: 26rpx;
   font-weight: 700;
 }
 
