@@ -6,6 +6,16 @@
     <text class="app-title">码上启航 CodeSail</text>
     <text class="subtitle">让非开发者掌握编程基础</text>
     <text class="subtitle">从而更好地用AI写代码</text>
+
+    <view class="btn-row">
+      <view class="btn-wrapper">
+        <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" disabled="{{!privacyAgreed}}" bind:click="handleLogin" />
+      </view>
+      <view class="guest-btn" bind:tap="onGuestEntry">
+        <text class="guest-btn-text">游客模式</text>
+      </view>
+    </view>
+
     <view class="privacy-checkbox" bind:tap="togglePrivacyAgreed">
       <view class="checkbox-box {{privacyAgreed ? 'checkbox-checked' : ''}}">
         <text wx:if="{{privacyAgreed}}" class="checkbox-icon">✓</text>
@@ -14,19 +24,6 @@
       <text class="privacy-link" catch:tap="onPrivacyTap">《隐私政策》</text>
       <text class="privacy-label">及</text>
       <text class="privacy-link" catch:tap="onAgreementTap">《用户服务协议》</text>
-    </view>
-    <view class="btn-wrapper">
-      <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" disabled="{{!privacyAgreed}}" bind:click="handleLogin" />
-    </view>
-
-    <view class="guest-divider">
-      <view class="divider-line"></view>
-      <text class="divider-text">或</text>
-      <view class="divider-line"></view>
-    </view>
-
-    <view class="guest-btn" bind:tap="onGuestEntry">
-      <text class="guest-btn-text">游客模式</text>
     </view>
   </view>
 </scroll-view>
