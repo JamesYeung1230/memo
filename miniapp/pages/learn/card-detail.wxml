@@ -12,6 +12,7 @@
       <knowledge-card
         card="{{cardDetail}}"
         expandable="{{true}}"
+        isGuest="{{_isGuest}}"
         bind:mastered="onMastered"
         bind:favorite="onFavorite"
       ></knowledge-card>

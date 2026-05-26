@@ -15,6 +15,10 @@ Component({
     expandable: {
       type: Boolean,
       value: true
+    },
+    isGuest: {
+      type: Boolean,
+      value: false
     }
   },
 

@@ -36,6 +36,10 @@ Page({
     })
   },
 
+  onGuestEntry() {
+    wx.reLaunch({ url: '/pages/home/home' })
+  },
+
   handleLogin() {
     var self = this
 

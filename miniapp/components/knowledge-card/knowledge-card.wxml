@@ -11,7 +11,7 @@
         />
       </block>
     </view>
-    <view class="kcard__bookmark {{card.favorited ? 'kcard__bookmark--active' : ''}}" bind:tap="onFavorite">
+    <view class="kcard__bookmark {{card.favorited ? 'kcard__bookmark--active' : ''}}" bind:tap="onFavorite" wx:if="{{!isGuest}}">
       <text class="kcard__bookmark-icon">{{card.favorited ? '🔖' : '🏷'}}</text>
     </view>
   </view>
@@ -27,7 +27,7 @@
     <text class="kcard__expand-text">{{expanded ? '收起' : '展开全文'}}</text>
   </view>
 
-  <view class="kcard__actions">
+  <view class="kcard__actions" wx:if="{{!isGuest}}">
     <view class="kcard__btn-master {{card.mastered ? 'kcard__btn-master--done' : ''}}" bind:tap="onMastered">
       <text class="kcard__btn-master-text">{{card.mastered ? '✓ 已掌握' : '懂了'}}</text>
     </view>

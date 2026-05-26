@@ -5,6 +5,7 @@ Page({
   data: {
     _pageEnter: true,
     _loading: true,
+    _isGuest: true,
     domains: [],
     activeTagIndex: 0,
     statusBarHeight: 0,
@@ -27,6 +28,8 @@ Page({
   },
 
   onLoad() {
+    var app = getApp()
+    this.setData({ _isGuest: !app.globalData.isLoggedIn })
     var info = wx.getSystemInfoSync()
     this.setData({ statusBarHeight: info.statusBarHeight }, function () {
       this.loadAllData()
@@ -34,6 +37,8 @@ Page({
   },
 
   onShow() {
+    var app = getApp()
+    this.setData({ _isGuest: !app.globalData.isLoggedIn })
     if (this._hasShown) {
       this.setData({ _pageEnter: false }, function () {
         this.setData({ _pageEnter: true })
@@ -46,8 +51,11 @@ Page({
 
   loadAllData() {
     this.fetchDomains()
-    this.fetchReviewToday()
-    this.fetchErrorCount()
+    // 登录用户才加载进度/复习/错题
+    if (!this.data._isGuest) {
+      this.fetchReviewToday()
+      this.fetchErrorCount()
+    }
   },
 
   fetchDomains() {

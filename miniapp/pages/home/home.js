@@ -37,8 +37,9 @@ Page({
     this.setData({ _isGuest: !loggedIn })
     if (loggedIn) {
       this.loadHomeData()
-      this.loadRecommendedCard()
     }
+    // 游客也加载推荐卡片（公开数据）
+    this.loadRecommendedCard()
   },
 
   onShow() {
@@ -55,8 +56,8 @@ Page({
     this.setData({ _isGuest: !loggedIn })
     if (loggedIn) {
       this.loadHomeData()
-      this.loadRecommendedCard()
     }
+    this.loadRecommendedCard()
   },
 
   loadHomeData() {
@@ -148,6 +149,7 @@ Page({
   },
 
   onCardGotIt() {
+    if (this.data._isGuest) { this._showLoginTip() ; return }
     var self = this
     var cardId = self.data.currentCardId
     if (!cardId) return
@@ -161,6 +163,7 @@ Page({
   },
 
   onCardSave() {
+    if (this.data._isGuest) { this._showLoginTip() ; return }
     var self = this
     var cardId = self.data.currentCardId
     if (!cardId) return
@@ -176,14 +179,17 @@ Page({
   },
 
   onChallengeStart() {
+    if (this.data._isGuest) { this._showLoginTip(); return }
     wx.navigateTo({ url: '/pages/learn/daily-challenge' })
   },
 
   onQuickNote() {
+    if (this.data._isGuest) { this._showLoginTip(); return }
     wx.navigateTo({ url: '/pages/notes/note-editor' })
   },
 
   onWatchAd() {
+    if (this.data._isGuest) { this._showLoginTip(); return }
     var self = this
     pointsApi.adWatch().then(function (res) {
       wx.showToast({ title: '+10 积分', icon: 'success' })
@@ -191,5 +197,9 @@ Page({
     }).catch(function (err) {
       wx.showToast({ title: err.message || '获取积分失败', icon: 'none' })
     })
+  },
+
+  _showLoginTip() {
+    wx.showToast({ title: '登录后可记录学习进度', icon: 'none' })
   }
 })

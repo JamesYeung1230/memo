@@ -19,7 +19,7 @@
         </view>
       </view>
 
-      <view class="overview-card">
+      <view class="overview-card" wx:if="{{!_isGuest}}">
         <view class="overview-header">
           <text class="overview-title">{{currentDomainName || '编程基础概念'}}</text>
           <text class="overview-status">{{currentDomainStatus || '学习中'}}</text>
@@ -56,7 +56,7 @@
         <text class="entry-arrow">›</text>
       </view>
 
-      <view class="entry-card" bind:tap="onQuizTap">
+      <view class="entry-card" wx:if="{{!_isGuest}}" bind:tap="onQuizTap">
         <view class="entry-left">
           <text class="entry-icon">📝</text>
           <view class="entry-info">
@@ -67,7 +67,7 @@
         <text class="entry-arrow">›</text>
       </view>
 
-      <view class="entry-card" bind:tap="onDailyChallengeTap">
+      <view class="entry-card" wx:if="{{!_isGuest}}" bind:tap="onDailyChallengeTap">
         <view class="entry-left">
           <text class="entry-icon">🏆</text>
           <view class="entry-info">
@@ -78,7 +78,7 @@
         <text class="entry-arrow">›</text>
       </view>
 
-      <view class="memory-card">
+      <view class="memory-card" wx:if="{{!_isGuest}}">
         <view class="memory-header">
           <text class="memory-title">记忆强化</text>
           <text class="memory-subtitle">艾宾浩斯记忆法</text>

@@ -8,8 +8,8 @@
     <view class="guest-login-content">
       <text class="guest-login-icon">👤</text>
       <view class="guest-login-info">
-        <text class="guest-login-title">登录后同步学习数据</text>
-        <text class="guest-login-sub">一键微信登录，云端保存进度</text>
+        <text class="guest-login-title">登录后解锁全部学习内容</text>
+        <text class="guest-login-sub">可记录学习进度、答题挑战、赚取积分</text>
       </view>
       <view class="guest-login-btn">
         <text class="guest-login-btn-text">登录</text>
@@ -23,7 +23,7 @@
         <text class="banner-text">{{bannerText}}</text>
       </view>
 
-      <view class="progress-card">
+      <view class="progress-card" wx:if="{{!_isGuest}}">
         <view class="progress-ring">
           <view class="progress-ring-inner">
             <text class="progress-percent">{{ringPercent}}</text>
@@ -35,7 +35,7 @@
         </view>
       </view>
 
-      <view class="review-card" bind:tap="onReviewTap">
+      <view class="review-card" wx:if="{{!_isGuest}}" bind:tap="onReviewTap">
         <view class="review-left">
           <text>📋</text>
           <view class="review-info">
@@ -60,7 +60,7 @@
         <text class="card-title">{{cardTitle}}</text>
         <text class="card-concept">{{cardConcept}}</text>
         <text class="card-desc">{{cardDesc}}</text>
-        <view class="card-actions">
+        <view class="card-actions" wx:if="{{!_isGuest}}">
           <view class="card-btn-primary" bind:tap="onCardGotIt">
             <text class="card-btn-primary-text">{{gotItText}}</text>
           </view>
@@ -70,7 +70,7 @@
         </view>
       </view>
 
-      <view class="challenge-card">
+      <view class="challenge-card" wx:if="{{!_isGuest}}">
         <view class="challenge-left">
           <text>🎯</text>
           <view class="challenge-info">
@@ -83,7 +83,7 @@
         </view>
       </view>
 
-      <view class="notes-card" bind:tap="onQuickNote">
+      <view class="notes-card" wx:if="{{!_isGuest}}" bind:tap="onQuickNote">
         <view class="notes-left">
           <text class="notes-emoji">✏️</text>
           <text class="notes-text">{{notesPlaceholder}}</text>
@@ -93,7 +93,7 @@
         </view>
       </view>
 
-      <view class="points-card">
+      <view class="points-card" wx:if="{{!_isGuest}}">
         <view class="points-left">
           <text class="points-emoji">{{pointsEmoji}}</text>
           <text class="points-amount">{{pointsAmount}}</text>

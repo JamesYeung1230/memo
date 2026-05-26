@@ -11,34 +11,34 @@ var request = require('../utils/request')
 
 /**
  * 获取知识领域列表
- * GET /learn/domains
+ * GET /learn/domains (公开)
  */
 function getDomains() {
-  return request.get('/learn/domains')
+  return request.get('/learn/domains', { needAuth: false })
 }
 
 /**
  * 获取领域下的章节列表
- * GET /learn/domains/{domainId}/chapters
+ * GET /learn/domains/{domainId}/chapters (公开)
  */
 function getChapters(domainId) {
-  return request.get('/learn/domains/' + domainId + '/chapters')
+  return request.get('/learn/domains/' + domainId + '/chapters', { needAuth: false })
 }
 
 /**
  * 获取章节下的卡片列表
- * GET /learn/chapters/{chapterId}/cards
+ * GET /learn/chapters/{chapterId}/cards (公开)
  */
 function getCards(chapterId) {
-  return request.get('/learn/chapters/' + chapterId + '/cards')
+  return request.get('/learn/chapters/' + chapterId + '/cards', { needAuth: false })
 }
 
 /**
  * 获取卡片详情
- * GET /learn/cards/{cardId}
+ * GET /learn/cards/{cardId} (公开)
  */
 function getCardDetail(cardId) {
-  return request.get('/learn/cards/' + cardId)
+  return request.get('/learn/cards/' + cardId, { needAuth: false })
 }
 
 /**

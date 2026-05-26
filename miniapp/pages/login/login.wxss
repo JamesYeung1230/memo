@@ -50,6 +50,39 @@
   border-radius: 48rpx;
 }
 
+/* 或 分割线 */
+.guest-divider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16rpx;
+  width: 480rpx;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1rpx;
+  background-color: var(--color-border);
+}
+
+.divider-text {
+  color: var(--color-text-hint);
+  font-size: var(--font-caption);
+  white-space: nowrap;
+}
+
+/* 游客入口链接 */
+.guest-link {
+  padding: 16rpx 32rpx;
+}
+
+.guest-link-text {
+  color: var(--color-primary);
+  font-size: var(--font-body);
+  text-align: center;
+}
+
 .privacy-text {
   color: var(--color-text-hint);
   font-size: var(--font-caption);

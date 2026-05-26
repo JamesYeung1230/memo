@@ -3,6 +3,7 @@ var learnApi = require('../../api/learn')
 Page({
   data: {
     _loading: true,
+    _isGuest: true,
     cardId: null,
     cardDetail: null,
     questionData: null,
@@ -11,6 +12,8 @@ Page({
   },
 
   onLoad(options) {
+    var app = getApp()
+    this.setData({ _isGuest: !app.globalData.isLoggedIn })
     var cardId = options.card_id
     this.setData({ cardId: cardId }, function () {
       this.fetchCardDetail()
@@ -69,6 +72,7 @@ Page({
   },
 
   onMastered(e) {
+    if (this.data._isGuest) { wx.showToast({ title: '登录后可记录学习进度', icon: 'none' }); return }
     var that = this
     var cardId = this.data.cardId
 
@@ -91,6 +95,7 @@ Page({
   },
 
   onFavorite(e) {
+    if (this.data._isGuest) { wx.showToast({ title: '登录后可收藏卡片', icon: 'none' }); return }
     var that = this
 
     learnApi.favoriteCard(this.data.cardId).then(function () {
@@ -112,6 +117,7 @@ Page({
   },
 
   onShareCard() {
+    if (this.data._isGuest) { wx.showToast({ title: '登录后可分享卡片', icon: 'none' }); return }
     var that = this
     var card = this.data.cardDetail
     if (!card) return

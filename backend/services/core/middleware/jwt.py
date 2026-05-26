@@ -6,10 +6,23 @@ from shared.auth import extract_token, verify_jwt
 from shared.config import get_env
 from shared.errors import ErrorCodes
 
+# 公开路径白名单 — 游客无需登录即可访问
+# 对应小程序游客模式的浏览功能
+PUBLIC_PATHS = {
+    "/api/v1/learn/domains",
+    "/api/v1/learn/chapters/",
+    "/api/v1/learn/cards/",
+}
+
 
 class JWTAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
+        # 系统健康检查 / 文档
         if request.url.path in ("/health", "/docs", "/openapi.json", "/redoc"):
+            return await call_next(request)
+
+        # 公开路径 — 跳过 JWT 校验
+        if self._is_public_path(request.url.path):
             return await call_next(request)
 
         if request.url.path.startswith("/api/v1/admin/"):
@@ -18,6 +31,15 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
             return await self._verify_user(request, call_next)
 
         return await call_next(request)
+
+    def _is_public_path(self, path: str) -> bool:
+        """判断请求路径是否在公开白名单中。"""
+        if path in PUBLIC_PATHS:
+            return True
+        for prefix in PUBLIC_PATHS:
+            if path.startswith(prefix):
+                return True
+        return False
 
     async def _verify_admin(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
         auth_header = request.headers.get("Authorization", "")

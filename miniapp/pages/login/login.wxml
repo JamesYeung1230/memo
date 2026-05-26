@@ -18,5 +18,15 @@
     <view class="btn-wrapper">
       <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" disabled="{{!privacyAgreed}}" bind:click="handleLogin" />
     </view>
+
+    <view class="guest-divider">
+      <view class="divider-line"></view>
+      <text class="divider-text">或</text>
+      <view class="divider-line"></view>
+    </view>
+
+    <view class="guest-link" bind:tap="onGuestEntry">
+      <text class="guest-link-text">先看看学什么 ></text>
+    </view>
   </view>
 </scroll-view>
