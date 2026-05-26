@@ -107,6 +107,13 @@
   justify-content: center;
   flex-shrink: 0;
   transition: all 0.2s;
+  background-color: #FFFFFF;
+}
+
+.checkbox-box:active {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  transform: scale(0.92);
 }
 
 .checkbox-checked {
