@@ -7,13 +7,8 @@
     <text class="subtitle">让非开发者掌握编程基础</text>
     <text class="subtitle">从而更好地用AI写代码</text>
 
-    <view class="btn-row">
-      <view class="btn-wrapper">
-        <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" disabled="{{!privacyAgreed}}" bind:click="handleLogin" />
-      </view>
-      <view class="guest-btn" bind:tap="onGuestEntry">
-        <text class="guest-btn-text">游客模式</text>
-      </view>
+    <view class="btn-wrapper">
+      <btn type="primary" size="lg" text="{{isLogging ? '登录中...' : '微信一键登录'}}" loading="{{isLogging}}" disabled="{{!privacyAgreed}}" bind:click="handleLogin" />
     </view>
 
     <view class="privacy-checkbox" bind:tap="togglePrivacyAgreed">

@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/login/login",
     "pages/home/home",
     "pages/learn/learn",
+    "pages/login/login",
     "pages/learn/knowledge-tree",
     "pages/learn/card-browse",
     "pages/learn/card-detail",
