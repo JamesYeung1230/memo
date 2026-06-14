@@ -12,11 +12,17 @@
 !/test/
 !/webapp/
 
+# 放行根目录 CLAUDE.md（项目规则锚点）
+!/CLAUDE.md
+
 # 放行根目录 README
 !/README.md
 
 # 放行根目录品牌素材
 !/码上启航Codesail.jpg
+
+# 放行文档目录
+!/docs/
 
 # 放行根目录 .trae 规则文件
 !/.trae/
