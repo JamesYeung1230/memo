@@ -2,6 +2,7 @@ import apiClient from './client'
 
 interface LoginResponse {
   token: string
+  refreshToken: string
   username: string
 }
 
@@ -10,24 +11,35 @@ interface ChangePasswordParams {
   newPassword: string
 }
 
-const isMock = import.meta.env.DEV || import.meta.env.VITE_USE_MOCK === 'true'
+interface BackendLoginData {
+  access_token: string
+  refresh_token: string
+  token_type: string
+  expires_in: number
+}
 
 export const authApi = {
+  /**
+   * Admin login — POST /api/v1/admin/login
+   * Maps backend { access_token, refresh_token } → { token, refreshToken, username }
+   */
   async login(params: { username: string; password: string }): Promise<LoginResponse> {
-    if (isMock) {
-      await new Promise((r) => setTimeout(r, 800))
-      if (params.username === 'admin' && params.password === 'admin123') {
-        return { token: 'mock-token-codesail-' + Date.now(), username: params.username }
-      }
-      throw new Error('用户名或密码错误')
+    const res = await apiClient.post('/admin/login', params)
+    const data = res.data as BackendLoginData
+    return {
+      token: data.access_token,
+      refreshToken: data.refresh_token,
+      username: params.username,
     }
-    return apiClient.post('/auth/login', params) as Promise<LoginResponse>
   },
 
-  changePassword(params: ChangePasswordParams) {
-    if (isMock) {
-      return Promise.resolve()
-    }
-    return apiClient.post('/auth/change-password', params) as Promise<void>
+  /**
+   * Admin password change — PUT /api/v1/admin/password
+   */
+  async changePassword(params: ChangePasswordParams): Promise<void> {
+    await apiClient.put('/admin/password', {
+      old_password: params.oldPassword,
+      new_password: params.newPassword,
+    })
   },
 }

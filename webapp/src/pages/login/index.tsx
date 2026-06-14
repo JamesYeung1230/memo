@@ -21,7 +21,7 @@ export default function LoginPage() {
     setLoading(true)
     try {
       const result = await authApi.login(values)
-      login(result.token, result.username)
+      login(result.token, result.refreshToken, result.username)
       message.success('登录成功')
       navigate(ROUTE_PATHS.DASHBOARD, { replace: true })
     } catch (err) {
