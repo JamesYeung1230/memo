@@ -14,9 +14,6 @@
 
 ```
 webapp/
-├── .trae/
-│   └── rules/
-│       └── project_rules.md     # 项目开发规则锚点（核心文件，每次开发前必读）
 ├── project.md                   # 项目总览（里程碑、规范、原则）
 ├── README.md                    # 本文件
 └── docs/
@@ -34,7 +31,7 @@ webapp/
 
 ## 相关文档
 
-- [项目开发规则锚点](./.trae/rules/project_rules.md) — **🔴 每次开发前必读**
+- [项目级 Claude Code 开发规范](../CLAUDE.md) — **🔴 每次开发前必读**
 - [Web 管理端 PRD](./docs/PRD.md)
 - [小程序 PRD](../miniapp/docs/PRD.md)
 - [技术可行性分析报告](./docs/技术可行性分析报告.md)

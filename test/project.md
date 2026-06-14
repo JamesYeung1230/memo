@@ -1,6 +1,6 @@
 # 项目总览
 
-> 行为规则与工作规范参见 [project_rules.md](.trae/rules/project_rules.md)。
+> 行为规则与工作规范参见 [../CLAUDE.md](../CLAUDE.md)。
 
 ## 项目信息
 
@@ -31,10 +31,7 @@
 ```
 test/
 ├── project.md                 # 本文件
-├── README.md                  # 项目说明
-└── .trae/rules/
-    ├── core-rules.md          # 通用开发规范
-    └── project_rules.md       # 项目专属规则
+└── README.md                  # 项目说明
 ```
 
 > 注：项目初始化阶段，目录结构待搭建。
