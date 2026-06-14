@@ -20,6 +20,7 @@ from services.core.routes.points import router as points_router
 from services.core.routes.quiz import router as quiz_router
 from services.core.routes.review import router as review_router
 from services.core.routes.operations import router as operations_router
+from services.core.routes.admin_knowledge import router as admin_knowledge_router
 
 logger = logging.getLogger("core")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -160,3 +161,4 @@ app.include_router(points_router)
 app.include_router(quiz_router)
 app.include_router(review_router)
 app.include_router(operations_router)
+app.include_router(admin_knowledge_router)
