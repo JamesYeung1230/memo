@@ -1,66 +1,140 @@
-import { ApiResponse } from '@/types/api'
+import apiClient from './client'
+import type { ApiResponse, PaginatedResponse } from '@/types/api'
 import type { ReviewStats, PendingNote, ReviewRecord } from '@/types/review'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const mockPendingNotes: PendingNote[] = [
-  { id: 'r1', noteTitle: 'React Hooks 入门指南：useState 与 useEffect 详解', author: 'wx_user_001', submitTime: '2026-05-07 14:32', aiRiskScore: 25, aiRiskType: '低风险' },
-  { id: 'r2', noteTitle: 'JavaScript 闭包深入理解与实践技巧', author: 'wx_user_023', submitTime: '2026-05-07 13:15', aiRiskScore: 55, aiRiskType: '中风险' },
-  { id: 'r3', noteTitle: 'Python 异步编程终极指南', author: 'wx_user_045', submitTime: '2026-05-07 11:08', aiRiskScore: 78, aiRiskType: '高风险' },
-  { id: 'r4', noteTitle: 'Git 工作流最佳实践分享', author: 'wx_user_012', submitTime: '2026-05-07 09:45', aiRiskScore: 15, aiRiskType: '低风险' },
-  { id: 'r5', noteTitle: '数据库索引优化策略总结', author: 'wx_user_067', submitTime: '2026-05-06 22:30', aiRiskScore: 42, aiRiskType: '中风险' },
-  { id: 'r6', noteTitle: 'Docker 容器化部署实战笔记', author: 'wx_user_034', submitTime: '2026-05-06 20:18', aiRiskScore: 30, aiRiskType: '低风险' },
-  { id: 'r7', noteTitle: 'Mac 配置前端开发环境的坑与解决', author: 'wx_user_089', submitTime: '2026-05-06 18:05', aiRiskScore: 65, aiRiskType: '高风险' },
-]
-
-const mockReviewRecords: ReviewRecord[] = [
-  { id: 'h1', noteTitle: 'React 组件设计模式', author: 'wx_user_015', submitTime: '2026-05-06 16:00', reviewStatus: 'approved', reviewer: '管理员', reviewTime: '2026-05-06 17:30' },
-  { id: 'h2', noteTitle: 'TypeScript 高级类型使用技巧', author: 'wx_user_032', submitTime: '2026-05-06 14:20', reviewStatus: 'rejected', reviewer: '管理员', reviewTime: '2026-05-06 16:00', rejectReason: '涉及敏感内容' },
-  { id: 'h3', noteTitle: 'Node.js 事件循环深度解析', author: 'wx_user_056', submitTime: '2026-05-05 10:30', reviewStatus: 'approved', reviewer: '管理员', reviewTime: '2026-05-05 14:00' },
-  { id: 'h4', noteTitle: 'CSS Grid 布局完全指南', author: 'wx_user_078', submitTime: '2026-05-04 09:00', reviewStatus: 'auto_rejected', reviewer: '-', reviewTime: '2026-05-04 09:01' },
-]
+function getRiskType(score: number): string {
+  if (score >= 61) return '高风险'
+  if (score >= 31) return '中风险'
+  return '低风险'
+}
 
 export const reviewApi = {
-  /** 获取审核统计 */
+  /** GET /admin/review/statistics — 审核统计 */
   async getStats(): Promise<ApiResponse<ReviewStats>> {
-    await delay(200)
+    const res = await apiClient.get('/admin/review/statistics')
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body = res as any
+
     return {
       data: {
-        pendingCount: 7,
-        todayReviewed: 3,
-        passRate7d: 72.5,
-        aiAccuracy: 85.0,
+        pendingCount: (body.data?.today_pending as number) ?? 0,
+        todayReviewed: (body.data?.today_reviewed as number) ?? 0,
+        passRate7d: (body.data?.weekly_approval_rate as number) ?? 0,
+        aiAccuracy: (body.data?.ai_accuracy as number) ?? 0,
       },
     }
   },
 
-  /** 获取待审核列表 */
-  async getPendingList(): Promise<ApiResponse<PendingNote[]>> {
-    await delay(300)
-    return { data: mockPendingNotes }
+  /** GET /admin/review/queue — 待审核队列（分页） */
+  async getPendingList(params: {
+    page: number
+    pageSize: number
+  }): Promise<ApiResponse<PaginatedResponse<PendingNote>>> {
+    const res = await apiClient.get('/admin/review/queue', {
+      params: {
+        page: params.page,
+        page_size: params.pageSize,
+      },
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body = res as any
+
+    const items: PendingNote[] = ((body.data as Record<string, unknown>[]) ?? []).map(
+      (item: Record<string, unknown>) => ({
+        id: (item.note_id as string) ?? (item.id as string),
+        noteTitle: (item.note_title as string) ?? '',
+        author: (item.author_id as string) ?? '',
+        submitTime: (item.created_at as string) ?? '',
+        aiRiskScore: (item.risk_score as number) ?? 0,
+        aiRiskType: getRiskType((item.risk_score as number) ?? 0),
+      }),
+    )
+
+    const meta = body.meta as { total: number; page: number; page_size: number } | null
+    return {
+      data: {
+        items,
+        total: meta?.total ?? items.length,
+        page: meta?.page ?? 1,
+        pageSize: meta?.page_size ?? 20,
+        totalPages: meta ? Math.ceil(meta.total / meta.page_size) : 1,
+      },
+    }
   },
 
-  /** 获取审核记录列表 */
-  async getReviewRecords(status?: string): Promise<ApiResponse<ReviewRecord[]>> {
-    await delay(300)
-    const filtered = status && status !== 'all' ? mockReviewRecords.filter((r) => r.reviewStatus === status) : mockReviewRecords
-    return { data: filtered }
+  /** GET /admin/review/records — 审核记录（分页+筛选） */
+  async getReviewRecords(params: {
+    page: number
+    pageSize: number
+    status?: string
+  }): Promise<ApiResponse<PaginatedResponse<ReviewRecord>>> {
+    const res = await apiClient.get('/admin/review/records', {
+      params: {
+        page: params.page,
+        page_size: params.pageSize,
+        status: params.status && params.status !== 'all' ? params.status : undefined,
+      },
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body = res as any
+
+    const items: ReviewRecord[] = ((body.data as Record<string, unknown>[]) ?? []).map(
+      (item: Record<string, unknown>) => ({
+        id: item.id as string,
+        noteTitle: (item.note_title as string) ?? '',
+        author: (item.author_id as string) ?? '',
+        submitTime: (item.created_at as string) ?? '',
+        reviewStatus: item.status as ReviewRecord['reviewStatus'],
+        reviewer: (item.manual_reviewer as string) ?? '-',
+        reviewTime: (item.reviewed_at as string) ?? '',
+        rejectReason: (item.manual_reason as string) ?? undefined,
+      }),
+    )
+
+    const meta = body.meta as { total: number; page: number; page_size: number } | null
+    return {
+      data: {
+        items,
+        total: meta?.total ?? items.length,
+        page: meta?.page ?? 1,
+        pageSize: meta?.page_size ?? 20,
+        totalPages: meta ? Math.ceil(meta.total / meta.page_size) : 1,
+      },
+    }
   },
 
-  /** 批量审核 */
-  async batchReview(_params: { ids: string[]; action: 'approve' | 'reject'; reason?: string }): Promise<ApiResponse<null>> {
-    await delay(500)
+  /** POST /admin/review/queue/batch-approve — 批量通过 */
+  async batchApprove(noteIds: string[]): Promise<ApiResponse<null>> {
+    await apiClient.post('/admin/review/queue/batch-approve', { note_ids: noteIds })
     return { data: null }
   },
 
-  /** 审核详情 */
-  async getReviewDetail(_id: string): Promise<ApiResponse<{ noteContent: string; aiReason: string; sensitiveWords: string[] }>> {
-    await delay(200)
+  /** POST /admin/review/queue/batch-reject — 批量驳回 */
+  async batchReject(params: { noteIds: string[]; reason?: string }): Promise<ApiResponse<null>> {
+    await apiClient.post('/admin/review/queue/batch-reject', {
+      note_ids: params.noteIds,
+      reason: params.reason || undefined,
+    })
+    return { data: null }
+  },
+
+  /** GET /admin/review/queue/{noteId} — 审核详情 */
+  async getReviewDetail(
+    noteId: string,
+  ): Promise<ApiResponse<{ noteContent: string; aiReason: string; sensitiveWords: string[] }>> {
+    const res = await apiClient.get(`/admin/review/queue/${noteId}`)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body = res as any
+
     return {
       data: {
-        noteContent: '这是一篇用户的笔记内容，包含了关于学习编程的一些心得和总结。笔记中提到了多种编程语言的特性和使用场景。',
-        aiReason: '笔记内容包含可能的敏感词汇，经AI模型判定为中风险。',
-        sensitiveWords: ['违规词A', '违规词B'],
+        noteContent: (body.data?.note_content as string) ?? '',
+        aiReason: (body.data?.ai_reasoning as string) ?? '',
+        sensitiveWords: (body.data?.sensitive_words_hit as string[]) ?? [],
       },
     }
   },

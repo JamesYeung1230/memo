@@ -9,6 +9,12 @@ interface ReviewRecordsProps {
   loading: boolean
   statusFilter: string
   onStatusFilterChange: (status: string) => void
+  pagination: {
+    current: number
+    pageSize: number
+    total: number
+    onChange: (page: number, pageSize: number) => void
+  }
 }
 
 const columns: ColumnsType<ReviewRecord> = [
@@ -31,6 +37,7 @@ export const ReviewRecords = memo(function ReviewRecords({
   loading,
   statusFilter,
   onStatusFilterChange,
+  pagination,
 }: ReviewRecordsProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -55,9 +62,12 @@ export const ReviewRecords = memo(function ReviewRecords({
         dataSource={dataSource}
         loading={loading}
         pagination={{
-          pageSize: 10,
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: pagination.total,
           showSizeChanger: true,
           showTotal: (total) => `共 ${total} 条`,
+          onChange: pagination.onChange,
         }}
         locale={{ emptyText: '暂无审核记录' }}
       />

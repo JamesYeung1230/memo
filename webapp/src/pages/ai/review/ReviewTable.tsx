@@ -10,6 +10,12 @@ interface ReviewTableProps {
   selectedIds: string[]
   onSelectChange: (ids: string[]) => void
   onReview: (note: PendingNote) => void
+  pagination: {
+    current: number
+    pageSize: number
+    total: number
+    onChange: (page: number, pageSize: number) => void
+  }
 }
 
 const columns: ColumnsType<PendingNote> = [
@@ -57,6 +63,7 @@ export const ReviewTable = memo(function ReviewTable({
   selectedIds,
   onSelectChange,
   onReview,
+  pagination,
 }: ReviewTableProps) {
   return (
     <Table<PendingNote>
@@ -82,9 +89,12 @@ export const ReviewTable = memo(function ReviewTable({
         onChange: (keys) => onSelectChange(keys as string[]),
       }}
       pagination={{
-        pageSize: 10,
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        total: pagination.total,
         showSizeChanger: true,
         showTotal: (total) => `共 ${total} 条`,
+        onChange: pagination.onChange,
       }}
       locale={{ emptyText: '暂无待审核笔记' }}
     />
