@@ -174,9 +174,8 @@ export const pointApi = {
    * Note: Backend history_entries is currently a placeholder (always empty).
    */
   async getChangeLogs(): Promise<ApiResponse<PointChangeLog[]>> {
-    await apiClient.get('/admin/points-rules/history')
-    // Backend history_entries is always empty for now.
-    // When populated, map each entry to a PointChangeLog:
+    // TODO(M8): Backend /admin/points-rules/history currently returns empty history_entries.
+    // When ConfigHistory table is implemented, fetch and map:
     //   entry → { id, actionType, oldValue, newValue, oldLimit, newLimit, operator, changedAt }
     return { data: [] }
   },

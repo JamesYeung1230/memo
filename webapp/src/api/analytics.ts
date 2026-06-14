@@ -32,7 +32,7 @@ export const analyticsApi = {
   /**
    * Dashboard workbench stats.
    * Combines /admin/dashboard/review + /admin/dashboard/overview in parallel.
-   * Note: totalCards and activeUsers7d are NOT available from backend — always 0.
+   * Note: totalCards and activeUsers7d return -1 (backend not available yet).
    */
   async getDashboardStats(): Promise<ApiResponse<DashboardStats>> {
     const [reviewRes, overviewRes] = await Promise.all([
@@ -48,11 +48,11 @@ export const analyticsApi = {
     return {
       data: {
         pendingReview: reviewData.today_pending ?? 0,
-        // Backend does not provide total cards count
-        totalCards: 0,
+        // TODO(M8): Backend does not provide total cards count yet
+        totalCards: -1,
         totalUsers: overviewData.total_users ?? 0,
-        // Backend does not provide 7-day active users count
-        activeUsers7d: 0,
+        // TODO(M8): Backend does not provide 7-day active users count yet
+        activeUsers7d: -1,
       },
     }
   },
@@ -86,7 +86,7 @@ export const analyticsApi = {
   /**
    * Core overview metrics (7 stat cards).
    * Combines /admin/dashboard/overview + /admin/dashboard/points in parallel.
-   * Note: todayDau and retention7d are NOT available from backend — always 0.
+   * Note: todayDau and retention7d return -1 (backend not available yet).
    */
   async getOverviewStats(): Promise<ApiResponse<OverviewStats>> {
     const [overviewRes, pointsRes] = await Promise.all([
@@ -102,14 +102,14 @@ export const analyticsApi = {
     return {
       data: {
         totalUsers: overviewData.total_users ?? 0,
-        // Backend does not provide daily active users (DAU)
-        todayDau: 0,
+        // TODO(M8): Backend does not provide daily active users (DAU)
+        todayDau: -1,
         todayCards: overviewData.today_learning ?? 0,
         todayQuestions: overviewData.today_answers ?? 0,
         todayPointsIssued: pointsData.today_issued ?? 0,
         todayPointsConsumed: pointsData.today_consumed ?? 0,
-        // Backend does not provide 7-day retention rate
-        retention7d: 0,
+        // TODO(M8): Backend does not provide 7-day retention rate
+        retention7d: -1,
       },
     }
   },
@@ -119,7 +119,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getUserGrowthTrend(_days: 7 | 30): Promise<ApiResponse<UserGrowthPoint[]>> {
-    // Backend does not provide user growth trend data
+    // TODO(M8): Backend does not provide user growth trend data yet
     return { data: [] }
   },
 
@@ -130,7 +130,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getDomainHeat(): Promise<ApiResponse<DomainHeatItem[]>> {
-    // Backend does not provide domain heat/learning distribution data
+    // TODO(M8): Backend does not provide domain heat/learning distribution data yet
     return { data: [] }
   },
 
@@ -139,7 +139,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getCardLearningRank(): Promise<ApiResponse<CardRankItem[]>> {
-    // Backend does not provide card learning ranking data
+    // TODO(M8): Backend does not provide card learning ranking data yet
     return { data: [] }
   },
 
@@ -148,7 +148,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getQuestionAccuracy(): Promise<ApiResponse<QuestionAccuracyItem[]>> {
-    // Backend does not provide question accuracy by domain data
+    // TODO(M8): Backend does not provide question accuracy by domain data yet
     return { data: [] }
   },
 
@@ -159,7 +159,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getUserGrowth(): Promise<ApiResponse<UserGrowthItem[]>> {
-    // Backend does not provide user growth trend over time
+    // TODO(M8): Backend does not provide user growth trend over time yet
     return { data: [] }
   },
 
@@ -168,7 +168,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getActivityDistribution(): Promise<ApiResponse<ActivityDistributionItem[]>> {
-    // Backend does not provide user activity distribution data
+    // TODO(M8): Backend does not provide user activity distribution data yet
     return { data: [] }
   },
 
@@ -177,7 +177,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getLearningFunnel(): Promise<ApiResponse<FunnelStep[]>> {
-    // Backend does not provide learning funnel data
+    // TODO(M8): Backend does not provide learning funnel data yet
     return { data: [] }
   },
 
@@ -188,7 +188,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getPointsTrend(): Promise<ApiResponse<PointsTrendItem[]>> {
-    // Backend does not provide points trend over time
+    // TODO(M8): Backend does not provide points trend over time yet
     return { data: [] }
   },
 
@@ -197,7 +197,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getAdStats(): Promise<ApiResponse<AdStatItem[]>> {
-    // Backend does not provide ad stats trend over time
+    // TODO(M8): Backend does not provide ad stats trend over time yet
     return { data: [] }
   },
 
@@ -206,7 +206,7 @@ export const analyticsApi = {
    * No backend endpoint — returns empty array.
    */
   async getPointsDistribution(): Promise<ApiResponse<PointsDistributionItem[]>> {
-    // Backend does not provide points distribution breakdown
+    // TODO(M8): Backend does not provide points distribution breakdown yet
     return { data: [] }
   },
 }
