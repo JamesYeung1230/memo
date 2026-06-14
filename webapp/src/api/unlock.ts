@@ -1,39 +1,119 @@
+import apiClient from './client'
 import { ApiResponse } from '@/types/api'
 import type { UnlockConfig } from '@/types/unlock'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+/** Backend unlock config shape inside config_value */
+interface BackendUnlockConfigValue {
+  domain_unlock_ranges: Record<string, number>
+  premium_card_unlock: number
+}
 
-const mockData: UnlockConfig[] = [
-  { domainId: 'd1', domainName: '计算机科学', isFree: true, unlockPoints: 0 },
-  { domainId: 'd2', domainName: '数学基础', isFree: true, unlockPoints: 0 },
-  { domainId: 'd3', domainName: '英语学习', isFree: false, unlockPoints: 200 },
-  { domainId: 'd4', domainName: '历史文化', isFree: true, unlockPoints: 0 },
-  { domainId: 'd5', domainName: '物理科学', isFree: false, unlockPoints: 300 },
-  { domainId: 'd6', domainName: '生物医学', isFree: false, unlockPoints: 500 },
-  { domainId: 'd7', domainName: '经济学', isFree: true, unlockPoints: 0 },
-  { domainId: 'd8', domainName: '哲学思考', isFree: true, unlockPoints: 0 },
-]
+/** Backend domain list item (minimal fields we need) */
+interface BackendDomain {
+  id: string
+  name: string
+}
+
+/** Helper: GET /admin/unlock-config → extract config_value */
+async function getUnlockConfigValue(): Promise<BackendUnlockConfigValue> {
+  const res = await apiClient.get('/admin/unlock-config')
+  const data = res.data as {
+    config_key: string
+    config_value: BackendUnlockConfigValue
+    version: number
+    updated_at: string
+  }
+  return data.config_value
+}
+
+/** Helper: PUT /admin/unlock-config with updated config_value */
+async function putUnlockConfigValue(configValue: BackendUnlockConfigValue): Promise<void> {
+  await apiClient.put('/admin/unlock-config', { config_value: configValue })
+}
+
+/** Map a domain + its unlock points → frontend UnlockConfig */
+function toUnlockConfig(
+  domain: BackendDomain,
+  unlockPoints: number | undefined,
+): UnlockConfig {
+  const points = unlockPoints ?? 0
+  return {
+    domainId: domain.id,
+    domainName: domain.name,
+    isFree: points === 0,
+    unlockPoints: points,
+  }
+}
 
 export const unlockApi = {
+  /**
+   * Fetch all domains + unlock config, merge into UnlockConfig[] sorted by domain name.
+   * A domain is free when its unlock_points is 0 or not present in the config.
+   */
   async getList(): Promise<ApiResponse<UnlockConfig[]>> {
-    await delay(300)
-    return { data: [...mockData].sort((a, b) => a.domainName.localeCompare(b.domainName)) }
+    const [domainsRes, configValue] = await Promise.all([
+      apiClient.get('/admin/domains', { params: { page: 1, page_size: 100 } }),
+      getUnlockConfigValue(),
+    ])
+
+    const domains = (domainsRes.data as BackendDomain[]) ?? []
+    const ranges = configValue.domain_unlock_ranges ?? {}
+
+    const list: UnlockConfig[] = domains.map((d) => toUnlockConfig(d, ranges[d.id]))
+    list.sort((a, b) => a.domainName.localeCompare(b.domainName))
+
+    return { data: list }
   },
 
-  async update(domainId: string, params: { unlockPoints: number }): Promise<ApiResponse<UnlockConfig>> {
-    await delay(400)
-    const idx = mockData.findIndex((d) => d.domainId === domainId)
-    if (idx === -1) throw new Error('领域不存在')
-    mockData[idx].unlockPoints = params.unlockPoints
-    return { data: mockData[idx] }
-  },
+  /**
+   * Update a single domain's unlock points via read-modify-write on the config.
+   * Returns the updated UnlockConfig with the domain name resolved from /admin/domains.
+   */
+  async update(
+    domainId: string,
+    params: { unlockPoints: number },
+  ): Promise<ApiResponse<UnlockConfig>> {
+    // Read current config
+    const configValue = await getUnlockConfigValue()
 
-  async batchUpdate(updates: { domainId: string; unlockPoints: number }[]): Promise<ApiResponse<null>> {
-    await delay(500)
-    for (const u of updates) {
-      const idx = mockData.findIndex((d) => d.domainId === u.domainId)
-      if (idx !== -1) mockData[idx].unlockPoints = u.unlockPoints
+    // Modify
+    configValue.domain_unlock_ranges[domainId] = params.unlockPoints
+
+    // Write back
+    await putUnlockConfigValue(configValue)
+
+    // Resolve domain name for the response
+    const domainsRes = await apiClient.get('/admin/domains', {
+      params: { page: 1, page_size: 100 },
+    })
+    const domains = (domainsRes.data as BackendDomain[]) ?? []
+    const domain = domains.find((d) => d.id === domainId)
+
+    return {
+      data: toUnlockConfig(
+        domain ?? { id: domainId, name: '' },
+        params.unlockPoints,
+      ),
     }
+  },
+
+  /**
+   * Batch update multiple domains' unlock points via read-modify-write on the config.
+   */
+  async batchUpdate(
+    updates: { domainId: string; unlockPoints: number }[],
+  ): Promise<ApiResponse<null>> {
+    // Read current config
+    const configValue = await getUnlockConfigValue()
+
+    // Modify each entry
+    for (const u of updates) {
+      configValue.domain_unlock_ranges[u.domainId] = u.unlockPoints
+    }
+
+    // Write back
+    await putUnlockConfigValue(configValue)
+
     return { data: null }
   },
 }

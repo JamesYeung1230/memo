@@ -1,73 +1,85 @@
+import apiClient from './client'
 import { ApiResponse } from '@/types/api'
-import type { BannerData } from '@/types/banner'
+import type { BannerData, JumpType } from '@/types/banner'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+/** Map backend snake_case to frontend BannerData (camelCase + computed clickRate) */
+function mapBanner(raw: Record<string, unknown>): BannerData {
+  const status = raw.status as string
+  const impressionPv = (raw.impression_pv as number) ?? 0
+  const clickCount = (raw.click_count as number) ?? 0
+  return {
+    id: raw.id as string,
+    imageUrl: raw.image_url as string,
+    title: raw.title as string,
+    jumpType: (raw.link_type as JumpType) ?? 'none',
+    jumpPath: (raw.link_param as string) ?? '',
+    sortOrder: (raw.sort_order as number) ?? 0,
+    enabled: status === 'enabled',
+    startTime: (raw.start_date as string) ?? '',
+    endTime: (raw.end_date as string) ?? '',
+    pv: impressionPv,
+    clickPv: clickCount,
+    clickRate: impressionPv > 0 ? (clickCount / impressionPv) * 100 : 0,
+  }
+}
 
-let data: BannerData[] = [
-  {
-    id: 'b1', imageUrl: 'https://picsum.photos/800/300?random=1', title: '暑期特惠学习季',
-    jumpType: 'h5', jumpPath: 'https://example.com/promotion', sortOrder: 1, enabled: true,
-    startTime: '2026-06-01', endTime: '2026-08-31', pv: 12580, clickPv: 3200, clickRate: 25.44,
-  },
-  {
-    id: 'b2', imageUrl: 'https://picsum.photos/800/300?random=2', title: '新用户专享福利',
-    jumpType: 'miniapp', jumpPath: 'pages/promotion/new-user', sortOrder: 2, enabled: true,
-    startTime: '2026-05-01', endTime: '2026-12-31', pv: 8900, clickPv: 4100, clickRate: 46.07,
-  },
-  {
-    id: 'b3', imageUrl: 'https://picsum.photos/800/300?random=3', title: '每日打卡挑战',
-    jumpType: 'none', jumpPath: '', sortOrder: 3, enabled: false,
-    startTime: '2026-05-15', endTime: '2026-06-15', pv: 0, clickPv: 0, clickRate: 0,
-  },
-]
+/** Build backend request body from frontend BannerData fields (snake_case) */
+function buildBannerBody(
+  params: Partial<Omit<BannerData, 'id' | 'pv' | 'clickPv' | 'clickRate'>>,
+): Record<string, unknown> {
+  const body: Record<string, unknown> = {}
+  if (params.title !== undefined) body.title = params.title
+  if (params.imageUrl !== undefined) body.image_url = params.imageUrl
+  if (params.jumpType !== undefined) body.link_type = params.jumpType
+  if (params.jumpPath !== undefined) body.link_param = params.jumpPath
+  if (params.sortOrder !== undefined) body.sort_order = params.sortOrder
+  if (params.enabled !== undefined) body.status = params.enabled ? 'enabled' : 'disabled'
+  if (params.startTime !== undefined) body.start_date = params.startTime || null
+  if (params.endTime !== undefined) body.end_date = params.endTime || null
+  return body
+}
 
 export const bannerApi = {
+  /** GET /admin/banners — returns array directly, no pagination wrapper */
   async getList(): Promise<ApiResponse<BannerData[]>> {
-    await delay(300)
-    return { data: [...data].sort((a, b) => a.sortOrder - b.sortOrder) }
+    const res = await apiClient.get('/admin/banners')
+    const items = ((res.data as Record<string, unknown>[]) ?? []).map(mapBanner)
+    return { data: items }
   },
 
-  async create(params: Omit<BannerData, 'id' | 'pv' | 'clickPv' | 'clickRate'>): Promise<ApiResponse<BannerData>> {
-    await delay(400)
-    const item: BannerData = {
-      id: `b${Date.now()}`,
-      ...params,
-      pv: 0,
-      clickPv: 0,
-      clickRate: 0,
-    }
-    data.push(item)
-    return { data: item }
+  /** POST /admin/banners */
+  async create(
+    params: Omit<BannerData, 'id' | 'pv' | 'clickPv' | 'clickRate'>,
+  ): Promise<ApiResponse<BannerData>> {
+    const res = await apiClient.post('/admin/banners', buildBannerBody(params))
+    return { data: mapBanner(res.data as Record<string, unknown>) }
   },
 
-  async update(id: string, params: Partial<Omit<BannerData, 'id' | 'pv' | 'clickPv' | 'clickRate'>>): Promise<ApiResponse<BannerData>> {
-    await delay(300)
-    const idx = data.findIndex((d) => d.id === id)
-    if (idx === -1) throw new Error('Banner 不存在')
-    data[idx] = { ...data[idx], ...params }
-    return { data: data[idx] }
+  /** PUT /admin/banners/{id} — partial update */
+  async update(
+    id: string,
+    params: Partial<Omit<BannerData, 'id' | 'pv' | 'clickPv' | 'clickRate'>>,
+  ): Promise<ApiResponse<BannerData>> {
+    const res = await apiClient.put(`/admin/banners/${id}`, buildBannerBody(params))
+    return { data: mapBanner(res.data as Record<string, unknown>) }
   },
 
-  async toggle(id: string, enabled: boolean): Promise<ApiResponse<null>> {
-    await delay(200)
-    const idx = data.findIndex((d) => d.id === id)
-    if (idx !== -1) data[idx].enabled = enabled
+  /** POST /admin/banners/{id}/toggle — backend ignores enabled param, just flips status */
+  async toggle(id: string, _enabled: boolean): Promise<ApiResponse<null>> {
+    await apiClient.post(`/admin/banners/${id}/toggle`)
     return { data: null }
   },
 
+  /** PUT /admin/banners/reorder — convert ids to {items: [{id, sort_order}]} format */
   async reorder(ids: string[]): Promise<ApiResponse<null>> {
-    await delay(200)
-    const orderMap: Record<string, number> = {}
-    ids.forEach((id, i) => { orderMap[id] = i + 1 })
-    data.forEach((d) => {
-      if (orderMap[d.id] !== undefined) d.sortOrder = orderMap[d.id]
-    })
+    const items = ids.map((id, i) => ({ id, sort_order: i + 1 }))
+    await apiClient.put('/admin/banners/reorder', { items })
     return { data: null }
   },
 
+  /** DELETE /admin/banners/{id} */
   async delete(id: string): Promise<ApiResponse<null>> {
-    await delay(300)
-    data = data.filter((d) => d.id !== id)
+    await apiClient.delete(`/admin/banners/${id}`)
     return { data: null }
   },
 }
