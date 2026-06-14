@@ -27,6 +27,11 @@ Badge (Achievement):
   POST   /admin/badges               - 新增徽章
   PUT    /admin/badges/{id}          - 编辑徽章
   POST   /admin/badges/{id}/toggle   - 上架/下架
+  DELETE /admin/badges/{id}          - 删除徽章
+
+Review Default Config:
+  GET    /admin/review-default-config        - 获取复习默认配置
+  PUT    /admin/review-default-config        - 更新复习默认配置
 """
 
 from datetime import date
@@ -497,6 +502,23 @@ async def toggle_badge(
     return success(_serialize_badge(badge))
 
 
+@router.delete("/admin/badges/{badge_id}")
+async def delete_badge(
+    badge_id: str,
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """删除成就徽章."""
+    result = await db.execute(select(Achievement).where(Achievement.id == badge_id))
+    badge = result.scalar_one_or_none()
+    if not badge:
+        raise NotFoundError(f"Badge {badge_id} not found")
+
+    await db.delete(badge)
+    await db.commit()
+    return success({"deleted": True})
+
+
 # ═════════════════════════════════════════════
 #  Homepage Config  (/api/v1/admin/homepage-config)
 # ═════════════════════════════════════════════
@@ -521,6 +543,34 @@ async def update_homepage_config(
     """更新首页模块配置."""
     config = await _update_or_create_config(
         db, "homepage_module_order", body.config_value, admin_id, body.description,
+    )
+    return success(_serialize_config(config))
+
+
+# ═════════════════════════════════════════════
+#  Review Default Config  (/api/v1/admin/review-default-config)
+# ═════════════════════════════════════════════
+
+
+@router.get("/admin/review-default-config")
+async def get_review_default_config(
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """获取复习默认配置（config_key='default_review_config'）. """
+    config = await _get_config_entry(db, "default_review_config")
+    return success(_serialize_config(config))
+
+
+@router.put("/admin/review-default-config")
+async def update_review_default_config(
+    body: ConfigUpdate,
+    admin_id: str = Depends(get_admin_id),
+    db: AsyncSession = Depends(get_db),
+):
+    """更新复习默认配置."""
+    config = await _update_or_create_config(
+        db, "default_review_config", body.config_value, admin_id, body.description,
     )
     return success(_serialize_config(config))
 
