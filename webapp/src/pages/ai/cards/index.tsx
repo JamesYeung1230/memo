@@ -1,86 +1,76 @@
 import { useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import { Card, Input, Button, Table, Progress, Tag, message, Modal, Select, Empty } from 'antd'
-import { PlusOutlined, DeleteOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { Card, Input, Button, Table, Tag, message, Modal, Select, Empty, List } from 'antd'
+import { ThunderboltOutlined } from '@ant-design/icons'
 import type { ColumnsType } from 'antd/es/table'
 import { cardApi } from '@/api/cards'
+import { aiApi } from '@/api/ai'
 import type { AiGeneratedCard, AiCardGenerateHistory } from '@/api/cards'
+import type { CardSearchItem } from '@/types/question'
 import { CardPreviewModal } from './CardPreviewModal'
 
 function AiCardsPage() {
-  const [topics, setTopics] = useState<string[]>([''])
+  // Card search & selection state
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [selectedCardIds, setSelectedCardIds] = useState<string[]>([])
   const [generatedCards, setGeneratedCards] = useState<AiGeneratedCard[]>([])
-  const [generating, setGenerating] = useState(false)
-  const [genProgress, setGenProgress] = useState(0)
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewCard, setPreviewCard] = useState<AiGeneratedCard | null>(null)
   const [adoptModalOpen, setAdoptModalOpen] = useState(false)
   const [selectedChapter, setSelectedChapter] = useState<string | undefined>()
   const [adoptCards, setAdoptCards] = useState<AiGeneratedCard[]>([])
 
-  const { data: history } = useQuery({
+  // Search cards query
+  const { data: cardSearchData, isLoading: cardsLoading } = useQuery({
+    queryKey: ['ai', 'cards', 'search', searchKeyword],
+    queryFn: () => aiApi.searchCards(searchKeyword),
+    enabled: searchKeyword.length > 0,
+    placeholderData: (prev) => prev,
+  })
+
+  const cardList = cardSearchData?.data ?? []
+
+  // History query
+  const { data: history, isLoading: historyLoading } = useQuery({
     queryKey: ['ai', 'cards', 'history'],
     queryFn: () => cardApi.getHistory(),
   })
 
+  // Chapters query
   const { data: chapters } = useQuery({
     queryKey: ['ai', 'cards', 'chapters'],
     queryFn: () => cardApi.getChapters(),
   })
 
-  const handleTopicChange = (index: number, value: string) => {
-    const newTopics = [...topics]
-    newTopics[index] = value
-    setTopics(newTopics)
+  // Generate mutation
+  const {
+    mutate: generate,
+    isPending: generating,
+  } = useMutation({
+    mutationFn: (cardIds: string[]) => cardApi.generateCards(cardIds),
+    onSuccess: (result) => {
+      setGeneratedCards(result.data)
+      message.success('卡片生成完成！')
+    },
+    onError: (err: Error) => {
+      message.error(err.message || '生成失败，请重试')
+    },
+  })
+
+  // Card selection
+  const toggleCardSelection = (card: CardSearchItem) => {
+    setSelectedCardIds((prev) =>
+      prev.includes(card.id) ? prev.filter((id) => id !== card.id) : [...prev, card.id],
+    )
   }
 
-  const addTopic = () => {
-    if (topics.length < 10) {
-      setTopics([...topics, ''])
-    } else {
-      message.warning('最多支持10个主题')
-    }
-  }
-
-  const removeTopic = (index: number) => {
-    if (topics.length > 1) {
-      setTopics(topics.filter((_, i) => i !== index))
-    }
-  }
-
-  const handleGenerate = async () => {
-    const validTopics = topics.filter((t) => t.trim())
-    if (validTopics.length === 0) {
-      message.warning('请至少输入一个主题')
+  const handleGenerate = () => {
+    if (selectedCardIds.length === 0) {
+      message.warning('请至少选择一张参考卡片')
       return
     }
-
-    setGenerating(true)
     setGeneratedCards([])
-    setGenProgress(0)
-
-    // Simulate progress
-    const interval = setInterval(() => {
-      setGenProgress((prev) => {
-        if (prev >= 90) {
-          clearInterval(interval)
-          return 90
-        }
-        return prev + 10
-      })
-    }, 200)
-
-    try {
-      const result = await cardApi.generateCards(validTopics)
-      setGeneratedCards(result.data)
-      setGenProgress(100)
-      message.success('卡片生成完成！')
-    } catch {
-      message.error('生成失败，请重试')
-    } finally {
-      clearInterval(interval)
-      setGenerating(false)
-    }
+    generate(selectedCardIds)
   }
 
   const handlePreview = (card: AiGeneratedCard) => {
@@ -130,61 +120,75 @@ function AiCardsPage() {
     <div className="flex flex-col gap-6">
       <h1 className="m-0 text-[28px] font-bold text-text-primary leading-tight">AI 知识卡片生成</h1>
 
-      {/* 主题输入区 */}
-      <Card title={<span className="text-base font-semibold">批量主题输入</span>} className="shadow-sm">
-        <div className="flex flex-col gap-2">
-          {topics.map((topic, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <Input
-                value={topic}
-                onChange={(e) => handleTopicChange(index, e.target.value)}
-                placeholder={`主题 ${index + 1}`}
-                className="max-w-md"
-                disabled={generating}
-              />
-              {topics.length > 1 && (
-                <Button
-                  type="text"
-                  danger
-                  icon={<DeleteOutlined />}
-                  onClick={() => removeTopic(index)}
-                  disabled={generating}
-                />
-              )}
-            </div>
-          ))}
-          {topics.length < 10 && (
-            <Button
-              type="dashed"
-              icon={<PlusOutlined />}
-              onClick={addTopic}
-              className="max-w-xs mt-1"
-              disabled={generating}
-            >
-              添加主题（最多10个）
-            </Button>
-          )}
-        </div>
+      {/* Card Selection Section */}
+      <Card title={<span className="text-base font-semibold">选择参考卡片</span>} className="shadow-sm">
+        <p className="text-sm text-gray-500 mb-4">
+          搜索并选择现有知识卡片作为参考，AI 将基于所选卡片内容生成新的知识卡片
+        </p>
 
-        <div className="mt-4 flex items-center gap-4">
+        <Input.Search
+          placeholder="搜索知识卡片..."
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          onSearch={(value) => setSearchKeyword(value)}
+          className="max-w-md mb-3"
+          allowClear
+        />
+
+        {searchKeyword && (
+          <List
+            loading={cardsLoading}
+            dataSource={cardList}
+            locale={{ emptyText: '未找到匹配的卡片' }}
+            className="max-h-48 overflow-y-auto border rounded-lg mb-4"
+            renderItem={(item) => {
+              const isSelected = selectedCardIds.includes(item.id)
+              return (
+                <List.Item
+                  className={`px-4 py-3 cursor-pointer transition-colors hover:bg-purple-50 ${
+                    isSelected ? 'bg-purple-50 border-l-4 border-l-[#160C57]' : ''
+                  }`}
+                  onClick={() => toggleCardSelection(item)}
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm truncate">{item.title}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">
+                      {item.domainName ? `${item.domainName} / ` : ''}{item.chapterName}
+                    </div>
+                  </div>
+                  <Tag color="default" className="text-xs shrink-0">
+                    {item.difficulty}
+                  </Tag>
+                </List.Item>
+              )
+            }}
+          />
+        )}
+
+        {selectedCardIds.length > 0 && (
+          <div className="bg-purple-50 rounded-lg p-4 border border-purple-100 mb-4">
+            <div className="text-sm font-medium text-gray-700">
+              已选择 <strong>{selectedCardIds.length}</strong> 张参考卡片
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center gap-4">
           <Button
             type="primary"
             icon={<ThunderboltOutlined />}
             onClick={handleGenerate}
             loading={generating}
-            disabled={generating || topics.every((t) => !t.trim())}
+            disabled={generating || selectedCardIds.length === 0}
             size="large"
             style={{ background: '#160C57' }}
           >
-            {generating ? `生成中 ${genProgress}%` : '开始生成'}
+            {generating ? '生成中...' : '开始生成'}
           </Button>
-          {generating && (
-            <Progress percent={genProgress} className="flex-1 max-w-md" strokeColor="#160C57" />
-          )}
         </div>
       </Card>
 
-      {/* 生成结果 */}
+      {/* Generated Results */}
       {generatedCards.length > 0 && (
         <Card
           title={<span className="text-base font-semibold">生成结果（{generatedCards.length} 张卡片）</span>}
@@ -218,26 +222,27 @@ function AiCardsPage() {
         </Card>
       )}
 
-      {/* 历史记录 */}
+      {/* History */}
       <Card title={<span className="text-base font-semibold">历史生成记录</span>} className="shadow-sm">
         <Table<AiCardGenerateHistory>
           rowKey="id"
           columns={historyColumns}
           dataSource={history?.data ?? []}
+          loading={historyLoading}
           pagination={false}
           locale={{ emptyText: <Empty description="暂无历史记录" /> }}
           size="small"
         />
       </Card>
 
-      {/* 预览弹窗 */}
+      {/* Preview Modal */}
       <CardPreviewModal
         open={previewOpen}
         card={previewCard}
         onClose={() => setPreviewOpen(false)}
       />
 
-      {/* 采纳弹窗 */}
+      {/* Adopt Modal */}
       <Modal
         title="采纳为正式卡片"
         open={adoptModalOpen}

@@ -14,6 +14,7 @@ function AiQuestionsPage() {
   const { data: cardData, isLoading: cardLoading } = useQuery({
     queryKey: ['ai', 'cards', 'search', searchKeyword],
     queryFn: () => aiApi.searchCards(searchKeyword),
+    enabled: searchKeyword.length > 0,
     placeholderData: (prev) => prev,
   })
 
@@ -26,8 +27,8 @@ function AiQuestionsPage() {
     onSuccess: () => {
       message.success('题目生成成功！请审核编辑后采纳保存。')
     },
-    onError: () => {
-      message.error('生成失败，请重试')
+    onError: (err: Error) => {
+      message.error(err.message || '生成失败，请重试')
     },
   })
 
@@ -53,7 +54,6 @@ function AiQuestionsPage() {
 
   const handleEditSave = useCallback(
     (_values: AiGeneratedQuestion) => {
-      // In real scenario, this would call the API
       message.success('题目已更新保存')
       setEditModalOpen(false)
     },

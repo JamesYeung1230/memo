@@ -1,6 +1,11 @@
-import { ApiResponse } from '@/types/api'
+import type { ApiResponse, PaginatedResponse, PaginationMeta } from '@/types/api'
+import apiClient from './client'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const DIFFICULTY_MAP: Record<string, string> = {
+  beginner: '入门',
+  intermediate: '基础',
+  advanced: '进阶',
+}
 
 export interface AiGeneratedCard {
   title: string
@@ -24,44 +29,152 @@ export interface ChapterOption {
   domainName: string
 }
 
+/**
+ * Map backend card list item (snake_case) to frontend CardSearchItem.
+ * Exported for reuse by ai.ts if needed.
+ */
+export function mapCardListItem(item: Record<string, unknown>) {
+  return {
+    id: item.id as string,
+    title: item.title as string,
+    chapterName: (item.chapter_name as string) ?? '',
+    domainName: (item.domain_name as string) ?? '',
+    difficulty: DIFFICULTY_MAP[item.difficulty as string] ?? (item.difficulty as string),
+  }
+}
+
 export const cardApi = {
-  async generateCards(topics: string[]): Promise<ApiResponse<AiGeneratedCard[]>> {
-    await delay(2000)
+  /**
+   * GET /api/v1/admin/cards — paginated card list with optional keyword search.
+   */
+  async getList(params: {
+    keyword?: string
+    page?: number
+    pageSize?: number
+  }): Promise<ApiResponse<PaginatedResponse<ReturnType<typeof mapCardListItem>>>> {
+    const res = await apiClient.get('/admin/cards', {
+      params: {
+        keyword: params.keyword || undefined,
+        page: params.page ?? 1,
+        page_size: params.pageSize ?? 20,
+      },
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body = res as any
+    const items = ((body.data as Record<string, unknown>[]) ?? []).map(mapCardListItem)
+    const meta = body.meta as PaginationMeta
+
     return {
-      data: topics.map((topic, i) => ({
-        title: `${topic} 基础概念`,
-        coreConcept: `${topic} 是编程中的核心概念，掌握它对于后续学习至关重要。`,
-        detail: `<p><strong>${topic}</strong> 是编程语言中的基本构建块。</p><p>通过理解 ${topic}，开发者可以更好地组织和构建代码。</p><p>实际应用中，${topic} 广泛用于各种场景。</p>`,
-        lifeAnalogy: `${topic} 就像日常生活中的一个基本工具，虽然简单但不可或缺。`,
-        tags: [topic, '编程基础', '入门知识'],
-        difficulty: i < 3 ? '入门' as const : '基础' as const,
-      })),
+      data: {
+        items,
+        total: meta.total,
+        page: meta.page,
+        pageSize: meta.page_size,
+        totalPages: Math.ceil(meta.total / meta.page_size),
+      },
     }
   },
 
+  /**
+   * GET /api/v1/admin/cards/{id} — single card detail.
+   */
+  async getDetail(id: string): Promise<ApiResponse<Record<string, unknown>>> {
+    const res = await apiClient.get(`/admin/cards/${id}`)
+    return { data: res.data as Record<string, unknown> }
+  },
+
+  /**
+   * POST /api/v1/admin/ai/generate-cards — AI generate cards from existing card IDs.
+   * Returns sync results (mode='sync' by default).
+   */
+  async generateCards(cardIds: string[]): Promise<ApiResponse<AiGeneratedCard[]>> {
+    const res = await apiClient.post('/admin/ai/generate-cards', {
+      card_ids: cardIds,
+      mode: 'sync',
+    })
+
+    const data = res.data as Record<string, unknown>
+    const results = (data.results as Record<string, unknown>[]) ?? []
+
+    const cards: AiGeneratedCard[] = results.map((r: Record<string, unknown>) => ({
+      title: r.title as string,
+      coreConcept: r.core_concept as string,
+      detail: r.detail as string,
+      lifeAnalogy: r.life_analogy as string,
+      tags: (r.tags as string[]) ?? [],
+      difficulty: (DIFFICULTY_MAP[r.difficulty as string] ?? '入门') as AiGeneratedCard['difficulty'],
+    }))
+
+    return { data: cards }
+  },
+
+  /**
+   * POST /api/v1/admin/ai/generate-cards (async mode) — start async generation.
+   * Returns { task_id, status }.
+   */
+  async generateCardsAsync(cardIds: string[]): Promise<ApiResponse<{ task_id: string; status: string }>> {
+    const res = await apiClient.post('/admin/ai/generate-cards', {
+      card_ids: cardIds,
+      mode: 'async',
+    })
+
+    return { data: res.data as { task_id: string; status: string } }
+  },
+
+  /**
+   * GET /api/v1/admin/ai/generate-cards/{task_id}/result — poll async task result.
+   */
+  async getGenerateCardsResult(taskId: string): Promise<ApiResponse<AiGeneratedCard[]>> {
+    const res = await apiClient.get(`/admin/ai/generate-cards/${taskId}/result`)
+
+    const data = res.data as Record<string, unknown>
+    const results = (data.results as Record<string, unknown>[]) ?? []
+
+    const cards: AiGeneratedCard[] = results.map((r: Record<string, unknown>) => ({
+      title: r.title as string,
+      coreConcept: r.core_concept as string,
+      detail: r.detail as string,
+      lifeAnalogy: r.life_analogy as string,
+      tags: (r.tags as string[]) ?? [],
+      difficulty: (DIFFICULTY_MAP[r.difficulty as string] ?? '入门') as AiGeneratedCard['difficulty'],
+    }))
+
+    return { data: cards }
+  },
+
+  /**
+   * GET /api/v1/admin/ai/generation-history — list AI generation history records.
+   */
   async getHistory(): Promise<ApiResponse<AiCardGenerateHistory[]>> {
-    await delay(200)
-    return {
-      data: [
-        { id: 'h1', topic: '变量与数据类型', createdAt: '2026-05-07 14:30', adopted: true },
-        { id: 'h2', topic: '条件判断语句', createdAt: '2026-05-07 11:00', adopted: true },
-        { id: 'h3', topic: '循环结构详解', createdAt: '2026-05-06 16:20', adopted: false },
-        { id: 'h4', topic: '函数定义与参数传递', createdAt: '2026-05-06 09:10', adopted: true },
-        { id: 'h5', topic: '数组操作方法', createdAt: '2026-05-05 14:00', adopted: false },
-      ],
-    }
+    const res = await apiClient.get('/admin/ai/generation-history')
+
+    const items: AiCardGenerateHistory[] = ((res.data as Record<string, unknown>[]) ?? []).map(
+      (item: Record<string, unknown>) => ({
+        id: item.id as string,
+        topic: item.topic as string,
+        createdAt: (item.created_at as string) ?? '',
+        adopted: (item.adopted as boolean) ?? false,
+      }),
+    )
+
+    return { data: items }
   },
 
+  /**
+   * GET /api/v1/admin/chapters — list all chapters with domain names.
+   */
   async getChapters(): Promise<ApiResponse<ChapterOption[]>> {
-    await delay(200)
-    return {
-      data: [
-        { id: 'ch1', name: '变量与数据类型', domainName: '编程基础概念' },
-        { id: 'ch2', name: '控制流程', domainName: '编程基础概念' },
-        { id: 'ch3', name: '函数', domainName: '编程基础概念' },
-        { id: 'ch4', name: 'HTTP 协议', domainName: '计算机网络基础' },
-        { id: 'ch5', name: '传输层协议', domainName: '计算机网络基础' },
-      ],
-    }
+    const res = await apiClient.get('/admin/chapters')
+
+    const items: ChapterOption[] = ((res.data as Record<string, unknown>[]) ?? []).map(
+      (ch: Record<string, unknown>) => ({
+        id: ch.id as string,
+        name: ch.name as string,
+        domainName: (ch.domain_name as string) ?? '',
+      }),
+    )
+
+    return { data: items }
   },
 }
