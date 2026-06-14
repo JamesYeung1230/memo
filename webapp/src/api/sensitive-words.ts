@@ -1,64 +1,141 @@
-import { ApiResponse } from '@/types/api'
+import type { ApiResponse, PaginatedResponse, PaginationMeta } from '@/types/api'
 import type { SensitiveWordData } from '@/types/sensitive-word'
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const mockData: SensitiveWordData[] = [
-  { id: 'sw1', word: '违禁品', matchMode: 'exact', enabled: true, createdAt: '2026-05-23' },
-  { id: 'sw2', word: 'falun', matchMode: 'pinyin', enabled: true, createdAt: '2026-05-22' },
-  { id: 'sw3', word: '法轮', matchMode: 'homophone', enabled: false, createdAt: '2026-05-21' },
-  { id: 'sw4', word: '\\d{17}[\\dXx]', matchMode: 'regex', enabled: true, createdAt: '2026-05-20' },
-  { id: 'sw5', word: '赌博', matchMode: 'exact', enabled: true, createdAt: '2026-05-19' },
-  { id: 'sw6', word: 'se qing', matchMode: 'pinyin', enabled: true, createdAt: '2026-05-18' },
-  { id: 'sw7', word: '毒品', matchMode: 'exact', enabled: false, createdAt: '2026-05-17' },
-  { id: 'sw8', word: 'fa lun', matchMode: 'pinyin', enabled: true, createdAt: '2026-05-16' },
-  { id: 'sw9', word: '暴力', matchMode: 'exact', enabled: true, createdAt: '2026-05-15' },
-  { id: 'sw10', word: '吸D', matchMode: 'homophone', enabled: false, createdAt: '2026-05-14' },
-  { id: 'sw11', word: '代开fa票', matchMode: 'homophone', enabled: true, createdAt: '2026-05-13' },
-  { id: 'sw12', word: '1xbet', matchMode: 'regex', enabled: true, createdAt: '2026-05-12' },
-]
+import apiClient from './client'
 
 export const sensitiveWordApi = {
-  async getList(params: { keyword?: string; page?: number; pageSize?: number }): Promise<ApiResponse<{ items: SensitiveWordData[]; total: number }>> {
-    await delay(300)
-    let filtered = [...mockData]
-    if (params.keyword) {
-      const q = params.keyword.toLowerCase()
-      filtered = filtered.filter((w) => w.word.toLowerCase().includes(q))
-    }
-    const page = params.page || 1
-    const pageSize = params.pageSize || 10
-    const start = (page - 1) * pageSize
+  /**
+   * GET /api/v1/admin/sensitive-words — paginated, filterable sensitive word list
+   */
+  async getList(params: {
+    page: number
+    pageSize: number
+    keyword?: string
+    matchMode?: string
+    isActive?: boolean
+  }): Promise<ApiResponse<PaginatedResponse<SensitiveWordData>>> {
+    const res = await apiClient.get('/admin/sensitive-words', {
+      params: {
+        page: params.page,
+        page_size: params.pageSize,
+        keyword: params.keyword || undefined,
+        match_mode: params.matchMode || undefined,
+        is_active: params.isActive,
+      },
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const body = res as any
+
+    const items: SensitiveWordData[] = (body.data as Record<string, unknown>[]).map(
+      (item: Record<string, unknown>) => ({
+        id: item.id as string,
+        word: item.word as string,
+        match_mode: item.match_mode as SensitiveWordData['match_mode'],
+        enabled: (item.enabled as boolean) ?? true,
+        created_at: (item.created_at as string) ?? '',
+        updated_at: (item.updated_at as string) ?? undefined,
+      }),
+    )
+
+    const meta = body.meta as PaginationMeta
+
     return {
       data: {
-        items: filtered.slice(start, start + pageSize),
-        total: filtered.length,
+        items,
+        total: meta.total,
+        page: meta.page,
+        pageSize: meta.page_size,
+        totalPages: Math.ceil(meta.total / meta.page_size),
       },
     }
   },
 
-  async create(_word: string, _matchMode: string): Promise<ApiResponse<SensitiveWordData>> {
-    await delay(400)
-    return { data: { id: 'new', word: _word, matchMode: _matchMode as any, enabled: true, createdAt: '2026-05-25' } }
+  /**
+   * POST /api/v1/admin/sensitive-words — create a single sensitive word
+   */
+  async create(data: { word: string; matchMode: string; enabled?: boolean }): Promise<ApiResponse<SensitiveWordData>> {
+    const res = await apiClient.post('/admin/sensitive-words', {
+      word: data.word,
+      match_mode: data.matchMode,
+      enabled: data.enabled,
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const item = (res as any).data as Record<string, unknown>
+
+    return {
+      data: {
+        id: item.id as string,
+        word: item.word as string,
+        match_mode: item.match_mode as SensitiveWordData['match_mode'],
+        enabled: (item.enabled as boolean) ?? true,
+        created_at: (item.created_at as string) ?? '',
+        updated_at: (item.updated_at as string) ?? undefined,
+      },
+    }
   },
 
-  async update(_id: string, _data: Partial<SensitiveWordData>): Promise<ApiResponse<SensitiveWordData>> {
-    await delay(300)
-    return { data: { id: _id, word: '', matchMode: 'exact', enabled: true, createdAt: '' } }
+  /**
+   * PUT /api/v1/admin/sensitive-words/{id} — update a sensitive word
+   */
+  async update(id: string, data: { word?: string; matchMode?: string; enabled?: boolean }): Promise<ApiResponse<SensitiveWordData>> {
+    const res = await apiClient.put(`/admin/sensitive-words/${id}`, {
+      word: data.word,
+      match_mode: data.matchMode,
+      enabled: data.enabled,
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const item = (res as any).data as Record<string, unknown>
+
+    return {
+      data: {
+        id: item.id as string,
+        word: item.word as string,
+        match_mode: item.match_mode as SensitiveWordData['match_mode'],
+        enabled: (item.enabled as boolean) ?? true,
+        created_at: (item.created_at as string) ?? '',
+        updated_at: (item.updated_at as string) ?? undefined,
+      },
+    }
   },
 
-  async toggle(_id: string, _enabled: boolean): Promise<ApiResponse<null>> {
-    await delay(200)
+  /**
+   * PUT /api/v1/admin/sensitive-words/{id}/toggle — enable/disable a word
+   */
+  async toggle(id: string, enabled: boolean): Promise<ApiResponse<SensitiveWordData>> {
+    const res = await apiClient.put(`/admin/sensitive-words/${id}/toggle`, {
+      is_active: enabled,
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const item = (res as any).data as Record<string, unknown>
+
+    return {
+      data: {
+        id: item.id as string,
+        word: (item.word as string) ?? '',
+        match_mode: (item.match_mode as SensitiveWordData['match_mode']) ?? 'exact',
+        enabled: (item.enabled as boolean) ?? false,
+        created_at: (item.created_at as string) ?? '',
+        updated_at: (item.updated_at as string) ?? undefined,
+      },
+    }
+  },
+
+  /**
+   * DELETE /api/v1/admin/sensitive-words/{id} — soft delete a word
+   */
+  async delete(id: string): Promise<ApiResponse<null>> {
+    await apiClient.delete(`/admin/sensitive-words/${id}`)
     return { data: null }
   },
 
-  async delete(_id: string): Promise<ApiResponse<null>> {
-    await delay(200)
-    return { data: null }
-  },
-
-  async batchDelete(_ids: string[]): Promise<ApiResponse<null>> {
-    await delay(300)
+  /**
+   * POST /api/v1/admin/sensitive-words/batch-delete — batch delete words
+   */
+  async batchDelete(ids: string[]): Promise<ApiResponse<null>> {
+    await apiClient.post('/admin/sensitive-words/batch-delete', { ids })
     return { data: null }
   },
 }

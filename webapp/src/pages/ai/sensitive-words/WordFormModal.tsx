@@ -7,6 +7,7 @@ interface WordFormModalProps {
   editingWord: SensitiveWordData | null
   onClose: () => void
   onSave: (word: string, matchMode: string, enabled: boolean) => void
+  confirmLoading?: boolean
 }
 
 export const WordFormModal = memo(function WordFormModal({
@@ -14,6 +15,7 @@ export const WordFormModal = memo(function WordFormModal({
   editingWord,
   onClose,
   onSave,
+  confirmLoading,
 }: WordFormModalProps) {
   const [form] = Form.useForm()
   const isEdit = !!editingWord
@@ -23,7 +25,7 @@ export const WordFormModal = memo(function WordFormModal({
       if (editingWord) {
         form.setFieldsValue({
           word: editingWord.word,
-          matchMode: editingWord.matchMode,
+          matchMode: editingWord.match_mode,
           enabled: editingWord.enabled,
         })
       } else {
@@ -54,6 +56,7 @@ export const WordFormModal = memo(function WordFormModal({
       okText="保存"
       cancelText="取消"
       okButtonProps={{ style: { background: '#160C57', borderColor: '#160C57' } }}
+      confirmLoading={confirmLoading}
       destroyOnClose
     >
       <Form

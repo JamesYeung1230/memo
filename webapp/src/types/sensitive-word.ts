@@ -3,9 +3,10 @@ export type MatchMode = 'exact' | 'pinyin' | 'homophone' | 'regex'
 export interface SensitiveWordData {
   id: string
   word: string
-  matchMode: MatchMode
+  match_mode: MatchMode
   enabled: boolean
-  createdAt: string
+  created_at: string
+  updated_at?: string
 }
 
 export const matchModeLabels: Record<MatchMode, string> = {

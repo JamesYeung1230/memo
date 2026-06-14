@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
-import { Input, Button, Table, Space, message, Modal } from 'antd'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { Input, Button, Table, Space, message, Modal, Alert } from 'antd'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import type { ColumnsType } from 'antd/es/table'
 import { sensitiveWordApi } from '@/api/sensitive-words'
@@ -26,16 +26,21 @@ function SensitiveWordsPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [deletingWord, setDeletingWord] = useState<SensitiveWordData | null>(null)
 
-  const { data, isLoading } = useQuery({
+  const queryClient = useQueryClient()
+
+  const { data, isLoading, error } = useQuery({
     queryKey: ['sensitive-words', keyword, page, pageSize],
-    queryFn: () => sensitiveWordApi.getList({ keyword: keyword || undefined, page, pageSize }),
+    queryFn: () =>
+      sensitiveWordApi.getList({ keyword: keyword || undefined, page, pageSize }),
     placeholderData: (prev) => prev,
   })
 
   const toggleMutation = useMutation({
-    mutationFn: ({ id, enabled }: { id: string; enabled: boolean }) => sensitiveWordApi.toggle(id, enabled),
+    mutationFn: ({ id, enabled }: { id: string; enabled: boolean }) =>
+      sensitiveWordApi.toggle(id, enabled),
     onSuccess: () => {
       message.success('操作成功')
+      queryClient.invalidateQueries({ queryKey: ['sensitive-words'] })
     },
   })
 
@@ -44,6 +49,8 @@ function SensitiveWordsPage() {
     onSuccess: () => {
       message.success('删除成功')
       setDeleteModalOpen(false)
+      setDeletingWord(null)
+      queryClient.invalidateQueries({ queryKey: ['sensitive-words'] })
     },
   })
 
@@ -52,21 +59,45 @@ function SensitiveWordsPage() {
     onSuccess: () => {
       message.success('批量删除成功')
       setSelectedIds([])
+      queryClient.invalidateQueries({ queryKey: ['sensitive-words'] })
     },
   })
 
   const createMutation = useMutation({
-    mutationFn: (params: { word: string; matchMode: string }) => sensitiveWordApi.create(params.word, params.matchMode),
+    mutationFn: (params: { word: string; matchMode: string; enabled?: boolean }) =>
+      sensitiveWordApi.create(params),
     onSuccess: () => {
       message.success('新增成功')
+      setModalOpen(false)
+      setEditingWord(null)
+      queryClient.invalidateQueries({ queryKey: ['sensitive-words'] })
+    },
+  })
+
+  const updateMutation = useMutation({
+    mutationFn: (params: { id: string; word: string; matchMode: string; enabled?: boolean }) =>
+      sensitiveWordApi.update(params.id, {
+        word: params.word,
+        matchMode: params.matchMode,
+        enabled: params.enabled,
+      }),
+    onSuccess: () => {
+      message.success('编辑成功')
+      setModalOpen(false)
+      setEditingWord(null)
+      queryClient.invalidateQueries({ queryKey: ['sensitive-words'] })
     },
   })
 
   const handleSave = useCallback(
-    (word: string, matchMode: string, _enabled: boolean) => {
-      createMutation.mutate({ word, matchMode })
+    (word: string, matchMode: string, enabled: boolean) => {
+      if (editingWord) {
+        updateMutation.mutate({ id: editingWord.id, word, matchMode, enabled })
+      } else {
+        createMutation.mutate({ word, matchMode, enabled })
+      }
     },
-    [createMutation],
+    [createMutation, updateMutation, editingWord],
   )
 
   const handleAdd = useCallback(() => {
@@ -100,8 +131,8 @@ function SensitiveWordsPage() {
     },
     {
       title: '匹配模式',
-      dataIndex: 'matchMode',
-      key: 'matchMode',
+      dataIndex: 'match_mode',
+      key: 'match_mode',
       width: '15%',
       render: (mode: MatchMode) => (
         <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${matchModeColors[mode] || 'bg-gray-100'}`}>
@@ -118,8 +149,8 @@ function SensitiveWordsPage() {
     },
     {
       title: '添加时间',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
+      dataIndex: 'created_at',
+      key: 'created_at',
       width: '18%',
     },
     {
@@ -150,6 +181,16 @@ function SensitiveWordsPage() {
         <h1 className="m-0 text-[28px] font-bold text-text-primary leading-tight">敏感词库管理</h1>
       </div>
 
+      {error && (
+        <Alert
+          message="加载失败"
+          description={(error as Error).message || '请检查网络连接后重试'}
+          type="error"
+          showIcon
+          closable
+        />
+      )}
+
       <div className="flex items-center justify-between">
         <Input
           placeholder="搜索敏感词..."
@@ -172,6 +213,7 @@ function SensitiveWordsPage() {
           <Button
             danger
             size="small"
+            loading={batchDeleteMutation.isPending}
             onClick={() => batchDeleteMutation.mutate(selectedIds)}
           >
             批量删除
@@ -205,6 +247,7 @@ function SensitiveWordsPage() {
         editingWord={editingWord}
         onClose={() => { setModalOpen(false); setEditingWord(null) }}
         onSave={handleSave}
+        confirmLoading={createMutation.isPending || updateMutation.isPending}
       />
 
       <Modal
@@ -216,6 +259,7 @@ function SensitiveWordsPage() {
         okText="确认删除"
         okButtonProps={{ danger: true }}
         cancelText="取消"
+        confirmLoading={deleteMutation.isPending}
       >
         <p className="text-sm text-gray-600">
           确定删除敏感词「<strong>{deletingWord?.word}</strong>」？删除后不可恢复。
