@@ -1,72 +1,79 @@
+import apiClient from './client'
 import { ApiResponse } from '@/types/api'
 import type { DomainData } from '@/types/domain'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const mockData: DomainData[] = [
-  { id: 'd1', name: '计算机科学', icon: '💻', isFree: true, unlockPoints: 0, enabled: true, sortOrder: 1, createdAt: '2026-05-01' },
-  { id: 'd2', name: '数学基础', icon: '📐', isFree: true, unlockPoints: 0, enabled: true, sortOrder: 2, createdAt: '2026-05-02' },
-  { id: 'd3', name: '英语学习', icon: '🇬🇧', isFree: false, unlockPoints: 200, enabled: true, sortOrder: 3, createdAt: '2026-05-03' },
-  { id: 'd4', name: '历史文化', icon: '🏛️', isFree: true, unlockPoints: 0, enabled: true, sortOrder: 4, createdAt: '2026-05-04' },
-  { id: 'd5', name: '物理科学', icon: '⚛️', isFree: false, unlockPoints: 300, enabled: false, sortOrder: 5, createdAt: '2026-05-05' },
-  { id: 'd6', name: '生物医学', icon: '🧬', isFree: false, unlockPoints: 500, enabled: true, sortOrder: 6, createdAt: '2026-05-06' },
-  { id: 'd7', name: '经济学', icon: '📊', isFree: true, unlockPoints: 0, enabled: false, sortOrder: 7, createdAt: '2026-05-07' },
-  { id: 'd8', name: '哲学思考', icon: '🧠', isFree: true, unlockPoints: 0, enabled: true, sortOrder: 8, createdAt: '2026-05-08' },
-]
-
-let data = [...mockData]
+/** Map backend snake_case to frontend camelCase */
+function mapDomain(raw: Record<string, unknown>): DomainData {
+  const status = raw.status as string
+  return {
+    id: raw.id as string,
+    name: raw.name as string,
+    icon: raw.icon as string,
+    isFree: (raw.is_free as boolean) ?? false,
+    unlockPoints: (raw.unlock_points as number) ?? 0,
+    enabled: status === 'published',
+    sortOrder: (raw.sort_order as number) ?? 0,
+    createdAt: (raw.created_at as string) ?? '',
+  }
+}
 
 export const domainApi = {
+  /** GET /admin/domains?page=1&page_size=100&status=all */
   async getList(): Promise<ApiResponse<DomainData[]>> {
-    await delay(300)
-    return { data: [...data].sort((a, b) => a.sortOrder - b.sortOrder) }
+    const res = await apiClient.get('/admin/domains', {
+      params: { page: 1, page_size: 100, status: 'all' },
+    })
+    const items = ((res.data as Record<string, unknown>[]) ?? []).map(mapDomain)
+    return { data: items }
   },
 
-  async create(params: { name: string; icon: string; isFree: boolean; unlockPoints: number; enabled: boolean }): Promise<ApiResponse<DomainData>> {
-    await delay(400)
-    const maxSort = data.reduce((max, d) => Math.max(max, d.sortOrder), 0)
-    const item: DomainData = {
-      id: `d${Date.now()}`,
+  /** POST /admin/domains */
+  async create(params: {
+    name: string
+    icon: string
+    isFree: boolean
+    unlockPoints: number
+    enabled: boolean
+  }): Promise<ApiResponse<DomainData>> {
+    const res = await apiClient.post('/admin/domains', {
       name: params.name,
       icon: params.icon,
-      isFree: params.isFree,
-      unlockPoints: params.unlockPoints,
-      enabled: params.enabled,
-      sortOrder: maxSort + 1,
-      createdAt: '2026-05-25',
-    }
-    data.push(item)
-    return { data: item }
-  },
-
-  async update(id: string, params: Partial<DomainData>): Promise<ApiResponse<DomainData>> {
-    await delay(300)
-    const idx = data.findIndex((d) => d.id === id)
-    if (idx === -1) throw new Error('领域不存在')
-    data[idx] = { ...data[idx], ...params }
-    return { data: data[idx] }
-  },
-
-  async toggle(id: string, enabled: boolean): Promise<ApiResponse<null>> {
-    await delay(200)
-    const idx = data.findIndex((d) => d.id === id)
-    if (idx !== -1) data[idx].enabled = enabled
-    return { data: null }
-  },
-
-  async reorder(ids: string[]): Promise<ApiResponse<null>> {
-    await delay(200)
-    const orderMap: Record<string, number> = {}
-    ids.forEach((id, i) => { orderMap[id] = i + 1 })
-    data.forEach((d) => {
-      if (orderMap[d.id] !== undefined) d.sortOrder = orderMap[d.id]
+      is_free: params.isFree,
+      unlock_points: params.unlockPoints,
+      status: params.enabled ? 'published' : 'draft',
     })
+    return { data: mapDomain(res.data as Record<string, unknown>) }
+  },
+
+  /** PUT /admin/domains/{id} — partial update */
+  async update(id: string, params: Partial<DomainData>): Promise<ApiResponse<DomainData>> {
+    const body: Record<string, unknown> = {}
+    if (params.name !== undefined) body.name = params.name
+    if (params.icon !== undefined) body.icon = params.icon
+    if (params.isFree !== undefined) body.is_free = params.isFree
+    if (params.unlockPoints !== undefined) body.unlock_points = params.unlockPoints
+    if (params.enabled !== undefined) body.status = params.enabled ? 'published' : 'draft'
+    if (params.sortOrder !== undefined) body.sort_order = params.sortOrder
+
+    const res = await apiClient.put(`/admin/domains/${id}`, body)
+    return { data: mapDomain(res.data as Record<string, unknown>) }
+  },
+
+  /** PUT /admin/domains/{id}/toggle */
+  async toggle(id: string, _enabled: boolean): Promise<ApiResponse<null>> {
+    await apiClient.put(`/admin/domains/${id}/toggle`)
     return { data: null }
   },
 
+  /** PUT /admin/domains/reorder */
+  async reorder(ids: string[]): Promise<ApiResponse<null>> {
+    await apiClient.put('/admin/domains/reorder', { order: ids })
+    return { data: null }
+  },
+
+  /** DELETE /admin/domains/{id} */
   async delete(id: string): Promise<ApiResponse<null>> {
-    await delay(300)
-    data = data.filter((d) => d.id !== id)
+    await apiClient.delete(`/admin/domains/${id}`)
     return { data: null }
   },
 }

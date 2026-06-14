@@ -1,95 +1,76 @@
+import apiClient from './client'
 import { ApiResponse } from '@/types/api'
 import type { ChapterData } from '@/types/chapter'
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const domainNames: Record<string, string> = {
-  d1: '计算机科学',
-  d2: '数学基础',
-  d3: '英语学习',
-  d4: '历史文化',
-  d5: '物理科学',
-  d6: '生物医学',
-  d7: '经济学',
-  d8: '哲学思考',
+/** Map backend snake_case to frontend camelCase */
+function mapChapter(raw: Record<string, unknown>): ChapterData {
+  const status = raw.status as string
+  return {
+    id: raw.id as string,
+    name: raw.name as string,
+    domainId: (raw.domain_id as string) ?? '',
+    domainName: (raw.domain_name as string) ?? '',
+    enabled: status === 'published',
+    sortOrder: (raw.sort_order as number) ?? 0,
+    createdAt: (raw.created_at as string) ?? '',
+  }
 }
 
-const mockData: ChapterData[] = [
-  { id: 'ch1', name: '数据结构与算法', domainId: 'd1', domainName: '计算机科学', enabled: true, sortOrder: 1, createdAt: '2026-05-01' },
-  { id: 'ch2', name: '操作系统原理', domainId: 'd1', domainName: '计算机科学', enabled: true, sortOrder: 2, createdAt: '2026-05-02' },
-  { id: 'ch3', name: '计算机网络', domainId: 'd1', domainName: '计算机科学', enabled: false, sortOrder: 3, createdAt: '2026-05-03' },
-  { id: 'ch4', name: '线性代数', domainId: 'd2', domainName: '数学基础', enabled: true, sortOrder: 1, createdAt: '2026-05-04' },
-  { id: 'ch5', name: '概率统计', domainId: 'd2', domainName: '数学基础', enabled: true, sortOrder: 2, createdAt: '2026-05-05' },
-  { id: 'ch6', name: '微积分', domainId: 'd2', domainName: '数学基础', enabled: true, sortOrder: 3, createdAt: '2026-05-06' },
-  { id: 'ch7', name: '词汇积累', domainId: 'd3', domainName: '英语学习', enabled: true, sortOrder: 1, createdAt: '2026-05-07' },
-  { id: 'ch8', name: '语法精讲', domainId: 'd3', domainName: '英语学习', enabled: false, sortOrder: 2, createdAt: '2026-05-08' },
-  { id: 'ch9', name: '阅读理解', domainId: 'd3', domainName: '英语学习', enabled: true, sortOrder: 3, createdAt: '2026-05-09' },
-  { id: 'ch10', name: '中国古代史', domainId: 'd4', domainName: '历史文化', enabled: true, sortOrder: 1, createdAt: '2026-05-10' },
-  { id: 'ch11', name: '世界近代史', domainId: 'd4', domainName: '历史文化', enabled: true, sortOrder: 2, createdAt: '2026-05-11' },
-  { id: 'ch12', name: '力学基础', domainId: 'd5', domainName: '物理科学', enabled: false, sortOrder: 1, createdAt: '2026-05-12' },
-  { id: 'ch13', name: '分子生物学', domainId: 'd6', domainName: '生物医学', enabled: true, sortOrder: 1, createdAt: '2026-05-13' },
-  { id: 'ch14', name: '微观经济学', domainId: 'd7', domainName: '经济学', enabled: false, sortOrder: 1, createdAt: '2026-05-14' },
-  { id: 'ch15', name: '逻辑与批判思维', domainId: 'd8', domainName: '哲学思考', enabled: true, sortOrder: 1, createdAt: '2026-05-15' },
-]
-
-let data = [...mockData]
-
 export const chapterApi = {
+  /**
+   * GET /admin/domains/{domainId}/chapters  (when domainId provided)
+   * GET /admin/chapters                     (when domainId omitted)
+   */
   async getList(params: { domainId?: string }): Promise<ApiResponse<ChapterData[]>> {
-    await delay(300)
-    let filtered = [...data]
+    let res
     if (params.domainId) {
-      filtered = filtered.filter((c) => c.domainId === params.domainId)
+      res = await apiClient.get(`/admin/domains/${params.domainId}/chapters`)
+    } else {
+      res = await apiClient.get('/admin/chapters')
     }
-    const sorted = filtered.sort((a, b) => a.sortOrder - b.sortOrder)
-    return { data: sorted }
+    const items = ((res.data as Record<string, unknown>[]) ?? []).map(mapChapter)
+    return { data: items }
   },
 
+  /** POST /admin/chapters */
   async create(params: { name: string; domainId: string }): Promise<ApiResponse<ChapterData>> {
-    await delay(400)
-    const chapters = data.filter((c) => c.domainId === params.domainId)
-    const maxSort = chapters.reduce((max, c) => Math.max(max, c.sortOrder), 0)
-    const item: ChapterData = {
-      id: `ch${Date.now()}`,
+    const res = await apiClient.post('/admin/chapters', {
       name: params.name,
-      domainId: params.domainId,
-      domainName: domainNames[params.domainId] || '未知领域',
-      enabled: true,
-      sortOrder: maxSort + 1,
-      createdAt: '2026-05-25',
-    }
-    data.push(item)
-    return { data: item }
+      domain_id: params.domainId,
+      status: 'published',
+    })
+    return { data: mapChapter(res.data as Record<string, unknown>) }
   },
 
+  /** PUT /admin/chapters/{id} — partial update */
   async update(id: string, params: Partial<ChapterData>): Promise<ApiResponse<ChapterData>> {
-    await delay(300)
-    const idx = data.findIndex((c) => c.id === id)
-    if (idx === -1) throw new Error('章节不存在')
-    data[idx] = { ...data[idx], ...params }
-    return { data: data[idx] }
+    const body: Record<string, unknown> = {}
+    if (params.name !== undefined) body.name = params.name
+    if (params.domainId !== undefined) body.domain_id = params.domainId
+    if (params.enabled !== undefined) body.status = params.enabled ? 'published' : 'draft'
+    if (params.sortOrder !== undefined) body.sort_order = params.sortOrder
+
+    const res = await apiClient.put(`/admin/chapters/${id}`, body)
+    return { data: mapChapter(res.data as Record<string, unknown>) }
   },
 
+  /** PUT /admin/chapters/{id} (toggle via status field — no dedicated toggle endpoint) */
   async toggle(id: string, enabled: boolean): Promise<ApiResponse<null>> {
-    await delay(200)
-    const idx = data.findIndex((c) => c.id === id)
-    if (idx !== -1) data[idx].enabled = enabled
-    return { data: null }
-  },
-
-  async reorder(ids: string[]): Promise<ApiResponse<null>> {
-    await delay(200)
-    const orderMap: Record<string, number> = {}
-    ids.forEach((id, i) => { orderMap[id] = i + 1 })
-    data.forEach((c) => {
-      if (orderMap[c.id] !== undefined) c.sortOrder = orderMap[c.id]
+    await apiClient.put(`/admin/chapters/${id}`, {
+      status: enabled ? 'published' : 'draft',
     })
     return { data: null }
   },
 
+  /** PUT /admin/chapters/reorder */
+  async reorder(ids: string[]): Promise<ApiResponse<null>> {
+    await apiClient.put('/admin/chapters/reorder', { order: ids })
+    return { data: null }
+  },
+
+  /** DELETE /admin/chapters/{id} */
   async delete(id: string): Promise<ApiResponse<null>> {
-    await delay(300)
-    data = data.filter((c) => c.id !== id)
+    await apiClient.delete(`/admin/chapters/${id}`)
     return { data: null }
   },
 }
