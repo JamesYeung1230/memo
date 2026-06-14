@@ -11,7 +11,7 @@
 | 关联项目 | [码上启航微信小程序](../miniapp)、[码上启航 Web 管理后台](../webapp) |
 | 测试范围 | 后端 SDK API 测试、微信小程序黑盒测试、Web 管理后台黑盒测试 |
 | Bug 管理 | BugPack MCP 服务 |
-| 当前阶段 | **M0 — 项目初始化** |
+| 当前阶段 | **M1 已完成 — Auth/Knowledge/Core API 集成测试就绪（51 活跃用例）** |
 | 相关文档 | [小程序 PRD](../miniapp/docs/PRD.md)、[Web 管理端 PRD](../webapp/docs/PRD.md)、[交互设计.md](../miniapp/docs/交互设计.md) |
 
 ## 项目定位
@@ -31,17 +31,25 @@
 ```
 test/
 ├── project.md                 # 本文件
-└── README.md                  # 项目说明
+├── pytest.ini                 # Pytest 配置（标记：smoke/auth/wechat/admin/knowledge）
+├── requirements.txt           # Python 依赖（pytest + httpx + python-dotenv）
+├── .env / .env.example        # 环境变量
+├── docs/                      # 测试文档（测试用例、PRD、API 契约等）
+├── tests/
+│   ├── conftest.py            # 会话级 fixtures（ApiClient、admin_token 等）
+│   ├── utils/client.py        # ApiClient（httpx 封装）+ ApiResponse
+│   ├── auth/                  # Auth 服务测试 (8001)：6 文件 36 用例
+│   ├── knowledge/             # Knowledge 服务测试 (8002)：7 文件 51 用例
+│   └── core/                  # Core 服务测试 (8000)：1 文件 1 用例
+└── venv/                      # Python 虚拟环境
 ```
-
-> 注：项目初始化阶段，目录结构待搭建。
 
 ## 开发里程碑
 
 | 阶段 | 里程碑 | 状态 | 开始日期 | 完成日期 | 说明 |
 |------|--------|------|----------|----------|------|
-| **M0** | 项目初始化 | 🔴 进行中 | 2026-05-05 | - | 测试框架选型、工程搭建、文档编写 |
-| **M1** | 后端 SDK API 测试框架搭建 | ⚪ 待开始 | - | - | 测试框架配置、SDK 对接、用例模板 |
+| **M0** | 项目初始化 | 🟢 已完成 | 2026-05-05 | 2026-06-14 | 测试框架选型（pytest + httpx）、工程搭建、文档编写、venv 配置 |
+| **M1** | 后端 SDK API 测试框架搭建 | 🟢 已完成 | 2026-06-14 | 2026-06-14 | ApiClient 封装、session fixtures、测试标记、Auth/Knowledge/Core conftest |
 | **M2** | 小程序黑盒测试用例编写 | ⚪ 待开始 | - | - | 覆盖首页个性化、卡片学习、刷题、记忆强化、笔记（含审核）、积分、广告、个人中心 |
 | **M3** | Web 管理后台 AI 工作台测试 | ⚪ 待开始 | - | - | AI 卡片生成、AI 题目生成、笔记审核队列、敏感词库（Playwright） |
 | **M4** | Web 管理后台内容管理测试 | ⚪ 待开始 | - | - | 领域/章节/卡片/题目的增删改查、排序、上架下架（Playwright） |

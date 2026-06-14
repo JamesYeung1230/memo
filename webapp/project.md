@@ -9,7 +9,7 @@
 | 关联项目 | [码上启航微信小程序](../miniapp) |
 | 技术栈 | React 19 + TypeScript + Vite + Ant Design 5.x |
 | 设计规范 | 深紫色 (#160C57) 品牌色，详见[交互设计](docs/交互设计.md) |
-| 当前阶段 | **项目初始化已完成 — 待开发（需后端全部就绪后启动）** |
+| 当前阶段 | **工程已搭建 — 全页面就绪（Mock 数据驱动），待接入真实 API** |
 | 相关文档 | [Web管理端 PRD v1.3](docs/PRD.md)、[小程序 PRD](../miniapp/docs/PRD.md)、[技术可行性分析报告](docs/技术可行性分析报告.md)、[前端技术开发指导及规范](docs/前端技术开发指导及规范.md) |
 | 用户模型 | 个人项目，单一管理员账号即拥有全部操作权限 |
 | 核心功能 | AI内容工作台（卡片/题目生成 + 笔记审核 + 敏感词库）、知识内容管理（领域/章节/卡片/题目CRUD）、运营配置（积分/解锁/Banner/徽章/广告/复习）、数据看板（核心指标/内容/用户/积分广告）、用户管理、系统管理 |
@@ -35,11 +35,36 @@ Web 端管理后台是「码上启航」平台的运营管理后台，面向**�
 webapp/
 ├── project.md                 # 本文件（项目总览与规范）
 ├── README.md                  # 项目说明
-└── docs/
-    └── PRD.md                 # Web 管理端产品需求规格说明书（v1.3）
+├── index.html                 # HTML 入口（zh-CN）
+├── package.json               # 依赖与脚本
+├── vite.config.ts             # Vite 构建配置（@ 别名、API 代理）
+├── vitest.config.ts           # Vitest 测试配置（jsdom）
+├── tsconfig.json              # TypeScript 配置（strict、ES2020）
+├── .eslintrc.cjs              # ESLint 配置
+├── .prettierrc                # Prettier 配置
+├── designs/
+│   └── codesail-admin.pen     # Pixso 设计源文件
+├── docs/
+│   ├── PRD.md                 # 产品需求规格说明书 v1.3
+│   ├── 技术可行性分析报告.md    # 技术选型与架构设计
+│   ├── 前端技术开发指导及规范.md # 前端开发规范指南
+│   └── 交互设计.md            # 设计 Token 与交互规范
+├── src/
+│   ├── main.tsx               # 入口（StrictMode + App）
+│   ├── App.tsx                # Provider 层级（ErrorBoundary→ConfigProvider→QueryClient→Router）
+│   ├── api/                   # 19 个 API 模块（当前使用 Mock 数据）
+│   ├── components/common/     # 9 个通用组件
+│   ├── layouts/AdminLayout/   # 管理布局（Sidebar + Header + Outlet）
+│   ├── pages/                 # 18 个页面目录（全部页面就绪）
+│   ├── routes/                # 路由定义 + AuthGuard
+│   ├── stores/                # Zustand stores（auth、theme）
+│   ├── styles/                # Tailwind v4 + Ant Design 主题
+│   ├── types/                 # 18 个类型定义文件
+│   └── utils/                 # 工具函数
+└── tests/
+    ├── setup.ts               # 测试环境配置
+    └── components/            # 组件测试示例
 ```
-
-> 注：项目初始化阶段，工程目录结构待搭建。
 
 ---
 
@@ -313,7 +338,7 @@ v1.0 的知识内容（领域、章节、卡片、题目）、成就徽章、运
 
 | 阶段 | 里程碑 | 状态 | 开始日期 | 完成日期 | 说明 |
 |------|--------|:----:|:--------:|:--------:|------|
-| **M0** | 项目初始化 | 🔴 进行中 | 2026-05-05 | - | 项目架构设计、技术选型、工程搭建、路由框架 |
+| **M0** | 项目初始化 | 🟢 已完成 | 2026-05-05 | 2026-06-14 | 项目架构设计、技术选型、工程搭建、路由框架、19个API模块、18个页面（Mock数据）、9个通用组件、Zustand stores、完整类型定义 |
 | **M1** | 登录 + 系统管理 | ⚪ 待开始 | - | - | 管理员登录、Token 管理、修改密码、操作日志 |
 | **M2** | AI 内容工作台 | ⚪ 待开始 | - | - | AI卡片/题目生成、笔记审核队列与统计、敏感词库管理 |
 | **M3** | 内容管理 | ⚪ 待开始 | - | - | 知识领域/章节/卡片/题目 CRUD、排序、上下架、卡片预览 |
