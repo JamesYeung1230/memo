@@ -11,6 +11,7 @@ from services.core.models.OpLog import OpLog
 from services.core.models.FavoriteCard import FavoriteCard
 from services.core.models.DailyChallengeRecord import DailyChallengeRecord
 from services.core.models.ReviewConfig import ReviewConfig
+from services.core.models.User import User
 
 __all__ = [
     "Base",
@@ -26,4 +27,5 @@ __all__ = [
     "FavoriteCard",
     "DailyChallengeRecord",
     "ReviewConfig",
+    "User",
 ]
