@@ -25,6 +25,8 @@ export const CardPreviewModal = memo(function CardPreviewModal({
       open={open}
       width={720}
       onCancel={onClose}
+      getContainer={() => document.body}
+      zIndex={10000}
       footer={null}
     >
       {card && (

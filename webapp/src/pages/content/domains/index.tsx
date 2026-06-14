@@ -207,8 +207,9 @@ function DomainsPage() {
         </Button>
       </div>
 
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <SortableContext items={domains.map((d) => d.id)} strategy={verticalListSortingStrategy}>
+      <div style={{ isolation: 'isolate' }}>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+          <SortableContext items={domains.map((d) => d.id)} strategy={verticalListSortingStrategy}>
           <Table<DomainData>
             rowKey="id"
             columns={columns}
@@ -226,6 +227,7 @@ function DomainsPage() {
           />
         </SortableContext>
       </DndContext>
+      </div>
 
       <DomainFormModal
         open={modalOpen}

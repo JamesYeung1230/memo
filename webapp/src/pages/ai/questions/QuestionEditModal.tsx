@@ -46,6 +46,8 @@ export const QuestionEditModal = memo(function QuestionEditModal({
       okButtonProps={{
         style: { background: '#160C57', borderColor: '#160C57' },
       }}
+      getContainer={() => document.body}
+      zIndex={10000}
       destroyOnClose
     >
       {question && (

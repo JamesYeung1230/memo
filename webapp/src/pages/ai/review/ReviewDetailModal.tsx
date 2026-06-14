@@ -28,6 +28,8 @@ export const ReviewDetailModal = memo(function ReviewDetailModal({
       open={open}
       width={720}
       onCancel={onClose}
+      getContainer={() => document.body}
+      zIndex={10000}
       footer={[
         <button
           key="reject"

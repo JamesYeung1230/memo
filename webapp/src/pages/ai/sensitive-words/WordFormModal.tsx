@@ -57,6 +57,8 @@ export const WordFormModal = memo(function WordFormModal({
       cancelText="取消"
       okButtonProps={{ style: { background: '#160C57', borderColor: '#160C57' } }}
       confirmLoading={confirmLoading}
+      getContainer={() => document.body}
+      zIndex={10000}
       destroyOnClose
     >
       <Form

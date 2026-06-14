@@ -70,6 +70,8 @@ export const BannerFormModal = memo(function BannerFormModal({
       okText="保存"
       cancelText="取消"
       okButtonProps={{ style: { background: '#160C57', borderColor: '#160C57' } }}
+      getContainer={() => document.body}
+      zIndex={10000}
       destroyOnClose
     >
       <Form form={form} layout="vertical" className="mt-2" initialValues={{ enabled: true, jumpType: 'none' }}>

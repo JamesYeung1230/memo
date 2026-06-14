@@ -37,6 +37,8 @@ export const DomainDeleteConfirm = memo(function DomainDeleteConfirm({
       onOk={handleOk}
       onCancel={onCancel}
       maskClosable={false}
+      getContainer={() => document.body}
+      zIndex={10000}
     >
       <div className="space-y-3">
         <Text>

@@ -203,8 +203,9 @@ function ChaptersPage() {
         />
       </div>
 
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <SortableContext items={chapters.map((c) => c.id)} strategy={verticalListSortingStrategy}>
+      <div style={{ isolation: 'isolate' }}>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+          <SortableContext items={chapters.map((c) => c.id)} strategy={verticalListSortingStrategy}>
           <Table<ChapterData>
             rowKey="id"
             columns={columns}
@@ -222,6 +223,7 @@ function ChaptersPage() {
           />
         </SortableContext>
       </DndContext>
+      </div>
 
       <ChapterFormModal
         open={modalOpen}
