@@ -57,6 +57,7 @@ bin/
 # Logs
 *.log
 logs/
+!webapp/src/pages/system/logs/
 npm-debug.log*
 
 # Temp
